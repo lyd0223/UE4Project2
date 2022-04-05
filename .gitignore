@@ -426,12 +426,14 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-/UnrealClinet/Intermediate
-/UnrealClinet/Binaries/Win64
-/UnrealClinet/Saved
-/UnrealClient/Binaries/Win64
-/UnrealClient/Intermediate
-/UnrealClient/Saved
+/Client/Intermediate
+/Client/Binaries/Win64
+/Client/Saved
+/Client/Binaries/Win64
+/Client/Intermediate
+/Client/Saved
+/Client/Content
+!/Client/Content/01Resources
 
 
 !/PorjectCode/Thirdparty/lib/*
