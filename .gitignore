@@ -432,7 +432,7 @@ DerivedDataCache/*
 /Client/Binaries/Win64
 /Client/Intermediate
 /Client/Saved
-/Client/Content
+/Client/Content/*
 !/Client/Content/01Resources
 
 
