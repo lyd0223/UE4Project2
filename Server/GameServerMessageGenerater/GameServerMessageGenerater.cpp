@@ -477,7 +477,7 @@ int main()
 		GameServerDirectory SaveDir;
 		SaveDir.MoveParent();
 		SaveDir.MoveParent();
-		SaveDir.MoveChild("UnrealClient\\Source\\UnrealClient\\Global\\Message");
+		SaveDir.MoveChild("Client\\Source\\Project1\\Global\\Message");
 
 
 		{
@@ -600,7 +600,7 @@ int main()
 		}
 
 		{
-			HandlerHeader.h Create
+			//HandlerHeader.h Create
 			std::string DisText;
 
 			DisText += "#pragma once																									  \n";
