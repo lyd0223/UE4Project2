@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="PreCompile.h">
+      <Filter>PreCompile</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadMessageBase.h">
+      <Filter>Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginMessageHandler.h">
+      <Filter>Messages\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="DBQueue.h">
+      <Filter>Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="NetQueue.h">
+      <Filter>Queue</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerDispatcher.h">
+      <Filter>Messages</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatMessageHandler.h">
+      <Filter>Messages\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServerUser.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="DBUserInfoTable.h">
+      <Filter>DBTable</Filter>
+    </ClInclude>
+    <ClInclude Include="SignInMessageHandler.h">
+      <Filter>Messages\Login</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PreCompile.cpp">
+      <Filter>PreCompile</Filter>
+    </ClCompile>
+    <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="ThreadMessageBase.cpp">
+      <Filter>Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginMessageHandler.cpp">
+      <Filter>Messages\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="DBQueue.cpp">
+      <Filter>Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="NetQueue.cpp">
+      <Filter>Queue</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerDispatcher.cpp">
+      <Filter>Messages</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatMessageHandler.cpp">
+      <Filter>Messages\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="GameServerUser.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="DBUserInfoTable.cpp">
+      <Filter>DBTable</Filter>
+    </ClCompile>
+    <ClCompile Include="SignInMessageHandler.cpp">
+      <Filter>Messages\Login</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="PreCompile">
+      <UniqueIdentifier>{3279ae6f-94f3-4e16-ad46-52daa8edb4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Messages">
+      <UniqueIdentifier>{5255371b-839c-4575-964d-bb6c2b6d6a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Messages\Login">
+      <UniqueIdentifier>{4da5fbe9-9d43-43e1-8a27-15ef7d013d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Queue">
+      <UniqueIdentifier>{e9dd193b-8d1e-4e05-8bb4-e8cb341199a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{fab733e8-2570-4f58-9671-0da9ac1a24fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DBTable">
+      <UniqueIdentifier>{e22b24a7-e49c-4f6a-89d0-7e0b1b5634c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
