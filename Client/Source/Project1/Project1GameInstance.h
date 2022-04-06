@@ -1,20 +1,54 @@
-
 #pragma once
 
 #include "GameInfo.h"
 #include "Engine/GameInstance.h"
+#include <memory>
+#include <vector>
 #include "Project1GameInstance.generated.h"
+
+
+class GameServerMessage;
+
+class ClientRecvThread : public FRunnable
+{
+private:
+	FSocket* m_RecvSocket;
+	TAtomic<bool> m_IsAppClosed;
+
+	TQueue<std::shared_ptr<GameServerMessage>, EQueueMode::Spsc>* m_MessageQueue;
+
+public:
+	ClientRecvThread(FSocket* _RecvSocket, TQueue<std::shared_ptr<GameServerMessage>>* _MessageQueue);
+
+	virtual uint32 Run() override;
+
+	void Close();
+};
 
 UCLASS()
 class PROJECT1_API UProject1GameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
-	public:
-	UProject1GameInstance();
-	virtual ~UProject1GameInstance();
 
-	private:
+public:
+	UProject1GameInstance();
+	virtual ~UProject1GameInstance() override;
+
+private:
+	//-------------------------------------------------------
+	//서버용 멤버변수
+	TQueue<std::shared_ptr<GameServerMessage>> m_MessageQueue;
+	ClientRecvThread* m_RecvThread;
+	FRunnableThread* m_ThreadRunalbe;
+
+	ISocketSubsystem* m_SocketSubSystem;
+	FSocket* m_Socket;
+
+	bool m_IsServerConnected;
+	//셀프 패킷 실험용으로 클라이언트 모드를 만들어놓음.
+	bool m_IsClientMode;
+	// ---------------------------------------------------------
+	
 	UPROPERTY()
 	UDataTable* m_MonsterInfoTable;
 
@@ -26,29 +60,48 @@ class PROJECT1_API UProject1GameInstance : public UGameInstance
 
 	UPROPERTY()
 	UDataTable* m_ItemInfoTable;
-	
+
 	UPROPERTY()
 	UDataTable* m_BulletInfoTable;
-	
-	EPlayerJob	m_SelectJob;
+
+	EPlayerJob m_SelectJob;
 
 	UPROPERTY()
 	class UInventoryManager* m_InventoryManager;
-	
+
 	//
 	// UPROPERTY()
 	// UDataTable* m_QuestInfoTable;
 
-	public:
+public:
+	//Getter & Setter
+	//------------------------서버용-----------------------
+	bool GetIsClientMode() const
+	{
+		return m_IsClientMode;
+	}
+
+	void SetIsClientMode(bool _IsClientMode)
+	{
+		m_IsClientMode = _IsClientMode;
+	}
+
+	bool IsEmptyMessage() const
+	{
+		return m_MessageQueue.IsEmpty();
+	}
+	// ---------------------------------------------------
+	
 	UDataTable* GetSelectPlayerInfoTable() const
 	{
 		return m_SelectPlayerInfoTable;
 	}
 
-	EPlayerJob GetSelectJob()	const
+	EPlayerJob GetSelectJob() const
 	{
 		return m_SelectJob;
 	}
+
 	void SetSelectJob(EPlayerJob Job)
 	{
 		m_SelectJob = Job;
@@ -59,10 +112,26 @@ class PROJECT1_API UProject1GameInstance : public UGameInstance
 		return m_InventoryManager;
 	}
 
-	public:
-	virtual void Init();
+public:
+	virtual void Init() override;
 
-	public:
+	// ----------------------------- 서버용 ----------------------------------
+	bool ServerConnect(const FString& _IPString, const FString& _PortString);
+	
+	void PushClientMessage(std::shared_ptr<GameServerMessage> _Message);
+	
+	std::shared_ptr<GameServerMessage> PopMessage();
+	
+	bool Send(const std::vector<uint8>& _Data);
+	
+	void Close();
+	
+	void FinishDestroy() override;
+	
+	bool ThreadAvailableCheck();
+	
+	// -----------------------------------------------------------------------
+	
 	const FMonsterTableInfo* FindMonsterInfo(const FString& Name);
 	const FPlayerTableInfo* FindPlayerInfo(const FString& Name);
 	const FSelectPlayerTableInfo* FindSelectPlayerTableInfo(const FString& Name);

@@ -16,6 +16,9 @@ public class Project1 : ModuleRules
 			//UMG모듈
 			"UMG"
 		});
+		
+		//Network모듈
+		PublicDependencyModuleNames.AddRange(new string[] { "Sockets", "Networking" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
