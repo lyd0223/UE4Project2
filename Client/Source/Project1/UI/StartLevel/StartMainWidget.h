@@ -13,26 +13,30 @@ class PROJECT1_API UStartMainWidget : public UUserWidget
 	GENERATED_BODY()
 	
 	protected:
-	UButton* m_StartButton;
+	UPROPERTY()
+	UButton* m_SignInButton;
 
-	UButton* m_LoadButton;
+	UPROPERTY()
+	UButton* m_SignUpButton;
 
+	UPROPERTY()
 	UButton* m_QuitButton;
 
-	class ULoadWidget* m_LoadWidget;
+	UPROPERTY()
+	class USignUpWidget* m_SignUpWidget;
 	
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	public:
 	UFUNCTION()
-	void StartButton();
+	void SignInButtonClicked();
 
 	UFUNCTION()
-	void LoadButton();
+	void SignUpButtonClicked();
 	
 	UFUNCTION()
-	void QuitButton();
+	void QuitButtonClicked();
 
 };

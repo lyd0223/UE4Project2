@@ -16,14 +16,14 @@ class PROJECT1_API AStartGameModeBase : public AGameModeBase
 	
 	protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	TSubclassOf<class UStartMainWidget>	m_StartHUDClass;
+	TSubclassOf<class UStartMainWidget>	m_StartMainWidgetClass;
 
-	class UStartMainWidget* m_StartHUD;
+	class UStartMainWidget* m_StartMainWidget;
 
 	public:
 	class UStartMainWidget* GetStartHUD()
 	{
-		return m_StartHUD;
+		return m_StartMainWidget;
 	}
 
 	public:

@@ -2,16 +2,14 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../../GameInfo.h"
 #include "Blueprint/UserWidget.h"
-#include "LoadWidget.generated.h"
+#include "StartLevelPopUpWidget.generated.h"
 
-/**
- * 
- */
 UCLASS()
-class PROJECT1_API ULoadWidget : public UUserWidget
+class PROJECT1_API UStartLevelPopUpWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
 	
 };

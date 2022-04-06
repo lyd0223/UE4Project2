@@ -6,10 +6,10 @@
 
 AStartGameModeBase::AStartGameModeBase()
 {
-	static ConstructorHelpers::FClassFinder<UStartMainWidget>	StartHUDClass(TEXT("WidgetBlueprint'/Game/01Resources/UI/StartLevel/UI_StartMainWidget.UI_StartMainWidget_C'"));
+	static ConstructorHelpers::FClassFinder<UStartMainWidget>	StartMainWidgetClass(TEXT("WidgetBlueprint'/Game/01Resources/UI/StartLevel/UI_StartMainWidget.UI_StartMainWidget_C'"));
 
-	if (StartHUDClass.Succeeded())
-		m_StartHUDClass = StartHUDClass.Class;
+	if (StartMainWidgetClass.Succeeded())
+		m_StartMainWidgetClass = StartMainWidgetClass.Class;
 }
 
 void AStartGameModeBase::InitGame(const FString& MapName,
@@ -22,13 +22,13 @@ void AStartGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (IsValid(m_StartHUDClass))
+	if (IsValid(m_StartMainWidgetClass))
 	{
-		m_StartHUD = Cast<UStartMainWidget>(CreateWidget(GetWorld(),
-			m_StartHUDClass));
+		m_StartMainWidget = Cast<UStartMainWidget>(CreateWidget(GetWorld(),
+			m_StartMainWidgetClass));
 
-		if (m_StartHUD)
-			m_StartHUD->AddToViewport();
+		if (m_StartMainWidget)
+			m_StartMainWidget->AddToViewport();
 	}
 
 	APlayerController* Controller = GetWorld()->GetFirstPlayerController();

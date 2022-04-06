@@ -484,7 +484,6 @@ void APlayerCharacter::BulletQuickSlotLeftKey()
 
 void APlayerCharacter::BulletQuickSlotRightKey()
 {
-	GetWorld()->ForceGarbageCollection(true);
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
