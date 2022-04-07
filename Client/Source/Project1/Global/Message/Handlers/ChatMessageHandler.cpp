@@ -5,6 +5,8 @@
 
 ChatMessageHandler::ChatMessageHandler(std::shared_ptr<ChatMessage> _ChatMessage)
 {
+	m_GameInstance = nullptr;
+	m_World = nullptr;
 	m_ChatMessage = _ChatMessage;
 }
 

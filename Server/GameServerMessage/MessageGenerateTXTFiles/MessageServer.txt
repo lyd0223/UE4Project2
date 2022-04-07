@@ -1,7 +1,7 @@
-|LoginResult-
-ELoginResultType m_LoginResultType;
+|SignInResult-
+ESignInResultType m_SignInResultType;
 
 |ServerDestroy-
 
-|SignInResult-
-ESignInResultType m_SignInResultType;
+|SignUpResult-
+ESignUpResultType m_SignUpResultType;

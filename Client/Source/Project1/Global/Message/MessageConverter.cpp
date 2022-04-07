@@ -9,20 +9,20 @@ MessageConverter::MessageConverter(const std::vector<unsigned char>&_Buffer)
 	memcpy_s(&Type, sizeof(EMessageType), &m_Buffer[0], sizeof(EMessageType));
 	switch (Type)
 	{
-	case EMessageType::Login:
-		m_Message = std::make_shared<LoginMessage>();
-		break;
 	case EMessageType::SignIn:
 		m_Message = std::make_shared<SignInMessage>();
 		break;
-	case EMessageType::LoginResult:
-		m_Message = std::make_shared<LoginResultMessage>();
+	case EMessageType::SignUp:
+		m_Message = std::make_shared<SignUpMessage>();
+		break;
+	case EMessageType::SignInResult:
+		m_Message = std::make_shared<SignInResultMessage>();
 		break;
 	case EMessageType::ServerDestroy:
 		m_Message = std::make_shared<ServerDestroyMessage>();
 		break;
-	case EMessageType::SignInResult:
-		m_Message = std::make_shared<SignInResultMessage>();
+	case EMessageType::SignUpResult:
+		m_Message = std::make_shared<SignUpResultMessage>();
 		break;
 	case EMessageType::Chat:
 		m_Message = std::make_shared<ChatMessage>();

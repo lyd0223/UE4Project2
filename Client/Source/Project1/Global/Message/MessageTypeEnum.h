@@ -2,11 +2,11 @@
 
 enum class EMessageType 
 {
-	Login,
 	SignIn,
-	LoginResult,
-	ServerDestroy,
+	SignUp,
 	SignInResult,
+	ServerDestroy,
+	SignUpResult,
 	Chat,
 	MAX
 };

@@ -3,6 +3,12 @@
 
 #include "SignUpWidget.h"
 
+#include "Project1/Project1GameInstance.h"
+#include <string>
+
+#include "Project1/Global/ClientBlueprintFunctionLibrary.h"
+#include "Project1/Global/Message/ClientToServer.h"
+
 
 void USignUpWidget::NativeConstruct()
 {
@@ -30,7 +36,29 @@ void USignUpWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 void USignUpWidget::SignUpButtonClicked()
 {
 	//서버로 회원가입 패킷 보내기.
-		
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+
+	if(GameInst->GetIsClientMode())
+	{
+		return;		
+	}
+	
+	std::string ID;
+	std::string PW;
+	UClientBlueprintFunctionLibrary::FStringToUTF8(m_IDString, ID);
+	UClientBlueprintFunctionLibrary::FStringToUTF8(m_PWString, PW);
+
+	SignUpMessage Message;
+	Message.m_ID = ID;
+	Message.m_PW = PW;
+	
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+	
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
+	}
 }
 
 void USignUpWidget::CloseButtonClicked()

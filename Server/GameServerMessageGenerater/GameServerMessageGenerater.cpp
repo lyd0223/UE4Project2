@@ -87,6 +87,7 @@ void MessageHeaderCreate(std::vector<MessageInfo>& _Collection, const std::strin
 
 	MessageText += "#pragma once\n";
 	MessageText += "#include \"GameServerMessage.h\"\n";
+	MessageText += "#include \"ContentsEnum.h\"\n";
 	MessageText += "\n";
 
 
@@ -650,6 +651,18 @@ int main()
 			gFileSaveFuncList.push_back([=]() {
 				GameServerFile SaveFile = GameServerFile{ SavePath, "wt" };
 				SaveFile.Write(DisText.c_str(), DisText.size());
+				});
+		}
+		{
+			std::string LoadFilePath = FileDir.PathToPlusFileName("ContentsEnum.h");
+			std::string SavePath = SaveDir.PathToPlusFileName("ContentsEnum.h");
+
+			gFileSaveFuncList.push_back([=]() {
+				GameServerFile LoadFile = { LoadFilePath, "rt" };
+				std::string Code = LoadFile.GetString();
+
+				GameServerFile SaveFile = GameServerFile{ SavePath, "wt" };
+				SaveFile.Write(Code.c_str(), Code.size());
 				});
 		}
 	}

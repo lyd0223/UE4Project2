@@ -1,22 +1,23 @@
 #pragma once
 #include "GameServerMessage.h"
+#include "ContentsEnum.h"
 
-class LoginMessage : public GameServerMessage                    
+class SignInMessage : public GameServerMessage                    
 {                                                               
 public:                                                         
 	std::string m_ID;
 	std::string m_PW;
                                                                 
 public:                                                         
-    LoginMessage()                                               
-        : GameServerMessage(EMessageType::Login)                    
+    SignInMessage()                                               
+        : GameServerMessage(EMessageType::SignIn)                    
         , m_ID()
         , m_PW()
     {                                                           
                                                                 
     }                                                           
                                                                 
-    virtual ~LoginMessage() {}                                   
+    virtual ~SignInMessage() {}                                   
                                                                 
     virtual int SizeCheck()                                     
     {                                                           
@@ -40,22 +41,22 @@ public:
     }                                                           
 };                                                              
 
-class SignInMessage : public GameServerMessage                    
+class SignUpMessage : public GameServerMessage                    
 {                                                               
 public:                                                         
 	std::string m_ID;
 	std::string m_PW;
                                                                 
 public:                                                         
-    SignInMessage()                                               
-        : GameServerMessage(EMessageType::SignIn)                    
+    SignUpMessage()                                               
+        : GameServerMessage(EMessageType::SignUp)                    
         , m_ID()
         , m_PW()
     {                                                           
                                                                 
     }                                                           
                                                                 
-    virtual ~SignInMessage() {}                                   
+    virtual ~SignUpMessage() {}                                   
                                                                 
     virtual int SizeCheck()                                     
     {                                                           

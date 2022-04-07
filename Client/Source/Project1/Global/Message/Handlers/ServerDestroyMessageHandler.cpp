@@ -5,6 +5,8 @@
 
 ServerDestroyMessageHandler::ServerDestroyMessageHandler(std::shared_ptr<ServerDestroyMessage> _ServerDestroyMessage)
 {
+	m_GameInstance = nullptr;
+	m_World = nullptr;
 	m_ServerDestroyMessage = _ServerDestroyMessage;
 }
 

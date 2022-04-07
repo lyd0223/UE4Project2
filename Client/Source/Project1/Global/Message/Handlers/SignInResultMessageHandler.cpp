@@ -1,11 +1,12 @@
 ﻿#include "SignInResultMessageHandler.h"
-#include "Project1/Project1GameInstance.h"
-//#include "Project1/UI/StartLevel//LoginHUD.h"
-//#include "UnrealClient/Login/LoginUI.h"
 
-SignInResultMessageHandler::SignInResultMessageHandler(
-	std::shared_ptr<SignInResultMessage> _SignInResultMessage)
+#include "Kismet/GameplayStatics.h"
+
+
+SignInResultMessageHandler::SignInResultMessageHandler(std::shared_ptr<SignInResultMessage> _SignInResultMessage)
 {
+	m_GameInstance = nullptr;
+	m_World = nullptr;
 	m_SignInResultMessage = _SignInResultMessage;
 }
 
@@ -17,33 +18,11 @@ void SignInResultMessageHandler::Init(UProject1GameInstance* _GameInstance, UWor
 
 void SignInResultMessageHandler::Start()
 {
-	ESignInResultType SignInResultType = m_SignInResultMessage->m_SignInResultType;
-	switch (SignInResultType)
+	if(m_SignInResultMessage->m_SignInResultType == ESignInResultType::OK)
 	{
-	case ESignInResultType::OK:
-		//회원가입 완료
-		{
-			// ALoginHUD* LoginHUD = Cast<ALoginHUD>(m_World->GetFirstPlayerController()->GetHUD());
-			// LoginHUD->GetLoginUI()->SignInUIOff();
-			// LoginHUD->GetLoginUI()->SignInSucceedPopUpOn();
-			break;
-		}
-	case ESignInResultType::Error_DuplicateID:
-		{
-			break;
-		}
-	case ESignInResultType::Error_NonAvailableID:
-		//유효하지않은 ID
-		{
-			// ALoginHUD* LoginHUD = Cast<ALoginHUD>(m_World->GetFirstPlayerController()->GetHUD());
-			// LoginHUD->GetLoginUI()->SignInFailedPopUpOn();
-			break;
-		}
-	case ESignInResultType::MAX:
-		//이런경우 아예 리턴때려버려야함.
-		{
-			break;
-		}
+		UGameplayStatics::OpenLevel(m_World, TEXT("MainLevel"));
+		
 	}
-
 }
+
+
