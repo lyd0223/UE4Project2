@@ -3,6 +3,7 @@
 
 #include "StartMainWidget.h"
 #include "SignUpWidget.h"
+#include "ServerConnectInfoWidget.h"
 
 void UStartMainWidget::NativeConstruct()
 {
@@ -11,11 +12,14 @@ void UStartMainWidget::NativeConstruct()
 	m_SignInButton = Cast<UButton>(GetWidgetFromName(TEXT("SignInButton")));
 	m_SignUpButton = Cast<UButton>(GetWidgetFromName(TEXT("SignUpButton")));
 	m_QuitButton = Cast<UButton>(GetWidgetFromName(TEXT("QuitButton")));
+	m_ServerConnectInfoButton = Cast<UButton>(GetWidgetFromName(TEXT("ServerConnectInfoButton")));
 	m_SignUpWidget = Cast<USignUpWidget>(GetWidgetFromName(TEXT("UI_SignUpWidget")));
+	m_ServerConnectInfoWidget = Cast<UServerConnectInfoWidget>(GetWidgetFromName(TEXT("UI_ServerConnectInfoWidget")));
 	
 	m_SignInButton->OnClicked.AddDynamic(this, &UStartMainWidget::SignInButtonClicked);
 	m_SignUpButton->OnClicked.AddDynamic(this, &UStartMainWidget::SignUpButtonClicked);
 	m_QuitButton->OnClicked.AddDynamic(this, &UStartMainWidget::QuitButtonClicked);
+	m_ServerConnectInfoButton->OnClicked.AddDynamic(this, &UStartMainWidget::ServerConnectInfoButtonClicked);
 
 }
 
@@ -46,4 +50,15 @@ void UStartMainWidget::QuitButtonClicked()
 {
 	UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(),
 		EQuitPreference::Quit, true);
+}
+
+
+
+void UStartMainWidget::ServerConnectInfoButtonClicked()
+{
+	if(m_ServerConnectInfoWidget->GetVisibility() == ESlateVisibility::SelfHitTestInvisible)
+		m_ServerConnectInfoWidget->SetVisibility(ESlateVisibility::Collapsed);
+	else
+		m_ServerConnectInfoWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		
 }

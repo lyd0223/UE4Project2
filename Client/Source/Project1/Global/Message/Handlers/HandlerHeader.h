@@ -1,7 +1,6 @@
 #pragma once																									  
 #include "CoreMinimal.h"																						  
-#include <functional>																								
-#include "../../ClientGameInstance.h"																			
+#include <functional>																							
 #include "../Dispatcher.h"																						
 																												  
 #include "LoginResultMessageHandler.h"
@@ -10,7 +9,7 @@
 #include "ChatMessageHandler.h"
 																												  
 template<class MessageHandler, class MessageType>															  
-void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, UClientGameInstance* _Inst, UWorld* _World)	  
+void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message,class UProject1GameInstance* _Inst, UWorld* _World)	  
 {																												  
 	std::shared_ptr<MessageType> ConvertMessage = std::static_pointer_cast<MessageType>(_Message);				  
 	if (nullptr == ConvertMessage)																				  
@@ -23,7 +22,7 @@ void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, UClientGameIn
 	Cmd.Start();																								  
 }																												  
 																												  
-void CheckHandler(Dispatcher& Dis, class UClientGameInstance* Inst, UWorld* World)								  
+void CheckHandler(Dispatcher& Dis, class UProject1GameInstance* Inst, UWorld* World)								  
 {														
 	Dis.AddHandler(EMessageType::LoginResult, std::bind(&OnMessageProcess<LoginResultMessageHandler, LoginResultMessage>, std::placeholders::_1, Inst, World));	
 	Dis.AddHandler(EMessageType::ServerDestroy, std::bind(&OnMessageProcess<ServerDestroyMessageHandler, ServerDestroyMessage>, std::placeholders::_1, Inst, World));	

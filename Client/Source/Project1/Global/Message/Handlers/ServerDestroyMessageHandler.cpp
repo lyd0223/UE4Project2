@@ -8,7 +8,7 @@ ServerDestroyMessageHandler::ServerDestroyMessageHandler(std::shared_ptr<ServerD
 	m_ServerDestroyMessage = _ServerDestroyMessage;
 }
 
-void ServerDestroyMessageHandler::Init(UClientGameInstance* _GameInstance, UWorld* _World)
+void ServerDestroyMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
 {
 	m_GameInstance = _GameInstance;
 	m_World = _World;

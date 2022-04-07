@@ -606,7 +606,6 @@ int main()
 			DisText += "#pragma once																									  \n";
 			DisText += "#include \"CoreMinimal.h\"																						  \n";
 			DisText += "#include <functional>																								\n";
-			DisText += "#include \"../../ClientGameInstance.h\"																			\n";
 			DisText += "#include \"../Dispatcher.h\"																						\n";
 
 			DisText += "																												  \n";
@@ -621,7 +620,7 @@ int main()
 			}
 			DisText += "																												  \n";
 			DisText += "template<class MessageHandler, class MessageType>															  \n";
-			DisText += "void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, UClientGameInstance* _Inst, UWorld* _World)	  \n";
+			DisText += "void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, class UProject1GameInstance* _Inst, UWorld* _World)	  \n";
 			DisText += "{																												  \n";
 			DisText += "	std::shared_ptr<MessageType> ConvertMessage = std::static_pointer_cast<MessageType>(_Message);				  \n";
 			DisText += "	if (nullptr == ConvertMessage)																				  \n";
@@ -634,7 +633,7 @@ int main()
 			DisText += "	Cmd.Start();																								  \n";
 			DisText += "}																												  \n";
 			DisText += "																												  \n";
-			DisText += "void CheckHandler(Dispatcher& Dis, class UClientGameInstance* Inst, UWorld* World)								  \n";
+			DisText += "void CheckHandler(Dispatcher& Dis, class UProject1GameInstance* Inst, UWorld* World)								  \n";
 			DisText += "{														\n";
 			for (size_t i = 0; i < ServerMessage.size(); i++)
 			{

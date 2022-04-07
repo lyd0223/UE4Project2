@@ -8,7 +8,7 @@ LoginResultMessageHandler::LoginResultMessageHandler(std::shared_ptr<LoginResult
 	m_LoginResultMessage = _LoginResultMessage;
 }
 
-void LoginResultMessageHandler::Init(UClientGameInstance* _GameInstance, UWorld* _World)
+void LoginResultMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
 {
 	m_GameInstance = _GameInstance;
 	m_World = _World;

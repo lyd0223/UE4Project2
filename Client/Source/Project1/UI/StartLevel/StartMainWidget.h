@@ -11,32 +11,36 @@ UCLASS()
 class PROJECT1_API UStartMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	protected:
+
+protected:
 	UPROPERTY()
 	UButton* m_SignInButton;
-
 	UPROPERTY()
 	UButton* m_SignUpButton;
-
 	UPROPERTY()
 	UButton* m_QuitButton;
+	UPROPERTY()
+	UButton* m_ServerConnectInfoButton;
 
 	UPROPERTY()
 	class USignUpWidget* m_SignUpWidget;
-	
-	protected:
+	UPROPERTY()
+	class UServerConnectInfoWidget* m_ServerConnectInfoWidget;
+
+protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
-	public:
+public:
 	UFUNCTION()
 	void SignInButtonClicked();
 
 	UFUNCTION()
 	void SignUpButtonClicked();
-	
+
 	UFUNCTION()
 	void QuitButtonClicked();
 
+	UFUNCTION()
+	void ServerConnectInfoButtonClicked();
 };

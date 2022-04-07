@@ -9,7 +9,7 @@ SignInResultMessageHandler::SignInResultMessageHandler(
 	m_SignInResultMessage = _SignInResultMessage;
 }
 
-void SignInResultMessageHandler::Init(UClientGameInstance* _GameInstance, UWorld* _World)
+void SignInResultMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
 {
 	m_GameInstance = _GameInstance;
 	m_World = _World;
