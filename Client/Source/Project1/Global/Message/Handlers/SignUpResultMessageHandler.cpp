@@ -23,9 +23,9 @@ void SignUpResultMessageHandler::Start()
 	case ESignUpResultType::OK:
 		//회원가입 완료
 		{
-			// ALoginHUD* LoginHUD = Cast<ALoginHUD>(m_World->GetFirstPlayerController()->GetHUD());
-			// LoginHUD->GetLoginUI()->SignInUIOff();
-			// LoginHUD->GetLoginUI()->SignInSucceedPopUpOn();
+			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+			//GameMode->GetStartMainWidget()->SignInSucceedPopUpOn();
+			PrintViewport(2.f, FColor::Green, TEXT("SignUp Success"));
 			break;
 		}
 	case ESignUpResultType::Error_DuplicateID:
@@ -35,6 +35,7 @@ void SignUpResultMessageHandler::Start()
 	case ESignUpResultType::Error_NonAvailableID:
 		//유효하지않은 ID
 		{
+			PrintViewport(2.f, FColor::Red, TEXT("SignUp Failed"));
 			// ALoginHUD* LoginHUD = Cast<ALoginHUD>(m_World->GetFirstPlayerController()->GetHUD());
 			// LoginHUD->GetLoginUI()->SignInFailedPopUpOn();
 			break;

@@ -38,11 +38,11 @@
     <ClInclude Include="PreCompile.h" />
     <ClInclude Include="ServerDispatcher.h" />
     <ClInclude Include="ChatMessageHandler.h" />
-    <ClInclude Include="LoginMessageHandler.h">
+    <ClInclude Include="SignInMessageHandler.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="SignInMessageHandler.h" />
+    <ClInclude Include="SignUpMessageHandler.h" />
     <ClInclude Include="ThreadMessageBase.h">
       <SubType>
       </SubType>
@@ -74,11 +74,11 @@
     </ClCompile>
     <ClCompile Include="ServerDispatcher.cpp" />
     <ClCompile Include="ChatMessageHandler.cpp" />
-    <ClCompile Include="LoginMessageHandler.cpp">
+    <ClCompile Include="SignInMessageHandler.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="SignInMessageHandler.cpp" />
+    <ClCompile Include="SignUpMessageHandler.cpp" />
     <ClCompile Include="ThreadMessageBase.cpp">
       <SubType>
       </SubType>

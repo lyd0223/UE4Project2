@@ -21,7 +21,7 @@ class PROJECT1_API AStartGameModeBase : public AGameModeBase
 	class UStartMainWidget* m_StartMainWidget;
 
 	public:
-	class UStartMainWidget* GetStartHUD()
+	class UStartMainWidget* GetStartMainWidget()
 	{
 		return m_StartMainWidget;
 	}

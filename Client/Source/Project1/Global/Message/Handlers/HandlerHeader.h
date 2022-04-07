@@ -3,7 +3,7 @@
 #include <functional>																								
 #include "../Dispatcher.h"																						
 																												  
-#include "SignUpResultMessageHandler.h"
+#include "SignInResultMessageHandler.h"
 #include "ServerDestroyMessageHandler.h"
 #include "SignUpResultMessageHandler.h"
 #include "ChatMessageHandler.h"
@@ -24,7 +24,7 @@ void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, class UProjec
 																												  
 void CheckHandler(Dispatcher& Dis, class UProject1GameInstance* Inst, UWorld* World)								  
 {														
-	Dis.AddHandler(EMessageType::SignInResult, std::bind(&OnMessageProcess<SignUpResultMessageHandler, SignUpResultMessage>, std::placeholders::_1, Inst, World));	
+	Dis.AddHandler(EMessageType::SignInResult, std::bind(&OnMessageProcess<SignInResultMessageHandler, SignInResultMessage>, std::placeholders::_1, Inst, World));	
 	Dis.AddHandler(EMessageType::ServerDestroy, std::bind(&OnMessageProcess<ServerDestroyMessageHandler, ServerDestroyMessage>, std::placeholders::_1, Inst, World));	
 	Dis.AddHandler(EMessageType::SignUpResult, std::bind(&OnMessageProcess<SignUpResultMessageHandler, SignUpResultMessage>, std::placeholders::_1, Inst, World));	
 	Dis.AddHandler(EMessageType::Chat, std::bind(&OnMessageProcess<ChatMessageHandler, ChatMessage>, std::placeholders::_1, Inst, World));	

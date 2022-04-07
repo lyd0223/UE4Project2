@@ -18,8 +18,6 @@ private:
 	//온 패킷
 	std::shared_ptr<ChatMessage> m_ChatMessage;
 
-	//결과 패킷
-	LoginResultMessage m_LoginResultMessage;
 
 public: //Default
 	ChatMessageHandler(std::shared_ptr<TCPSession> _TCPSession, std::shared_ptr<ChatMessage> _ChatMessage);
