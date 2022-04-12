@@ -2,9 +2,9 @@
 #include <GameServerNet/DBQuery.h>
 
 /*
-Usage		:  DB 쿼리용  
+Usage		:  DB UserInfo Table 쿼리용  
 Category	:  DB 
-Description :  DB쿼리 날리고 그에 관련된 일들을 하는 클래스들.
+Description :  UserInfo Table관련 DB쿼리 날리고 그에 관련된 일들을 하는 클래스들.
 */
 
 
