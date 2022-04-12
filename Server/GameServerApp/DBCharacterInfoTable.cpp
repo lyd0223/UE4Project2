@@ -18,11 +18,10 @@ DBCharacterInfoTable::~DBCharacterInfoTable()
 
 DBCharacterInfoTable_SelectCharacterInfoQuery::DBCharacterInfoTable_SelectCharacterInfoQuery(int _UserIdx)
 {
-	std::string str = "SELECT _Idx,_UserIndx,_Nickname,_ClassName,_HP,_MP,_ATK FROM unrealserver.characterinfo WHERE ID = '" 
-		+ std::to_string(_UserIdx) + "' LIMIT 1";
+	std::string str = "SELECT Idx,UserIdx,Nickname,ClassName,HP,MP,ATK FROM unrealserver.characterinfo WHERE UserIdx = '" 
+		+ std::to_string(_UserIdx) + "'";
 	m_QueryText = _strdup(str.c_str());
 	m_UserIdx = _UserIdx;
-	m_RowData = nullptr;
 }
 
 bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
@@ -33,6 +32,16 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 		std::string ErrorStr = mysql_error(m_DBConnecter->GetMYSQL());
 		GameServerDebug::LogError("QueryError : " + ErrorStr);
 		return false;
+	}
+
+	//DB에서 불러온 데이터 TableRow에 저장.
+	MYSQL_RES* MysqlResult = mysql_store_result(m_DBConnecter->GetMYSQL());
+	MYSQL_ROW MysqlRow;
+	while ((MysqlRow = mysql_fetch_row(MysqlResult)) != NULL)
+	{
+		m_RowDataList.push_back(std::make_shared<DBCharacterInfoTableRow>(std::stoi(MysqlRow[0]), std::stoi(MysqlRow[1]),
+			MysqlRow[2], MysqlRow[3],std::stof(MysqlRow[4]), std::stof(MysqlRow[5]), std::stof(MysqlRow[6])));
+
 	}
 
 	return true;

@@ -4,6 +4,7 @@
 #include "DBQueue.h"
 #include "NetQueue.h"
 #include "DBCharacterInfoTable.h"
+#include "GameServerMessage/ContentsStruct.h"
 
 RequestCharacterInfoMessageHandler::RequestCharacterInfoMessageHandler(std::shared_ptr<TCPSession> _TCPSession,
 	std::shared_ptr<RequestCharacterInfoMessage> _RequestCharacterInfoMessage)
@@ -24,44 +25,33 @@ void RequestCharacterInfoMessageHandler::Start()
 		GameServerDebug::LogError("SignIn TCPSession is Nullptr");
 		return;
 	}
-	//m_RequestCharacterInfoMessage.m_SignInResultType = ESignInResultType::OK;
 
 	DBQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::DBCheck, shared_from_this()));
-
 }
 
 void RequestCharacterInfoMessageHandler::DBCheck()
 {
-	//UserInfoTable_SelectIDQuery SelectQuery(m_SignInMessage->m_ID, m_SignInMessage->m_PW);
-	//if (SelectQuery.DoQuery() == false)
-	//{
-	//	//쿼리 실패. (ID 존재하지않음.)
-	//	m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
-	//}
-	//else
-	//{
-	//	if (SelectQuery.CheckPW() == false)
-	//	{
-	//		// 비밀번호 틀림. 틀렷다는 패킷 보내주자.
-	//		m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
-	//	}
-	//	else
-	//	{
-	//		m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
-	//		m_SignInResultMessage.m_UserIdx = SelectQuery.m_RowData->m_Index;
-	//	}
-	//}
+	DBCharacterInfoTable_SelectCharacterInfoQuery SelectQuery(m_RequestCharacterInfoMessage->m_UserIdx);
+	if (SelectQuery.DoQuery() == false)
+	{
+		//쿼리 실패. 바로 에러띄우고, 리턴때려버림.
+		GameServerDebug::LogInfo("DBCharacterInfoTable_SelectCharacterInfoQuery Error");
+		return;
+	}
 
-	//NetQueue::EnQueue(std::bind(&SignInMessageHandler::ResultSend, shared_from_this()));
+	for (auto& RowData : SelectQuery.m_RowDataList)
+	{
+		std::shared_ptr<FCharacterInfo> CharacterInfo = 
+			std::make_shared<FCharacterInfo>(RowData->m_Idx, RowData->m_UserIndx, RowData->m_Nickname, RowData->m_ClassName,
+			RowData->m_HP, RowData->m_MP, RowData->m_ATK);
+		m_ReplyCharacterInfoMessage.m_CharacterInfoList.push_back(*CharacterInfo);
+	}
+
+	NetQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::ResultSend, shared_from_this()));
 }
 
 void RequestCharacterInfoMessageHandler::ResultSend()
 {
-	/*std::shared_ptr<GameServerUser> NewUser = std::make_shared<GameServerUser>();
-	GameServerString::UTF8ToAnsi(m_SignInMessage->m_ID, NewUser->ID);
-
-	m_TCPSession->SetLink(NewUser);*/
-
 	GameServerSerializer Serializer;
 	m_ReplyCharacterInfoMessage.Serialize(Serializer);
 

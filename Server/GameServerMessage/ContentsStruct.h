@@ -3,6 +3,30 @@
 
 struct FCharacterInfo
 {
+public:
+	FCharacterInfo()
+	{
+		m_Idx = -1;
+		m_UserIdx = -1;
+		m_Nickname = "";
+		m_ClassName = "";
+		m_HP = 0;
+		m_MP = 0;
+		m_ATK = 0;
+	}
+	FCharacterInfo(int _Idx, int _UserIdx, std::string _Nickname, std::string _ClassName,
+		float _HP, float _MP, float _ATK)
+	{
+		m_Idx = _Idx;
+		m_UserIdx = _UserIdx;
+		m_Nickname = _Nickname;
+		m_ClassName = _ClassName;
+		m_HP = _HP;
+		m_MP = _MP;
+		m_ATK = _ATK;
+	}
+
+public:
 	int m_Idx;
 	int m_UserIdx;
 	std::string m_Nickname;

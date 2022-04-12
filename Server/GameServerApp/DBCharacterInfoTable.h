@@ -72,7 +72,7 @@ class DBCharacterInfoTable_SelectCharacterInfoQuery : public DBQuery, DBCharacte
 {
 public:
 	int m_UserIdx;
-	std::shared_ptr<DBCharacterInfoTableRow> m_RowData;
+	std::vector<std::shared_ptr<DBCharacterInfoTableRow>> m_RowDataList;
 
 public:
 	DBCharacterInfoTable_SelectCharacterInfoQuery(int _UserIdx);

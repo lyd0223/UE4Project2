@@ -2,9 +2,14 @@
 
 
 #include "SelectCharacterGameModeBase.h"
+
+#include "Project1GameInstance.h"
 #include "Player/SelectCharacterPlayerController.h"
 #include "Player/SelectCharacterLevel/SelectDefaultPawn.h"
 #include "UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
+#include <string>
+
+#include "Global/Message/ClientToServer.h"
 
 ASelectCharacterGameModeBase::ASelectCharacterGameModeBase()
 {
@@ -28,7 +33,21 @@ void ASelectCharacterGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//서버로 캐릭터인포 요청 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInst->GetIsClientMode())
+		return;		
+	RequestCharacterInfoMessage Message;
+	Message.m_UserIdx = GameInst->GetUserIdx(); 
 	
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+	
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
 	
 	if (IsValid(m_SelectCharacterMainWidgetClass))
 	{
