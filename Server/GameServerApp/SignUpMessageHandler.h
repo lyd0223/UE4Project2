@@ -28,7 +28,6 @@ public: //Default
 
 	SignUpMessageHandler(const SignUpMessageHandler& _Other) = delete;
 	SignUpMessageHandler(SignUpMessageHandler&& _Other)		noexcept = delete;
-
 	SignUpMessageHandler& operator=(const SignUpMessageHandler& _Other) = delete;
 	SignUpMessageHandler& operator=(SignUpMessageHandler&& _Other) = delete;
 

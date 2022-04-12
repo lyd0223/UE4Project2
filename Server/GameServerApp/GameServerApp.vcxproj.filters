@@ -8,7 +8,7 @@
       <Filter>Messages</Filter>
     </ClInclude>
     <ClInclude Include="SignInMessageHandler.h">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="DBQueue.h">
       <Filter>Queue</Filter>
@@ -20,7 +20,7 @@
       <Filter>Messages</Filter>
     </ClInclude>
     <ClInclude Include="ChatMessageHandler.h">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="GameServerUser.h">
       <Filter>Contents</Filter>
@@ -29,10 +29,13 @@
       <Filter>DBTable</Filter>
     </ClInclude>
     <ClInclude Include="SignUpMessageHandler.h">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClInclude>
     <ClInclude Include="DBCharacterInfoTable.h">
       <Filter>DBTable</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestCharacterInfoMessageHandler.h">
+      <Filter>Messages\Handlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -44,7 +47,7 @@
       <Filter>Messages</Filter>
     </ClCompile>
     <ClCompile Include="SignInMessageHandler.cpp">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="DBQueue.cpp">
       <Filter>Queue</Filter>
@@ -56,7 +59,7 @@
       <Filter>Messages</Filter>
     </ClCompile>
     <ClCompile Include="ChatMessageHandler.cpp">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="GameServerUser.cpp">
       <Filter>Contents</Filter>
@@ -65,10 +68,13 @@
       <Filter>DBTable</Filter>
     </ClCompile>
     <ClCompile Include="SignUpMessageHandler.cpp">
-      <Filter>Messages\Login</Filter>
+      <Filter>Messages\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="DBCharacterInfoTable.cpp">
       <Filter>DBTable</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestCharacterInfoMessageHandler.cpp">
+      <Filter>Messages\Handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +84,6 @@
     <Filter Include="Messages">
       <UniqueIdentifier>{5255371b-839c-4575-964d-bb6c2b6d6a91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Messages\Login">
-      <UniqueIdentifier>{4da5fbe9-9d43-43e1-8a27-15ef7d013d56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Queue">
       <UniqueIdentifier>{e9dd193b-8d1e-4e05-8bb4-e8cb341199a7}</UniqueIdentifier>
     </Filter>
@@ -89,6 +92,9 @@
     </Filter>
     <Filter Include="DBTable">
       <UniqueIdentifier>{e22b24a7-e49c-4f6a-89d0-7e0b1b5634c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Messages\Handlers">
+      <UniqueIdentifier>{4da5fbe9-9d43-43e1-8a27-15ef7d013d56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

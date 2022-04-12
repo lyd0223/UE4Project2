@@ -27,8 +27,6 @@ public: //Default
 
 	SignInMessageHandler(const SignInMessageHandler& _Other) = delete;
 	SignInMessageHandler(SignInMessageHandler&& _Other)		noexcept = delete;
-
-protected:
 	SignInMessageHandler& operator=(const SignInMessageHandler& _Other) = delete;
 	SignInMessageHandler& operator=(SignInMessageHandler&& _Other)		= delete;
 
