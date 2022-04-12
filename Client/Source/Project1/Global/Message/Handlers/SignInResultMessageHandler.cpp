@@ -3,6 +3,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Project1/GameInfo.h"
 #include "Project1/Project1GameInstance.h"
+#include "Project1/StartGameModeBase.h"
+#include "Project1/UI/StartLevel/StartMainWidget.h"
 
 
 SignInResultMessageHandler::SignInResultMessageHandler(std::shared_ptr<SignInResultMessage> _SignInResultMessage)
@@ -27,7 +29,9 @@ void SignInResultMessageHandler::Start()
 	}
 	else
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("Login Failed"));
+		//PrintViewport(2.f, FColor::Red, TEXT("Login Failed"));
+		AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+		GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignIn Failed"));
 	}
 }
 

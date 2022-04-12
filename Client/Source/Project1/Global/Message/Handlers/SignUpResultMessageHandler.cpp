@@ -1,6 +1,7 @@
 ﻿#include "SignUpResultMessageHandler.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/StartGameModeBase.h"
+#include "Project1/UI/StartLevel/StartMainWidget.h"
 
 SignUpResultMessageHandler::SignUpResultMessageHandler(std::shared_ptr<SignUpResultMessage> _SignUpResultMessage)
 {
@@ -23,9 +24,9 @@ void SignUpResultMessageHandler::Start()
 	case ESignUpResultType::OK:
 		//회원가입 완료
 		{
+			//PrintViewport(2.f, FColor::Green, TEXT("SignUp Success"));
 			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
-			//GameMode->GetStartMainWidget()->SignInSucceedPopUpOn();
-			PrintViewport(2.f, FColor::Green, TEXT("SignUp Success"));
+			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignUp Succeed"));
 			break;
 		}
 	case ESignUpResultType::Error_DuplicateID:
@@ -35,9 +36,10 @@ void SignUpResultMessageHandler::Start()
 	case ESignUpResultType::Error_NonAvailableID:
 		//유효하지않은 ID
 		{
-			PrintViewport(2.f, FColor::Red, TEXT("SignUp Failed"));
-			// ALoginHUD* LoginHUD = Cast<ALoginHUD>(m_World->GetFirstPlayerController()->GetHUD());
-			// LoginHUD->GetLoginUI()->SignInFailedPopUpOn();
+			//PrintViewport(2.f, FColor::Red, TEXT("SignUp Failed"));
+			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignUp Failed"));
+			
 			break;
 		}
 	case ESignUpResultType::MAX:

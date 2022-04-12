@@ -31,6 +31,9 @@
     <ClInclude Include="SignUpMessageHandler.h">
       <Filter>Messages\Login</Filter>
     </ClInclude>
+    <ClInclude Include="DBCharacterInfoTable.h">
+      <Filter>DBTable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -63,6 +66,9 @@
     </ClCompile>
     <ClCompile Include="SignUpMessageHandler.cpp">
       <Filter>Messages\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="DBCharacterInfoTable.cpp">
+      <Filter>DBTable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

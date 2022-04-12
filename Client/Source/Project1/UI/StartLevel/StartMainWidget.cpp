@@ -5,6 +5,7 @@
 #include "SignUpWidget.h"
 #include "SignInWidget.h"
 #include "ServerConnectInfoWidget.h"
+#include "StartLevelPopUpWidget.h"
 #include "Project1/Project1GameInstance.h"
 #include <string>
 
@@ -21,6 +22,7 @@ void UStartMainWidget::NativeConstruct()
 	m_SignUpWidget = Cast<USignUpWidget>(GetWidgetFromName(TEXT("UI_SignUpWidget")));
 	m_SignInWidget = Cast<USignInWidget>(GetWidgetFromName(TEXT("UI_SignInWidget")));
 	m_ServerConnectInfoWidget = Cast<UServerConnectInfoWidget>(GetWidgetFromName(TEXT("UI_ServerConnectInfoWidget")));
+	m_PopUpWidget = Cast<UStartLevelPopUpWidget>(GetWidgetFromName(TEXT("UI_PopUpWidget")));
 	
 	m_SignInButton->OnClicked.AddDynamic(this, &UStartMainWidget::SignInButtonClicked);
 	m_SignUpButton->OnClicked.AddDynamic(this, &UStartMainWidget::SignUpButtonClicked);
@@ -66,4 +68,11 @@ void UStartMainWidget::ServerConnectInfoButtonClicked()
 	else
 		m_ServerConnectInfoWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		
+}
+
+
+void UStartMainWidget::PopUpMessage(const FString& _Text)
+{
+	m_PopUpWidget->SetPopUpText(_Text);
+	m_PopUpWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }

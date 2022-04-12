@@ -28,6 +28,8 @@ protected:
 	class USignInWidget* m_SignInWidget;
 	UPROPERTY()
 	class UServerConnectInfoWidget* m_ServerConnectInfoWidget;
+	UPROPERTY()
+	class UStartLevelPopUpWidget* m_PopUpWidget;
 
 protected:
 	virtual void NativeConstruct() override;
@@ -45,4 +47,7 @@ public:
 
 	UFUNCTION()
 	void ServerConnectInfoButtonClicked();
+
+	UFUNCTION()
+	void PopUpMessage(const FString& _Text);
 };

@@ -1,9 +1,4 @@
 #pragma once
-class DBCharacterInfoTable
-{
-};
-
-
 #include <GameServerNet/DBQuery.h>
 
 /*
