@@ -50,6 +50,7 @@ void SignInMessageHandler::DBCheck()
 		else
 		{
 			m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
+			m_SignInResultMessage.m_UserIdx = SelectQuery.m_RowData->m_Index;
 		}
 	}
 

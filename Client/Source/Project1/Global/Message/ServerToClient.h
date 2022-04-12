@@ -6,11 +6,13 @@ class SignInResultMessage : public GameServerMessage
 {                                                               
 public:                                                         
 	ESignInResultType m_SignInResultType;
+	int m_UserIdx;
                                                                 
 public:                                                         
     SignInResultMessage()                                               
         : GameServerMessage(EMessageType::SignInResult)                    
         , m_SignInResultType()
+        , m_UserIdx()
     {                                                           
                                                                 
     }                                                           
@@ -19,13 +21,14 @@ public:
                                                                 
     virtual int SizeCheck()                                     
     {                                                           
-		return DataSizeCheck(m_SignInResultType);
+		return DataSizeCheck(m_SignInResultType) + DataSizeCheck(m_UserIdx);
     }                                                           
                                                                 
     void Serialize(GameServerSerializer& _Serializer)           
     {                                                           
         GameServerMessage::Serialize(_Serializer);              
         _Serializer<<static_cast<int>(m_SignInResultType);
+        _Serializer << m_UserIdx;
 
     }                                                           
                                                                 
@@ -35,6 +38,7 @@ public:
         int temp ;		
         _Serializer>>temp;
         m_SignInResultType = static_cast<ESignInResultType>(temp); 
+        _Serializer >> m_UserIdx;
 
     }                                                           
 };                                                              

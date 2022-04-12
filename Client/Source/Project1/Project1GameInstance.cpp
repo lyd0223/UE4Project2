@@ -109,6 +109,8 @@ UProject1GameInstance::UProject1GameInstance()
 
 	m_IsServerConnected = false;
 	m_IsClientMode = false;
+
+	m_UserIdx = -1;
 }
 
 UProject1GameInstance::~UProject1GameInstance()

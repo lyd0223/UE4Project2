@@ -47,7 +47,7 @@ bool UserInfoTable_SelectIDQuery::CheckPW()
 		if (m_PW != MysqlRow[2])
 			return false;
 
-		m_RowData = std::make_shared<DBUserInfoTableRow>(reinterpret_cast<int>(MysqlRow[0]), MysqlRow[1], MysqlRow[2]);
+		m_RowData = std::make_shared<DBUserInfoTableRow>(std::stoi(MysqlRow[0]), MysqlRow[1], MysqlRow[2]);
 	}
 
 	return true;

@@ -47,6 +47,8 @@ private:
 	bool m_IsServerConnected;
 	//셀프 패킷 실험용으로 클라이언트 모드를 만들어놓음.
 	bool m_IsClientMode;
+
+	unsigned int m_UserIdx;
 	// ---------------------------------------------------------
 	
 	UPROPERTY()
@@ -68,11 +70,7 @@ private:
 
 	UPROPERTY()
 	class UInventoryManager* m_InventoryManager;
-
-	//
-	// UPROPERTY()
-	// UDataTable* m_QuestInfoTable;
-
+	
 public:
 	//Getter & Setter
 	//------------------------서버용-----------------------
@@ -80,7 +78,6 @@ public:
 	{
 		return m_IsClientMode;
 	}
-
 	void SetIsClientMode(bool _IsClientMode)
 	{
 		m_IsClientMode = _IsClientMode;
@@ -89,6 +86,15 @@ public:
 	bool IsEmptyMessage() const
 	{
 		return m_MessageQueue.IsEmpty();
+	}
+
+	unsigned int GetUserIdx() const
+	{
+		return m_UserIdx;
+	}
+	void SetUserIdx(int _UserIdx)
+	{
+		m_UserIdx = _UserIdx;
 	}
 	// ---------------------------------------------------
 	

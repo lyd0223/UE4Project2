@@ -2,6 +2,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Project1/GameInfo.h"
+#include "Project1/Project1GameInstance.h"
 
 
 SignInResultMessageHandler::SignInResultMessageHandler(std::shared_ptr<SignInResultMessage> _SignInResultMessage)
@@ -21,8 +22,8 @@ void SignInResultMessageHandler::Start()
 {
 	if(m_SignInResultMessage->m_SignInResultType == ESignInResultType::OK)
 	{
+		m_GameInstance->SetUserIdx(m_SignInResultMessage->m_UserIdx);
 		UGameplayStatics::OpenLevel(m_World, TEXT("SelectCharacter"));
-		
 	}
 	else
 	{

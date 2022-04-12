@@ -1,5 +1,6 @@
 |SignInResult-
 ESignInResultType m_SignInResultType;
+int m_UserIdx;
 
 |ServerDestroy-
 
