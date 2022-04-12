@@ -34,28 +34,24 @@ void SignInMessageHandler::DBCheck()
 {
 	std::string Name = GameServerThread::GetName();
 
-	//UserInfoTable_SelectIDQuery SelectQuery(m_SignInMessage->m_ID);
-	//SelectQuery.DoQuery();
-	UserInfoTable_InsertUserInfoQuery InsertUserInfoQuery("111", "");
-	InsertUserInfoQuery.DoQuery();
-
-	//if (nullptr == SelectQuery.RowData)
-	//{
-	//	SignInResult_.Code = EGameServerCode::SignInError;
-	//}
-	//else
-	//{
-	//	SignInResult_.Code = EGameServerCode::OK;
-	//}
-
-	//UserTable_InsertUserInfo Query = UserTable_InsertUserInfo("kk", "kk");
-	//if (false == Query.DoQuery())
-	//{
-	//	int a = 0;
-	//}
-
-
-	// INSERT INTO `userver2`.`user` (`ID`, `PW`) VALUES('c', 'c');
+	UserInfoTable_SelectIDQuery SelectQuery(m_SignInMessage->m_ID, m_SignInMessage->m_PW);
+	if (SelectQuery.DoQuery() == false)
+	{
+		//쿼리 실패. (ID 존재하지않음.)
+		m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
+	}
+	else
+	{
+		if (SelectQuery.CheckPW() == false)
+		{
+			// 비밀번호 틀림. 틀렷다는 패킷 보내주자.
+			m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
+		}
+		else
+		{
+			m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
+		}
+	}
 
 	NetQueue::EnQueue(std::bind(&SignInMessageHandler::ResultSend, shared_from_this()));
 }

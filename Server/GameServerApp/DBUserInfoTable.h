@@ -2,9 +2,9 @@
 #include <GameServerNet/DBQuery.h>
 
 /*
-Usage		:  모든 클래스 기본.  
-Category	:  Object 
-Description :  오브젝트 상속용.
+Usage		:  DB 쿼리용  
+Category	:  DB 
+Description :  DB쿼리 날리고 그에 관련된 일들을 하는 클래스들.
 */
 
 
@@ -56,11 +56,13 @@ class UserInfoTable_SelectIDQuery : public DBQuery, DBUserInfoTable
 {
 public:
 	std::string m_ID;
+	std::string m_PW;
 	std::shared_ptr<DBUserInfoTableRow> m_RowData;
 
 public:
-	UserInfoTable_SelectIDQuery(const std::string& _ID);
+	UserInfoTable_SelectIDQuery(const std::string& _ID, const std::string& _PW);
 	bool DoQuery() override;
+	bool CheckPW();
 	
 };
 

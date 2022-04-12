@@ -1,6 +1,7 @@
 ﻿#include "SignInResultMessageHandler.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Project1/GameInfo.h"
 
 
 SignInResultMessageHandler::SignInResultMessageHandler(std::shared_ptr<SignInResultMessage> _SignInResultMessage)
@@ -20,8 +21,12 @@ void SignInResultMessageHandler::Start()
 {
 	if(m_SignInResultMessage->m_SignInResultType == ESignInResultType::OK)
 	{
-		UGameplayStatics::OpenLevel(m_World, TEXT("MainLevel"));
+		UGameplayStatics::OpenLevel(m_World, TEXT("SelectCharacter"));
 		
+	}
+	else
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("Login Failed"));
 	}
 }
 

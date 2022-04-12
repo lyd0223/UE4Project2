@@ -3,7 +3,12 @@
 
 #include "StartMainWidget.h"
 #include "SignUpWidget.h"
+#include "SignInWidget.h"
 #include "ServerConnectInfoWidget.h"
+#include "Project1/Project1GameInstance.h"
+#include <string>
+
+#include "Project1/Global/ClientBlueprintFunctionLibrary.h"
 
 void UStartMainWidget::NativeConstruct()
 {
@@ -14,6 +19,7 @@ void UStartMainWidget::NativeConstruct()
 	m_QuitButton = Cast<UButton>(GetWidgetFromName(TEXT("QuitButton")));
 	m_ServerConnectInfoButton = Cast<UButton>(GetWidgetFromName(TEXT("ServerConnectInfoButton")));
 	m_SignUpWidget = Cast<USignUpWidget>(GetWidgetFromName(TEXT("UI_SignUpWidget")));
+	m_SignInWidget = Cast<USignInWidget>(GetWidgetFromName(TEXT("UI_SignInWidget")));
 	m_ServerConnectInfoWidget = Cast<UServerConnectInfoWidget>(GetWidgetFromName(TEXT("UI_ServerConnectInfoWidget")));
 	
 	m_SignInButton->OnClicked.AddDynamic(this, &UStartMainWidget::SignInButtonClicked);
@@ -30,11 +36,10 @@ void UStartMainWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 
 void UStartMainWidget::SignInButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("SelectCharacter"));
-	// if(m_SignUpWidget->GetVisibility() == ESlateVisibility::SelfHitTestInvisible)
-	// 	m_SignUpWidget->SetVisibility(ESlateVisibility::Collapsed);
-	// else
-	// 	m_SignUpWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	if(m_SignInWidget->GetVisibility() == ESlateVisibility::SelfHitTestInvisible)
+		m_SignInWidget->SetVisibility(ESlateVisibility::Collapsed);
+	else
+		m_SignInWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
 
 void UStartMainWidget::SignUpButtonClicked()

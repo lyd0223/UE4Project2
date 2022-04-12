@@ -25,6 +25,8 @@ protected:
 	UPROPERTY()
 	class USignUpWidget* m_SignUpWidget;
 	UPROPERTY()
+	class USignInWidget* m_SignInWidget;
+	UPROPERTY()
 	class UServerConnectInfoWidget* m_ServerConnectInfoWidget;
 
 protected:

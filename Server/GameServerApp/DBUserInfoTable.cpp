@@ -15,25 +15,48 @@ DBUserInfoTable::~DBUserInfoTable()
 }
 
 
-UserInfoTable_SelectIDQuery::UserInfoTable_SelectIDQuery(const std::string& _ID)
-	: DBQuery("SELECT Idx, ID, PW FROM unrealserver.userinfo WHERE ID = 'ww' LIMIT 1")
+UserInfoTable_SelectIDQuery::UserInfoTable_SelectIDQuery(const std::string& _ID, const std::string& _PW)
 {
+	std::string str = "SELECT Idx, ID, PW FROM unrealserver.userinfo WHERE ID = '" + _ID + "' LIMIT 1";
+	m_QueryText = _strdup(str.c_str());
 	m_ID = _ID;
+	m_PW = _PW;
 	m_RowData = nullptr;
 }
 
 bool UserInfoTable_SelectIDQuery::DoQuery()
 {
-	mysql_query(m_DBConnecter->GetMYSQL(), m_QueryText);
+	int __stdcall result = mysql_query(m_DBConnecter->GetMYSQL(), m_QueryText);
+	if (result != 0)
+	{
+		std::string ErrorStr = mysql_error(m_DBConnecter->GetMYSQL());
+		GameServerDebug::LogError("QueryError : " + ErrorStr);
+		return false;
+	}
+	
+	return true;
+}
+
+
+bool UserInfoTable_SelectIDQuery::CheckPW()
+{
+	MYSQL_RES* MysqlResult = mysql_store_result(m_DBConnecter->GetMYSQL());
+	MYSQL_ROW MysqlRow;
+	while ((MysqlRow = mysql_fetch_row(MysqlResult)) != NULL)
+	{
+		if (m_PW != MysqlRow[2])
+			return false;
+
+		m_RowData = std::make_shared<DBUserInfoTableRow>(reinterpret_cast<int>(MysqlRow[0]), MysqlRow[1], MysqlRow[2]);
+	}
+
 	return true;
 }
 
 
 UserInfoTable_InsertUserInfoQuery::UserInfoTable_InsertUserInfoQuery(const std::string& _ID, const std::string& _PW)
-	//:DBQuery("INSERT INTO unrealserver.userinfo (ID,PW) VALUES ('dddddd','1112');")
 {
 	std::string str = "INSERT INTO unrealserver.userinfo (ID,PW) VALUES ('" + _ID + "','" + _PW + "');";
-	//std::string str = "INSERT INTO unrealserver.userinfo (ID,PW) VALUES ('pppp','pppp');";
 	m_QueryText = _strdup(str.c_str());
 	m_ID = _ID;
 	m_PW = _PW;
