@@ -21,6 +21,7 @@
     <ClInclude Include="Messages.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="ContentsStruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">

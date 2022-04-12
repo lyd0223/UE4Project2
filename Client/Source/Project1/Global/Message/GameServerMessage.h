@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "MessageTypeEnum.h"
 #include "ContentsEnum.h"
+#include "ContentsStruct.h"
 #include "GameServerSerializer.h"
 
 class GameServerMessage

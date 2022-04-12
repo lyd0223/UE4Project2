@@ -1,6 +1,7 @@
 #pragma once
 #include "GameServerMessage.h"
 #include "ContentsEnum.h"
+#include "ContentsStruct.h"
 
 class ChatMessage : public GameServerMessage                    
 {                                                               

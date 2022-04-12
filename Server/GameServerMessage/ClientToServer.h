@@ -1,6 +1,7 @@
 #pragma once
 #include "GameServerMessage.h"
 #include "ContentsEnum.h"
+#include "ContentsStruct.h"
 
 class SignInMessage : public GameServerMessage                    
 {                                                               
@@ -76,6 +77,41 @@ public:
         GameServerMessage::DeSerialize(_Serializer);            
         _Serializer >> m_ID;
         _Serializer >> m_PW;
+
+    }                                                           
+};                                                              
+
+class RequestCharacterInfoMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	int m_UserIdx;
+                                                                
+public:                                                         
+    RequestCharacterInfoMessage()                                               
+        : GameServerMessage(EMessageType::RequestCharacterInfo)                    
+        , m_UserIdx()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~RequestCharacterInfoMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_UserIdx);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer << m_UserIdx;
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        _Serializer >> m_UserIdx;
 
     }                                                           
 };                                                              

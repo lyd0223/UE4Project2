@@ -41,11 +41,19 @@ void SerializerTypeCheck(std::string& _Text, MemberInfo& _MemberInfo)
 	{
 		_Text += "        _Serializer << " + _MemberInfo.Name + ";\n";
 	}
+	else if (std::string::npos != _MemberInfo.Type.find("std::vector<"))
+	{
+		_Text += "        _Serializer.WriteVector( " + _MemberInfo.Name + ");\n";
+	}
 	else
 	{
 		if (_MemberInfo.Type[0] == 'E')
 		{
 			_Text += "        _Serializer<<static_cast<int>(" + _MemberInfo.Name + ");\n";
+		}
+		else if (_MemberInfo.Type[0] == 'F')
+		{
+			_Text += "        " + _MemberInfo.Name + ".Serialize(_Serializer);\n";
 		}
 		else
 		{
@@ -64,6 +72,10 @@ void DeSerializerTypeCheck(std::string& _Text, MemberInfo& _MemberInfo)
 	{
 		_Text += "        _Serializer >> " + _MemberInfo.Name + ";\n";
 	}
+	else if (std::string::npos != _MemberInfo.Type.find("std::vector<"))
+	{
+		_Text += "        _Serializer.ReadVector( " + _MemberInfo.Name + ");\n";
+	}
 	else
 	{
 		if (_MemberInfo.Type[0] == 'E')
@@ -71,6 +83,10 @@ void DeSerializerTypeCheck(std::string& _Text, MemberInfo& _MemberInfo)
 			_Text += "        int temp ;		\n";
 			_Text += "        _Serializer>>temp;\n";
 			_Text += "        " + _MemberInfo.Name + " = static_cast<" + _MemberInfo.Type + ">(temp); \n";
+		}
+		else if (_MemberInfo.Type[0] == 'F')
+		{
+			_Text += "        " + _MemberInfo.Name + ".DeSerialize(_Serializer);\n";
 		}
 		else
 		{
@@ -88,6 +104,7 @@ void MessageHeaderCreate(std::vector<MessageInfo>& _Collection, const std::strin
 	MessageText += "#pragma once\n";
 	MessageText += "#include \"GameServerMessage.h\"\n";
 	MessageText += "#include \"ContentsEnum.h\"\n";
+	MessageText += "#include \"ContentsStruct.h\"\n";
 	MessageText += "\n";
 
 
@@ -660,6 +677,21 @@ int main()
 			gFileSaveFuncList.push_back([=]() {
 				GameServerFile LoadFile = { LoadFilePath, "rt" };
 				std::string Code = LoadFile.GetString();
+
+				GameServerFile SaveFile = GameServerFile{ SavePath, "wt" };
+				SaveFile.Write(Code.c_str(), Code.size());
+				});
+		}
+		{
+			std::string LoadFilePath = FileDir.PathToPlusFileName("ContentsStruct.h");
+			std::string SavePath = SaveDir.PathToPlusFileName("ContentsStruct.h");
+
+			gFileSaveFuncList.push_back([=]() {
+				GameServerFile LoadFile = { LoadFilePath, "rt" };
+				std::string Code = LoadFile.GetString();
+
+				Code.replace(Code.find("#include <GameServerBase/GameServerSerializer.h>")
+					, strlen("#include <GameServerBase/GameServerSerializer.h>"), "#include \"GameServerSerializer.h\"");
 
 				GameServerFile SaveFile = GameServerFile{ SavePath, "wt" };
 				SaveFile.Write(Code.c_str(), Code.size());

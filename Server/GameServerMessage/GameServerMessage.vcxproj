@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="ClientToServer.h" />
     <ClInclude Include="ContentsEnum.h" />
+    <ClInclude Include="ContentsStruct.h" />
     <ClInclude Include="Dispatcher.h" />
     <ClInclude Include="GameServerMessage.h" />
     <ClInclude Include="MessageConverter.h">

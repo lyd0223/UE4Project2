@@ -15,9 +15,3 @@ enum class ESignUpResultType
 	Error_NonAvailableID,
 	MAX
 };
-
-struct CharacterInfo
-{
-	std::string Idx;
-	std::string Name;
-};

@@ -28,6 +28,8 @@ void ASelectCharacterGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	
+	
 	if (IsValid(m_SelectCharacterMainWidgetClass))
 	{
 		m_SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(CreateWidget(GetWorld(),

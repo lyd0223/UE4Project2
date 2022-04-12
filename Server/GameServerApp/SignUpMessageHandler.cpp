@@ -38,7 +38,7 @@ void SignUpMessageHandler::DBCheck()
 	
 	UserInfoTable_InsertUserInfoQuery InsertUserInfoQuery(m_SignUpMessage->m_ID, m_SignUpMessage->m_PW);
 	
-	int CheckResult = InsertUserInfoQuery.DoQuery();
+	bool CheckResult = InsertUserInfoQuery.DoQuery();
 	m_SignUpResultMessage.m_SignUpResultType = CheckResult == true ? ESignUpResultType::OK : ESignUpResultType::Error_NonAvailableID;
 
 	NetQueue::EnQueue(std::bind(&SignUpMessageHandler::ResultSend, shared_from_this()));

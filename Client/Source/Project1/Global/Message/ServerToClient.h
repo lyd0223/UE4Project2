@@ -1,6 +1,7 @@
 #pragma once
 #include "GameServerMessage.h"
 #include "ContentsEnum.h"
+#include "ContentsStruct.h"
 
 class SignInResultMessage : public GameServerMessage                    
 {                                                               
@@ -106,6 +107,41 @@ public:
         int temp ;		
         _Serializer>>temp;
         m_SignUpResultType = static_cast<ESignUpResultType>(temp); 
+
+    }                                                           
+};                                                              
+
+class ReplyCharacterInfoMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	std::vector<FCharacterInfo> m_CharacterInfoList;
+                                                                
+public:                                                         
+    ReplyCharacterInfoMessage()                                               
+        : GameServerMessage(EMessageType::ReplyCharacterInfo)                    
+        , m_CharacterInfoList()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~ReplyCharacterInfoMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_CharacterInfoList);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer.WriteVector( m_CharacterInfoList);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        _Serializer.ReadVector( m_CharacterInfoList);
 
     }                                                           
 };                                                              

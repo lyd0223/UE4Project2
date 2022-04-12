@@ -5,3 +5,6 @@ std::string m_PW;
 |SignUp-
 std::string m_ID;
 std::string m_PW;
+
+|RequestCharacterInfo-
+int m_UserIdx;
