@@ -82,8 +82,6 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	
 public:
-	void SetQuickSlotObj(EQuickSlotType QuickSlotType, FQuickSlotObj* Obj);
-	
 	UFUNCTION()
 	void InventoryButtonClick();
 	UFUNCTION()

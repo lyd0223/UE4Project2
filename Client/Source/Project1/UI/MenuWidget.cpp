@@ -57,39 +57,6 @@ void UMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 }
 
-void UMenuWidget::SetQuickSlotObj(EQuickSlotType QuickSlotType, FQuickSlotObj* Obj)
-{
-	AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
-	if(GameModeBase)
-	{
-		UMainHUDWidget* MainHUDWidget = GameModeBase->GetMainHUDWidget();
-		if(MainHUDWidget)
-		{
-			UQuickSlotsWidget* QuickSlotsWidget = MainHUDWidget->GetQuickSlotWidget();
-			if(QuickSlotsWidget)
-			{
-				m_QuickSlotType = QuickSlotType;
-				m_QuickSlotObj = Obj;
-				
-				//QucikSlot 반짝이게 만들기.
-				switch (m_QuickSlotType)
-				{
-				case EQuickSlotType::None :
-					QuickSlotsWidget->QuickItemSlotOn(false);
-					QuickSlotsWidget->QuickBulletSlotOn(false);
-					break;
-				case EQuickSlotType::Item :
-					QuickSlotsWidget->QuickItemSlotOn(true);
-					break;
-				case EQuickSlotType::Bullet :
-					QuickSlotsWidget->QuickBulletSlotOn(true);
-					break;
-				}
-			}
-		}
-	}
-}
-
 void UMenuWidget::InventoryButtonClick()
 {
 	if(m_PrevWidget != m_InventoryWidget)

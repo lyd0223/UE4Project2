@@ -14,8 +14,8 @@ UCLASS()
 class PROJECT1_API UQuickItemSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UImage* m_ItemImage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -23,41 +23,45 @@ class PROJECT1_API UQuickItemSlotWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_LabelText;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UButton* m_SlotButton;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UImage* m_SelectImage;
-	
-	
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	uint8 m_LabelIndex;
 
 	FItem* m_Item;
 
-	public:
+	class UQuickSlotsWidget* m_QuickSlotsWidget;
+
+public:
 	FItem* GetItem() const
 	{
 		return m_Item;
 	}
+
 	void SetItem(FItem* Item)
 	{
 		m_Item = Item;
 	}
-	
-	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
-	public:
-	UFUNCTION()
-	void SlotButtonHovered();
-	UFUNCTION()
-	void SlotButtonClicked();
-	
+	void SetQuickSlotsWidget(UQuickSlotsWidget* QuickSlotsWidget)
+	{
+		m_QuickSlotsWidget = QuickSlotsWidget;
+	}
+
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent,
+	                  UDragDropOperation* InOperation) override;
+
+public:
 	//깜빡임을 키고 끄는 함수.
 	void SelectImageOn()
 	{
 		m_SelectImage->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
+
 	void SelectImageOff()
 	{
 		m_SelectImage->SetVisibility(ESlateVisibility::Collapsed);

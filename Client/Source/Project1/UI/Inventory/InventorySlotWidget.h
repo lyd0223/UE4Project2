@@ -21,8 +21,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_CountText;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UButton* m_ItemButton;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UCanvasPanel* m_ItemCanvasPanel;
 
 	class UItemToolTipWidget* m_ItemToolTipWidget;
@@ -48,17 +46,11 @@ protected:
 	virtual void NativeConstruct();
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
-
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 
 public:
-	UFUNCTION()
-	void ItemButtonClicked();
-	UFUNCTION()
-	void ItemButtonReleased();
-	UFUNCTION()
-	void ItemButtonHovered();
-	UFUNCTION()
-	void ItemButtonUnHovered();
-
 	void SetDatas(FItem* Item);
 };

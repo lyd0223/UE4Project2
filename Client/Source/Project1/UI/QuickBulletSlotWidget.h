@@ -13,27 +13,34 @@ UCLASS()
 class PROJECT1_API UQuickBulletSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UImage* m_BulletImage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UCanvasPanel* m_SelectCanvasPanel;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_SlotButton;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool m_IsSelected;
-	
-	
-	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
-	public:
+	class UQuickSlotsWidget* m_QuickSlotsWidget;
+
+public:
 	void SelectOn(bool IsOn);
+
 	void SetImage(UTexture2D* Texture)
 	{
 		m_BulletImage->SetBrushFromTexture(Texture);
 	}
+
+	void SetQuickSlotsWidget(UQuickSlotsWidget* QuickSlotsWidget)
+	{
+		m_QuickSlotsWidget = QuickSlotsWidget;
+	}
+
+protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };

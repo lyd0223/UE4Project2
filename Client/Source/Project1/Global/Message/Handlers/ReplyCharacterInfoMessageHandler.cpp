@@ -20,7 +20,7 @@ void ReplyCharacterInfoMessageHandler::Start()
 	for(auto& CharacterInfo : m_ReplyCharacterInfoMessage->m_CharacterInfoList)
 	{
 		ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
-		GameMode->GetSelectHUD()->
+		//GameMode->GetSelectHUD()->
 	}
 	
 }

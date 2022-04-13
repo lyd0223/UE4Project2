@@ -12,13 +12,18 @@ void UQuickSlotsWidget::NativeConstruct()
 	for(int i = 0 ; i <4; i++)
 	{
 		UQuickBulletSlotWidget* QuickBulletSlotWidget = Cast<UQuickBulletSlotWidget>(GetWidgetFromName(FName(FString::Printf(TEXT("UI_QuickBulletSlot_%d"),i))));
+		QuickBulletSlotWidget->SetQuickSlotsWidget(this);
 		m_QuickBulletSlotWidgetArray.Add(QuickBulletSlotWidget);
+		
 	}
 	for(int i = 0 ; i <5; i++)
 	{
 		UQuickItemSlotWidget* QuickItemSlotWidget = Cast<UQuickItemSlotWidget>(GetWidgetFromName(FName(FString::Printf(TEXT("UI_QuickItemSlot_%d"),i))));
+		QuickItemSlotWidget->SetQuickSlotsWidget(this);
 		m_QuickItemSlotWidgetArray.Add(QuickItemSlotWidget);
+		
 	}
+	
 }
 
 void UQuickSlotsWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
