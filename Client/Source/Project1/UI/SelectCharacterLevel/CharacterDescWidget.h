@@ -22,10 +22,11 @@ class PROJECT1_API UCharacterDescWidget : public UUserWidget
 	TMap<EPlayerJob, FSelectPlayerTableInfo> m_SelectPlayerTableInfoMap;
 	
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 
 	public:
 	void SetDesc(EPlayerJob PlayerJob);
+	void SetDesc(const FString& Text);
 };

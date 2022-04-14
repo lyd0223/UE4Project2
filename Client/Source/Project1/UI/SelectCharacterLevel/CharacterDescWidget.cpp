@@ -39,3 +39,8 @@ void UCharacterDescWidget::SetDesc(EPlayerJob PlayerJob)
 	m_NameText->SetText(FText::FromString(TableInfo->Name));
 	m_DescText->SetText(FText::FromString(TableInfo->Desc));
 }
+
+void UCharacterDescWidget::SetDesc(const FString& Text)
+{
+	m_DescText->SetText(FText::FromString(Text));
+}

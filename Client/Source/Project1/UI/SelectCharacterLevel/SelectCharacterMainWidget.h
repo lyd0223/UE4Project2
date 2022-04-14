@@ -5,6 +5,7 @@
 #include "../../GameInfo.h"
 #include "Components/Button.h"
 #include "Blueprint/UserWidget.h"
+#include "Project1/Global/Message/ContentsStruct.h"
 #include "SelectCharacterMainWidget.generated.h"
 
 UCLASS()
@@ -12,8 +13,8 @@ class PROJECT1_API USelectCharacterMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_Character1Button;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -22,7 +23,7 @@ class PROJECT1_API USelectCharacterMainWidget : public UUserWidget
 	UButton* m_Character3Button;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_Character4Button;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_CreateButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -35,12 +36,18 @@ class PROJECT1_API USelectCharacterMainWidget : public UUserWidget
 
 	EPlayerJob m_SelectJob;
 	class UCanvasPanelSlot* m_SelectPanelSlot;
-	
-	protected:
+
+	std::vector<FCharacterInfo> m_CharacterInfoList;
+	TMap<EPlayerJob, FString> m_CharacterDescMap;
+protected:
 	virtual void NativeConstruct();
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	
+public:
+	//DB에서 받아온 정보를 바탕으로 UI 초기화.
+	bool UIInitialize(std::vector<FCharacterInfo>& CharacterInfoList);
 
-	public:
+	void SetProfile(EPlayerJob PlayerJob);
 	
 	UFUNCTION()
 	void Character1ButtonClick();
@@ -50,16 +57,10 @@ class PROJECT1_API USelectCharacterMainWidget : public UUserWidget
 	void Character3ButtonClick();
 	UFUNCTION()
 	void Character4ButtonClick();
-	
+
 	UFUNCTION()
 	void CreateButtonClick();
 	UFUNCTION()
 	void BackButtonClick();
 
-	public:
-	void SetKnightStateVisibility(ESlateVisibility Visible);
-	void SetArcherStateVisibility(ESlateVisibility Visible);
-	void SetInputNameVisibility(ESlateVisibility Visible);
-	void SetKnightInfo(const FPlayerInfo& Info);
-	void SetArcherInfo(const FPlayerInfo& Info);
 };

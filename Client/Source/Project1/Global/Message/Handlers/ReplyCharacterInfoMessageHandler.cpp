@@ -1,4 +1,5 @@
 ﻿#include "ReplyCharacterInfoMessageHandler.h"
+
 #include "Project1/SelectCharacterGameModeBase.h"
 #include "Project1/UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
 
@@ -20,7 +21,10 @@ void ReplyCharacterInfoMessageHandler::Start()
 	for(auto& CharacterInfo : m_ReplyCharacterInfoMessage->m_CharacterInfoList)
 	{
 		ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
-		//GameMode->GetSelectHUD()->
+		if(GameMode == nullptr)
+			return;
+		USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
+		SelectCharacterMainWidget->UIInitialize(m_ReplyCharacterInfoMessage->m_CharacterInfoList);
 	}
 	
 }

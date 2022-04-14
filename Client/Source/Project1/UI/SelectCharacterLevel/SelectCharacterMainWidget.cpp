@@ -7,6 +7,7 @@
 #include "../../Player/SelectCharacterPlayerController.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Project1/Project1GameInstance.h"
+#include "Project1/Global/ClientBlueprintFunctionLibrary.h"
 
 void USelectCharacterMainWidget::NativeConstruct()
 {
@@ -43,6 +44,48 @@ void USelectCharacterMainWidget::NativeTick(const FGeometry& MyGeometry, float I
 	Super::NativeTick(MyGeometry, InDeltaTime);
 }
 
+bool USelectCharacterMainWidget::UIInitialize(std::vector<FCharacterInfo>& CharacterInfoList)
+{
+	m_CharacterInfoList = CharacterInfoList;
+	for(auto& CharacterInfo :CharacterInfoList)
+	{
+		if(CharacterInfo.m_ClassName == "Belica")
+		{
+			FString String = TEXT("캐릭터이름 : %s\n",CharacterInfo.m_Nickname);
+			String += TEXT("LV\t : %d",CharacterInfo.m_);
+			String += TEXT("HP\t : %f");
+			String += TEXT("MP\t : %f");
+			String += TEXT("ATK\t : %f");
+			
+			m_CharacterDescMap.Add(EPlayerJob::Belica, String);
+		}
+		else if(CharacterInfo.m_ClassName == "Revenant")
+		{
+			m_CharacterExistMap.Add(EPlayerJob::Revenant, true);
+			
+		}
+		else if(CharacterInfo.m_ClassName == "Wraith")
+		{
+			m_CharacterExistMap.Add(EPlayerJob::Wraith, true);
+			
+		}
+		else if(CharacterInfo.m_ClassName == "TwinBlaster")
+		{
+			m_CharacterExistMap.Add(EPlayerJob::TwinBlaster, true);
+			
+		}
+		else
+		{
+			PrintViewport(2.f, FColor::Red, TEXT("ClassName is worng!"));
+			return false;
+		}
+		
+		
+	}
+	
+	return true;
+}
+
 void USelectCharacterMainWidget::Character1ButtonClick()
 {
 	if(m_SelectJob != EPlayerJob::Belica)
@@ -65,7 +108,10 @@ void USelectCharacterMainWidget::Character1ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		m_CharacterDescWidget->SetDesc(m_SelectJob);
+		if(m_CharacterDescMap.Find(EPlayerJob::Belica))
+			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[EPlayerJob::Belica]);
+		else
+			m_CharacterDescWidget->SetDesc(m_SelectJob);
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		
@@ -103,6 +149,7 @@ void USelectCharacterMainWidget::Character2ButtonClick()
 		PlayerController->Move(m_SelectJob);
 	}
 }
+
 void USelectCharacterMainWidget::Character3ButtonClick()
 {
 	if(m_SelectJob != EPlayerJob::Wraith)

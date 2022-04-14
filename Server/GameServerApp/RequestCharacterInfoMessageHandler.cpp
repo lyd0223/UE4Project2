@@ -42,7 +42,7 @@ void RequestCharacterInfoMessageHandler::DBCheck()
 	for (auto& RowData : SelectQuery.m_RowDataList)
 	{
 		std::shared_ptr<FCharacterInfo> CharacterInfo = 
-			std::make_shared<FCharacterInfo>(RowData->m_Idx, RowData->m_UserIndx, RowData->m_Nickname, RowData->m_ClassName,
+			std::make_shared<FCharacterInfo>(RowData->m_Idx, RowData->m_UserIndx, RowData->m_Nickname, RowData->m_ClassName, RowData->m_LV,
 			RowData->m_HP, RowData->m_MP, RowData->m_ATK);
 		m_ReplyCharacterInfoMessage.m_CharacterInfoList.push_back(*CharacterInfo);
 	}
