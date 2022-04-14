@@ -18,7 +18,7 @@ DBCharacterInfoTable::~DBCharacterInfoTable()
 
 DBCharacterInfoTable_SelectCharacterInfoQuery::DBCharacterInfoTable_SelectCharacterInfoQuery(int _UserIdx)
 {
-	std::string str = "SELECT Idx,UserIdx,Nickname,ClassName,HP,MP,ATK FROM unrealserver.characterinfo WHERE UserIdx = '" 
+	std::string str = "SELECT Idx,UserIdx,Nickname,ClassName,LV,HP,MP,ATK FROM unrealserver.characterinfo WHERE UserIdx = '" 
 		+ std::to_string(_UserIdx) + "'";
 	m_QueryText = _strdup(str.c_str());
 	m_UserIdx = _UserIdx;
@@ -40,7 +40,7 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 	while ((MysqlRow = mysql_fetch_row(MysqlResult)) != NULL)
 	{
 		m_RowDataList.push_back(std::make_shared<DBCharacterInfoTableRow>(std::stoi(MysqlRow[0]), std::stoi(MysqlRow[1]),
-			MysqlRow[2], MysqlRow[3],std::stof(MysqlRow[4]), std::stof(MysqlRow[5]), std::stof(MysqlRow[6])));
+			MysqlRow[2], MysqlRow[3], std::stoi(MysqlRow[4]), std::stof(MysqlRow[5]), std::stof(MysqlRow[6]), std::stof(MysqlRow[7])));
 
 	}
 

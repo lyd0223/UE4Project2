@@ -17,6 +17,7 @@ public:
 		m_UserIndx = -1;
 		m_Nickname = "";
 		m_ClassName = "";
+		m_LV = 0;
 		m_HP = 0;
 		m_MP = 0;
 		m_ATK = 0;
@@ -25,6 +26,7 @@ public:
 		int _UserIndx,
 		std::string _Nickname,
 		std::string _ClassName,
+		int _LV,
 		float _HP,
 		float _MP,
 		float _ATK)
@@ -33,6 +35,7 @@ public:
 		m_UserIndx = _UserIndx;
 		m_Nickname = _UserIndx;
 		m_ClassName = _ClassName;
+		m_LV = _LV;
 		m_HP = _HP;
 		m_MP = _HP;
 		m_ATK = _ATK;
@@ -42,6 +45,7 @@ public:
 	int m_UserIndx;
 	std::string m_Nickname;
 	std::string m_ClassName;
+	int m_LV;
 	float m_HP;
 	float m_MP;
 	float m_ATK;
