@@ -21,6 +21,14 @@ private:
 	UEditableTextBox* m_NameTextBox;
 
 	FString m_NameString;
+
+	class USelectCharacterMainWidget* m_OwnerWidget;
+
+public:
+	void SetOwnerWidget(class USelectCharacterMainWidget* _OwnerWidget)
+	{
+		m_OwnerWidget = _OwnerWidget;
+	}
 	
 protected:
 	virtual void NativeConstruct() override;

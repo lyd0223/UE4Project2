@@ -35,22 +35,32 @@ protected:
 	class UCharacterStatGraphWidget* m_CharacterStatGraphWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCharacterDescWidget* m_CharacterDescWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UCharacterNameSettingWidget* m_CharacterNameSettingWidget;
 
 	EPlayerJob m_SelectJob;
 	class UCanvasPanelSlot* m_SelectPanelSlot;
 
 	std::vector<FCharacterInfo> m_CharacterInfoList;
 	TMap<EPlayerJob, FString> m_CharacterDescMap;
+
+	bool m_IsCanEnter;
+
+public:
+	EPlayerJob GetSelectJob() const
+	{
+		return m_SelectJob;
+	}
+
 protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
-	
+	virtual void NativeConstruct() override;
+
 public:
 	//DB에서 받아온 정보를 바탕으로 UI 초기화.
-	bool UIInitialize(std::vector<FCharacterInfo>& CharacterInfoList);
+	bool UIInitialize(const std::vector<FCharacterInfo>& CharacterInfoList);
 
 	void SetProfile(EPlayerJob PlayerJob);
-	
+
 	UFUNCTION()
 	void Character1ButtonClick();
 	UFUNCTION()
@@ -67,4 +77,5 @@ public:
 	UFUNCTION()
 	void BackButtonClick();
 
+	void EnterButtonOn(bool _IsOn);
 };

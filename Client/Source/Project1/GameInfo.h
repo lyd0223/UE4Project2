@@ -9,6 +9,7 @@
 #include "EngineGlobals.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Blueprint/SlateBlueprintLibrary.h"
+#include "Project1/Global/ClientBlueprintFunctionLibrary.h"
 #include "GameInfo.generated.h"
 
 

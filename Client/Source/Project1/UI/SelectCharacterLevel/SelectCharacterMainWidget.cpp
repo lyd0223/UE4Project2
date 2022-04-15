@@ -9,6 +9,7 @@
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Global/ClientBlueprintFunctionLibrary.h"
 #include "Project1/Global/Message/ClientToServer.h"
+#include "CharacterNameSettingWidget.h"
 
 void USelectCharacterMainWidget::NativeConstruct()
 {
@@ -23,7 +24,7 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_BackButton = Cast<UButton>(GetWidgetFromName(TEXT("BackButton")));
 	m_CharacterDescWidget = Cast<UCharacterDescWidget>(GetWidgetFromName(TEXT("UI_CharacterDescWidget")));
 	m_CharacterStatGraphWidget = Cast<UCharacterStatGraphWidget>(GetWidgetFromName(TEXT("UI_CharacterStatGraphWidget")));
-
+	
 	m_Character1Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character1ButtonClick);
 	m_Character2Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character2ButtonClick);
 	m_Character3Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character3ButtonClick);
@@ -32,22 +33,18 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_BackButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::BackButtonClick);
 	m_EnterButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::EnterButtonClick);
 
+	m_CharacterNameSettingWidget = Cast<UCharacterNameSettingWidget>(GetWidgetFromName(TEXT("UI_CharacterNameSettingWidget")));
+	m_CharacterNameSettingWidget->SetOwnerWidget(this);
+	
 	m_SelectJob = EPlayerJob::Belica;
 	
 	m_SelectPanelSlot = Cast<UCanvasPanelSlot>(m_Character1Button->GetParent()->Slot);
 	FVector2D Pos = m_SelectPanelSlot->GetPosition();
 	Pos.X += 50.f;
 	m_SelectPanelSlot->SetPosition(Pos);
-
-	
 }
 
-void USelectCharacterMainWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-}
-
-bool USelectCharacterMainWidget::UIInitialize(std::vector<FCharacterInfo>& CharacterInfoList)
+bool USelectCharacterMainWidget::UIInitialize(const std::vector<FCharacterInfo>& CharacterInfoList)
 {
 	m_CharacterInfoList = CharacterInfoList;
 	for(auto& CharacterInfo :CharacterInfoList)
@@ -84,8 +81,22 @@ bool USelectCharacterMainWidget::UIInitialize(std::vector<FCharacterInfo>& Chara
 			PrintViewport(2.f, FColor::Red, TEXT("ClassName is worng!"));
 			return false;
 		}
-		
-		
+	}
+
+	//characterSelect 초기화면은 Belica 캐릭터로 되어있기때문에, 초기화면 설정.
+	//스텟 이미지 변경
+	m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
+
+	//캐릭터 설명 변경
+	if(m_CharacterDescMap.Find(m_SelectJob))
+	{
+		m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
+		EnterButtonOn(true);
+	}
+	else
+	{
+		m_CharacterDescWidget->SetDesc(m_SelectJob);
+		EnterButtonOn(false);
 	}
 	
 	return true;
@@ -113,14 +124,15 @@ void USelectCharacterMainWidget::Character1ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		if(m_CharacterDescMap.Find(EPlayerJob::Belica))
+		if(m_CharacterDescMap.Find(m_SelectJob))
 		{
-			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[EPlayerJob::Belica]);
-			//m_CreateButton->
+			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
+			EnterButtonOn(true);
 		}
 		else
 		{
 			m_CharacterDescWidget->SetDesc(m_SelectJob);
+			EnterButtonOn(false);
 		}
 		
 		//컨트롤러 이동 (카메라 위치 이동)
@@ -151,7 +163,16 @@ void USelectCharacterMainWidget::Character2ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		m_CharacterDescWidget->SetDesc(m_SelectJob);
+		if(m_CharacterDescMap.Find(m_SelectJob))
+		{
+			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
+			EnterButtonOn(true);
+		}
+		else
+		{
+			m_CharacterDescWidget->SetDesc(m_SelectJob);
+			EnterButtonOn(false);
+		}
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
@@ -181,7 +202,16 @@ void USelectCharacterMainWidget::Character3ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		m_CharacterDescWidget->SetDesc(m_SelectJob);
+		if(m_CharacterDescMap.Find(m_SelectJob))
+		{
+			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
+			EnterButtonOn(true);
+		}
+		else
+		{
+			m_CharacterDescWidget->SetDesc(m_SelectJob);
+			EnterButtonOn(false);
+		}
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
@@ -210,8 +240,17 @@ void USelectCharacterMainWidget::Character4ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		m_CharacterDescWidget->SetDesc(m_SelectJob);
-
+		if(m_CharacterDescMap.Find(m_SelectJob))
+		{
+			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
+			EnterButtonOn(true);
+		}
+		else
+		{
+			m_CharacterDescWidget->SetDesc(m_SelectJob);
+			EnterButtonOn(false);
+		}
+		
 		//컨트롤러 이동 (카메라 위치 이동)		
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
 		PlayerController->Move(m_SelectJob);
@@ -220,60 +259,15 @@ void USelectCharacterMainWidget::Character4ButtonClick()
 
 void USelectCharacterMainWidget::CreateButtonClick()
 {
-	//서버로 캐릭터인포 생성 패킷 보내기.--------------------------------------------------------
-	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if(GameInst->GetIsClientMode())
-		return;		
-	CreateCharacterInfoMessage Message;
-
-	//캐릭터 정보 불러오기
-	FString ClassName = TEXT("");
-	switch(m_SelectJob)
-	{
-		case EPlayerJob::Belica :
-			ClassName = TEXT("Belica");
-			break;
-		case EPlayerJob::Revenant :
-			ClassName = TEXT("Revenant");
-			break;
-		case EPlayerJob::Wraith :
-			ClassName = TEXT("Wraith");
-			break;
-		case EPlayerJob::TwinBlaster :
-			ClassName = TEXT("TwinBlaster");
-			break;
-	}
-	
-	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(ClassName);
-
-	FCharacterInfo& CharacterInfo = Message.m_CharacterInfo;
-	if (Info)
-	{
-		UClientBlueprintFunctionLibrary::FStringToUTF8(Info->Name, CharacterInfo.m_Nickname);
-		UClientBlueprintFunctionLibrary::FStringToUTF8(ClassName, CharacterInfo.m_ClassName);
-		CharacterInfo.m_LV = Info->Level;
-		CharacterInfo.m_HP = Info->HPMax;
-		// m_PlayerInfo.SPMax = Info->SPMax;
-		// m_PlayerInfo.EXP = Info->EXP;
-		// m_PlayerInfo.ATK = Info->ATK;
-		// m_PlayerInfo.DEF = Info->DEF;
-		// m_PlayerInfo.AttackSpeed = Info->AttackSpeed;
-		//m_PlayerInfo.MoveSpeed = Info->MoveSpeed;
-	}
-	
-	GameServerSerializer Serializer;
-	Message.Serialize(Serializer);
-	
-	if (!GameInst->Send(Serializer.GetData()))
-	{
-		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
-	}
-	//--------------------------------------------------------------------------------------
+	if(m_IsCanEnter == true)
+		return;
+	m_CharacterNameSettingWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
 
 void USelectCharacterMainWidget::EnterButtonClick()
 {
+	if(m_IsCanEnter == false)
+		return;
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
 	GameInstance->SetSelectJob(m_SelectJob);
 	//SetSelectCharacter(); 로변경
@@ -285,5 +279,30 @@ void USelectCharacterMainWidget::BackButtonClick()
 {
 	//UKismetSystemLibrary::QuitGame(GetWorld(), GetWorld()->GetFirstPlayerController(),
 	//	EQuitPreference::Quit, true);
+
+	//------------------------------
+	//모든 서버 설정 초기화해줘야하는부분..
+	//추후 추가
+	//------------------------------
+	
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Start"));
+	
+}
+
+
+void USelectCharacterMainWidget::EnterButtonOn(bool _IsOn)
+{
+	if(_IsOn)
+	{
+		m_IsCanEnter = true;
+		m_CreateButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,0.3f));
+		m_EnterButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,1.f));
+	}
+	else
+	{
+		m_IsCanEnter = false;
+		m_CreateButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,1.f));
+		m_EnterButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,0.3f));
+		
+	}
 }

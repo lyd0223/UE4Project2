@@ -4,6 +4,8 @@
 #include "Engine/GameInstance.h"
 #include <memory>
 #include <vector>
+
+#include "Global/Message/ContentsStruct.h"
 #include "Project1GameInstance.generated.h"
 
 
@@ -49,6 +51,7 @@ private:
 	bool m_IsClientMode;
 
 	unsigned int m_UserIdx;
+	FCharacterInfo m_PlayingCharacterInfo;
 	// ---------------------------------------------------------
 	
 	UPROPERTY()
@@ -95,6 +98,10 @@ public:
 	void SetUserIdx(int _UserIdx)
 	{
 		m_UserIdx = _UserIdx;
+	}
+	void SetPlayingCharacterInfo(FCharacterInfo _CharacterInfo)
+	{
+		m_PlayingCharacterInfo = _CharacterInfo;
 	}
 	// ---------------------------------------------------
 	
