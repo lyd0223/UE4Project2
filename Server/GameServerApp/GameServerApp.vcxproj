@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CreateCharacterInfoMessageHandler.h" />
     <ClInclude Include="DBCharacterInfoTable.h" />
     <ClInclude Include="DBQueue.h">
       <SubType>
@@ -52,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="CreateCharacterInfoMessageHandler.cpp" />
     <ClCompile Include="DBCharacterInfoTable.cpp" />
     <ClCompile Include="DBQueue.cpp">
       <SubType>

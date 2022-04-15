@@ -111,6 +111,47 @@ public:
     }                                                           
 };                                                              
 
+class CreateCharacterInfoResultMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	ECreateCharacterInfoResultType m_CreateCharacterInfoResultType;
+	FCharacterInfo m_CharacterInfo;
+                                                                
+public:                                                         
+    CreateCharacterInfoResultMessage()                                               
+        : GameServerMessage(EMessageType::CreateCharacterInfoResult)                    
+        , m_CreateCharacterInfoResultType()
+        , m_CharacterInfo()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~CreateCharacterInfoResultMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_CreateCharacterInfoResultType) + DataSizeCheck(m_CharacterInfo);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer<<static_cast<int>(m_CreateCharacterInfoResultType);
+        m_CharacterInfo.Serialize(_Serializer);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        int temp ;		
+        _Serializer>>temp;
+        m_CreateCharacterInfoResultType = static_cast<ECreateCharacterInfoResultType>(temp); 
+        m_CharacterInfo.DeSerialize(_Serializer);
+
+    }                                                           
+};                                                              
+
 class ReplyCharacterInfoMessage : public GameServerMessage                    
 {                                                               
 public:                                                         

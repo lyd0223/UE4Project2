@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 enum class ESignInResultType
 {
@@ -13,5 +12,12 @@ enum class ESignUpResultType
 	OK,
 	Error_DuplicateID,
 	Error_NonAvailableID,
+	MAX
+};
+
+enum class ECreateCharacterInfoResultType
+{
+	OK,
+	Error,
 	MAX
 };

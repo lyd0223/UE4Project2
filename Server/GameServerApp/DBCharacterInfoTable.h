@@ -90,7 +90,7 @@ class DBCharacterInfoTable_InsertCharacterInfoQuery : public DBQuery, DBCharacte
 public:
 
 public:
-	DBCharacterInfoTable_InsertCharacterInfoQuery(const std::string& _ID, const std::string& _PW);
+	DBCharacterInfoTable_InsertCharacterInfoQuery(std::string _NickName);
 	bool DoQuery() override;
 
 };

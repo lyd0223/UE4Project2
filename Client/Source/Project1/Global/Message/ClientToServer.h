@@ -81,6 +81,41 @@ public:
     }                                                           
 };                                                              
 
+class CreateCharacterInfoMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	FCharacterInfo m_CharacterInfo;
+                                                                
+public:                                                         
+    CreateCharacterInfoMessage()                                               
+        : GameServerMessage(EMessageType::CreateCharacterInfo)                    
+        , m_CharacterInfo()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~CreateCharacterInfoMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_CharacterInfo);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        m_CharacterInfo.Serialize(_Serializer);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        m_CharacterInfo.DeSerialize(_Serializer);
+
+    }                                                           
+};                                                              
+
 class RequestCharacterInfoMessage : public GameServerMessage                    
 {                                                               
 public:                                                         

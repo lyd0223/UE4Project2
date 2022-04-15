@@ -7,5 +7,9 @@ int m_UserIdx;
 |SignUpResult-
 ESignUpResultType m_SignUpResultType;
 
+|CreateCharacterInfoResult-
+ECreateCharacterInfoResultType m_CreateCharacterInfoResultType;
+FCharacterInfo m_CharacterInfo;
+
 |ReplyCharacterInfo-
 std::vector<FCharacterInfo> m_CharacterInfoList;

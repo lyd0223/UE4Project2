@@ -37,6 +37,9 @@
     <ClInclude Include="RequestCharacterInfoMessageHandler.h">
       <Filter>Messages\Handlers</Filter>
     </ClInclude>
+    <ClInclude Include="CreateCharacterInfoMessageHandler.h">
+      <Filter>Messages\Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -74,6 +77,9 @@
       <Filter>DBTable</Filter>
     </ClCompile>
     <ClCompile Include="RequestCharacterInfoMessageHandler.cpp">
+      <Filter>Messages\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateCharacterInfoMessageHandler.cpp">
       <Filter>Messages\Handlers</Filter>
     </ClCompile>
   </ItemGroup>

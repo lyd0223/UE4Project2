@@ -50,7 +50,7 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 
 
 
-DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(const std::string& _ID, const std::string& _PW)
+DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(std::string _NickName)
 {
 	//std::string str = "INSERT INTO unrealserver.characterinfo (ID,PW) VALUES ('" + _ID + "','" + _PW + "');";
 	//m_QueryText = _strdup(str.c_str());

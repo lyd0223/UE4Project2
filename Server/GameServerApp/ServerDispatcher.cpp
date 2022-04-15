@@ -4,6 +4,7 @@
 																																													
 #include "SignInMessageHandler.h"
 #include "SignUpMessageHandler.h"
+#include "CreateCharacterInfoMessageHandler.h"
 #include "RequestCharacterInfoMessageHandler.h"
 #include "ChatMessageHandler.h"
 																																													
@@ -27,6 +28,7 @@ void DispatcherRegistration()
 {																																													
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::SignIn), std::bind(&OnMessageProcess<SignInMessageHandler, SignInMessage>, std::placeholders::_1, std::placeholders::_2));	
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::SignUp), std::bind(&OnMessageProcess<SignUpMessageHandler, SignUpMessage>, std::placeholders::_1, std::placeholders::_2));	
+	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::CreateCharacterInfo), std::bind(&OnMessageProcess<CreateCharacterInfoMessageHandler, CreateCharacterInfoMessage>, std::placeholders::_1, std::placeholders::_2));	
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::RequestCharacterInfo), std::bind(&OnMessageProcess<RequestCharacterInfoMessageHandler, RequestCharacterInfoMessage>, std::placeholders::_1, std::placeholders::_2));	
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::Chat), std::bind(&OnMessageProcess<ChatMessageHandler, ChatMessage>, std::placeholders::_1, std::placeholders::_2));	
 }																																													
