@@ -23,5 +23,4 @@ void CreateCharacterInfoResultMessageHandler::Start()
 	// 	USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
 	// 	SelectCharacterMainWidget->UIInitialize(m_ReplyCharacterInfoMessage->m_CharacterInfoList);
 	// }
-	
 }
