@@ -81,7 +81,7 @@ public:
     }                                                           
 };                                                              
 
-class CreateCharacterInfoMessage : public GameServerMessage
+class CreateCharacterInfoMessage : public GameServerMessage                    
 {                                                               
 public:                                                         
 	FCharacterInfo m_CharacterInfo;

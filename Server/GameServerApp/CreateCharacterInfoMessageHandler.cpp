@@ -34,7 +34,8 @@ void CreateCharacterInfoMessageHandler::DBCheck()
 	FCharacterInfo& CharacterInfo = m_CreateCharacterInfoMessage->m_CharacterInfo;
 	DBCharacterInfoTable_InsertCharacterInfoQuery InsertQuery(
 		CharacterInfo.m_UserIdx, CharacterInfo.m_Nickname, CharacterInfo.m_ClassName,
-		CharacterInfo.m_LV, CharacterInfo.m_HP, CharacterInfo.m_MP, CharacterInfo.m_ATK);
+		CharacterInfo.m_LV, CharacterInfo.m_EXP, CharacterInfo.m_HP, CharacterInfo.m_SP, 
+		CharacterInfo.m_ATK, CharacterInfo.m_DEF, CharacterInfo.m_AttackSpeed, CharacterInfo.m_MoveSpeed);
 	if (InsertQuery.DoQuery() == false)
 	{
 		//쿼리 실패. 바로 에러띄우고, 리턴때려버림.

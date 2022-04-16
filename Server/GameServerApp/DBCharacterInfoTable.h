@@ -14,41 +14,49 @@ public:
 	DBCharacterInfoTableRow()
 	{
 		m_Idx = -1;
-		m_UserIndx = -1;
+		m_UserIdx = -1;
 		m_Nickname = "";
 		m_ClassName = "";
 		m_LV = 0;
-		m_HP = 0;
-		m_MP = 0;
-		m_ATK = 0;
+		m_EXP = 0;
+		m_HP = 0.f;
+		m_SP = 0.f;
+		m_ATK = 0.f;
+		m_DEF = 0.f;
+		m_AttackSpeed = 0.f;
+		m_MoveSpeed = 0.f;
 	}
-	DBCharacterInfoTableRow(int _Idx,
-		int _UserIndx,
-		std::string _Nickname,
-		std::string _ClassName,
-		int _LV,
-		float _HP,
-		float _MP,
-		float _ATK)
+	DBCharacterInfoTableRow(int _Idx, int _UserIdx, std::string _Nickname, std::string _ClassName,
+		int _LV, int _EXP,
+		float _HP, float _SP, float _ATK, float _DEF,
+		float _AttackSpeed, float _MoveSpeed)
 	{
 		m_Idx = _Idx;
-		m_UserIndx = _UserIndx;
+		m_UserIdx = _UserIdx;
 		m_Nickname = _Nickname;
 		m_ClassName = _ClassName;
 		m_LV = _LV;
+		m_EXP = _EXP;
 		m_HP = _HP;
-		m_MP = _HP;
+		m_SP = _SP;
 		m_ATK = _ATK;
+		m_DEF = _DEF;
+		m_AttackSpeed = _AttackSpeed;
+		m_MoveSpeed = _MoveSpeed;
 	}
 public:
 	int m_Idx;
-	int m_UserIndx;
+	int m_UserIdx;
 	std::string m_Nickname;
 	std::string m_ClassName;
 	int m_LV;
+	int m_EXP;
 	float m_HP;
-	float m_MP;
+	float m_SP;
 	float m_ATK;
+	float m_DEF;
+	float m_AttackSpeed;
+	float m_MoveSpeed;
 
 
 };
@@ -91,7 +99,7 @@ public:
 
 public:
 	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, std::string _Nickname, std::string _ClassName,
-		int _LV, float _HP, float _MP, float _ATK);
+		int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed);
 	bool DoQuery() override;
 
 };

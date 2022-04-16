@@ -62,14 +62,13 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 		UClientBlueprintFunctionLibrary::FStringToUTF8(m_NameString, CharacterInfo.m_Nickname);
 		UClientBlueprintFunctionLibrary::FStringToUTF8(ClassName, CharacterInfo.m_ClassName);
 		CharacterInfo.m_LV = Info->Level;
+		CharacterInfo.m_EXP = Info->EXP;
 		CharacterInfo.m_HP = Info->HPMax;
-		CharacterInfo.m_MP = Info->SPMax;
+		CharacterInfo.m_SP = Info->SPMax;
 		CharacterInfo.m_ATK = Info->ATK;
-		// m_PlayerInfo.SPMax = Info->SPMax;
-		// m_PlayerInfo.EXP = Info->EXP;
-		// m_PlayerInfo.DEF = Info->DEF;
-		// m_PlayerInfo.AttackSpeed = Info->AttackSpeed;
-		//m_PlayerInfo.MoveSpeed = Info->MoveSpeed;
+		CharacterInfo.m_DEF = Info->DEF;
+		CharacterInfo.m_AttackSpeed = Info->AttackSpeed;
+		CharacterInfo.m_MoveSpeed = Info->MoveSpeed;
 	}
 
 	GameServerSerializer Serializer;
