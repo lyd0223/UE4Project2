@@ -84,31 +84,31 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UProject1GameInstance* gameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	gameInstance->GetInventoryManager()->SetOwnerCharacter(this);
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
+	if(GameInstance == nullptr)
+		return;
+	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
+	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(m_JobName);
+	m_PlayerInfo.Job = Info->Job;
+	m_PlayerInfo.CharacterTexture = Info->CharacterTexture;
+	m_PlayerInfo.Gold = Info->Gold;
+	m_PlayerInfo.AttackAngle = Info->AttackAngle;
+	m_PlayerInfo.AttackDistance = Info->AttackDistance;
 	
-	const FPlayerTableInfo* info = gameInstance->FindPlayerInfo(m_JobName);
-
-	if (info)
-	{
-		m_PlayerInfo.Name = info->Name;
-		m_PlayerInfo.Job = info->Job;
-		m_PlayerInfo.CharacterTexture = info->CharacterTexture;
-		m_PlayerInfo.ATK = info->ATK;
-		m_PlayerInfo.DEF = info->DEF;
-		m_PlayerInfo.HP = info->HP;
-		m_PlayerInfo.HPMax = info->HPMax;
-		m_PlayerInfo.SP = info->SP;
-		m_PlayerInfo.SPMax = info->SPMax;
-		m_PlayerInfo.Level = info->Level;
-		m_PlayerInfo.EXP = info->EXP;
-		m_PlayerInfo.EXPMax = info->EXPMax;
-		m_PlayerInfo.Gold = info->Gold;
-		m_PlayerInfo.AttackDistance = info->AttackDistance;
-		m_PlayerInfo.AttackSpeed = info->AttackSpeed;
-		m_PlayerInfo.AttackAngle = info->AttackAngle;
-		m_PlayerInfo.MoveSpeed = info->MoveSpeed;
-	}
+	FCharacterInfo CharacterInfo = GameInstance->GetPlayingCharacterInfo();
+	UClientBlueprintFunctionLibrary::UTF8ToFString(CharacterInfo.m_Nickname, m_PlayerInfo.Name);
+	m_PlayerInfo.Level = CharacterInfo.m_LV;
+	m_PlayerInfo.EXP = CharacterInfo.m_EXP;
+	//m_PlayerInfo.EXPMax = info->EXPMax;
+	m_PlayerInfo.ATK = CharacterInfo.m_ATK;
+	m_PlayerInfo.DEF = CharacterInfo.m_DEF;
+	m_PlayerInfo.HP = CharacterInfo.m_HP;
+	m_PlayerInfo.HPMax = CharacterInfo.m_HP;
+	m_PlayerInfo.SP = CharacterInfo.m_SP;
+	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
+	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
+	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
+		
 
 	//UI 변경
 	SetUI();

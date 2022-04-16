@@ -219,7 +219,7 @@ void USelectCharacterMainWidget::EnterButtonClick()
 		return;
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
 	GameInstance->SetSelectJob(m_SelectJob);
-	//SetSelectCharacter(); 로변경
+	GameInstance->SetPlayingCharacterInfo(*m_CharacterInfoMap.Find(m_SelectJob));
 	
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("WaitingRoom"));
 }

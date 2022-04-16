@@ -103,6 +103,10 @@ public:
 	{
 		m_PlayingCharacterInfo = _CharacterInfo;
 	}
+	FCharacterInfo GetPlayingCharacterInfo() const
+	{
+		return m_PlayingCharacterInfo;
+	}
 	// ---------------------------------------------------
 	
 	UDataTable* GetSelectPlayerInfoTable() const
@@ -139,7 +143,7 @@ public:
 	
 	void Close();
 	
-	void FinishDestroy() override;
+	virtual void FinishDestroy() override;
 	
 	bool ThreadAvailableCheck();
 	
