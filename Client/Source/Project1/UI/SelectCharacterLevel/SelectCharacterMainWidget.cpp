@@ -23,7 +23,10 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_EnterButton = Cast<UButton>(GetWidgetFromName(TEXT("EnterButton")));
 	m_BackButton = Cast<UButton>(GetWidgetFromName(TEXT("BackButton")));
 	m_CharacterDescWidget = Cast<UCharacterDescWidget>(GetWidgetFromName(TEXT("UI_CharacterDescWidget")));
+	m_CharacterDescWidget->SetOwnerWidget(this);
 	m_CharacterStatGraphWidget = Cast<UCharacterStatGraphWidget>(GetWidgetFromName(TEXT("UI_CharacterStatGraphWidget")));
+	m_CharacterNameSettingWidget = Cast<UCharacterNameSettingWidget>(GetWidgetFromName(TEXT("UI_CharacterNameSettingWidget")));
+	m_CharacterNameSettingWidget->SetOwnerWidget(this);
 	
 	m_Character1Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character1ButtonClick);
 	m_Character2Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character2ButtonClick);
@@ -33,8 +36,6 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_BackButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::BackButtonClick);
 	m_EnterButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::EnterButtonClick);
 
-	m_CharacterNameSettingWidget = Cast<UCharacterNameSettingWidget>(GetWidgetFromName(TEXT("UI_CharacterNameSettingWidget")));
-	m_CharacterNameSettingWidget->SetOwnerWidget(this);
 	
 	m_SelectJob = EPlayerJob::Belica;
 	
@@ -49,31 +50,24 @@ bool USelectCharacterMainWidget::UIInitialize(const std::vector<FCharacterInfo>&
 	m_CharacterInfoList = CharacterInfoList;
 	for(auto& CharacterInfo :CharacterInfoList)
 	{
-		FString String = TEXT("");
-		String += FString::Printf(TEXT("캐릭터이름 : %s\n"), CharacterInfo.m_Nickname.c_str());
-		String += FString::Printf(TEXT("LV\t : %d\n"), CharacterInfo.m_LV);
-		String += FString::Printf(TEXT("HP\t : %f\n"), CharacterInfo.m_HP);
-		String += FString::Printf(TEXT("MP\t : %f\n"), CharacterInfo.m_MP);
-		String += FString::Printf(TEXT("ATK\t : %f\n"), CharacterInfo.m_ATK);
-		
 		if(CharacterInfo.m_ClassName == "Belica")
 		{
-			m_CharacterDescMap.Add(EPlayerJob::Belica, String);
+			m_CharacterInfoMap.Add(EPlayerJob::Belica, CharacterInfo);
 			
 		}
 		else if(CharacterInfo.m_ClassName == "Revenant")
 		{
-			m_CharacterDescMap.Add(EPlayerJob::Revenant, String);
+			m_CharacterInfoMap.Add(EPlayerJob::Revenant, CharacterInfo);
 			
 		}
 		else if(CharacterInfo.m_ClassName == "Wraith")
 		{
-			m_CharacterDescMap.Add(EPlayerJob::Wraith, String);
+			m_CharacterInfoMap.Add(EPlayerJob::Wraith, CharacterInfo);
 			
 		}
 		else if(CharacterInfo.m_ClassName == "TwinBlaster")
 		{
-			m_CharacterDescMap.Add(EPlayerJob::TwinBlaster, String);
+			m_CharacterInfoMap.Add(EPlayerJob::TwinBlaster, CharacterInfo);
 			
 		}
 		else
@@ -88,16 +82,7 @@ bool USelectCharacterMainWidget::UIInitialize(const std::vector<FCharacterInfo>&
 	m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 	//캐릭터 설명 변경
-	if(m_CharacterDescMap.Find(m_SelectJob))
-	{
-		m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
-		EnterButtonOn(true);
-	}
-	else
-	{
-		m_CharacterDescWidget->SetDesc(m_SelectJob);
-		EnterButtonOn(false);
-	}
+	m_CharacterDescWidget->SetDesc(m_SelectJob,m_CharacterInfoMap);
 	
 	return true;
 }
@@ -124,16 +109,7 @@ void USelectCharacterMainWidget::Character1ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		if(m_CharacterDescMap.Find(m_SelectJob))
-		{
-			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
-			EnterButtonOn(true);
-		}
-		else
-		{
-			m_CharacterDescWidget->SetDesc(m_SelectJob);
-			EnterButtonOn(false);
-		}
+		m_CharacterDescWidget->SetDesc(m_SelectJob,m_CharacterInfoMap);
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
@@ -163,16 +139,7 @@ void USelectCharacterMainWidget::Character2ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		if(m_CharacterDescMap.Find(m_SelectJob))
-		{
-			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
-			EnterButtonOn(true);
-		}
-		else
-		{
-			m_CharacterDescWidget->SetDesc(m_SelectJob);
-			EnterButtonOn(false);
-		}
+		m_CharacterDescWidget->SetDesc(m_SelectJob,m_CharacterInfoMap);
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
@@ -202,16 +169,7 @@ void USelectCharacterMainWidget::Character3ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		if(m_CharacterDescMap.Find(m_SelectJob))
-		{
-			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
-			EnterButtonOn(true);
-		}
-		else
-		{
-			m_CharacterDescWidget->SetDesc(m_SelectJob);
-			EnterButtonOn(false);
-		}
+		m_CharacterDescWidget->SetDesc(m_SelectJob,m_CharacterInfoMap);
 		
 		//컨트롤러 이동 (카메라 위치 이동)
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());
@@ -240,16 +198,7 @@ void USelectCharacterMainWidget::Character4ButtonClick()
 		m_CharacterStatGraphWidget->SetStatGraphImage(m_SelectJob);
 
 		//캐릭터 설명 변경
-		if(m_CharacterDescMap.Find(m_SelectJob))
-		{
-			m_CharacterDescWidget->SetDesc(m_CharacterDescMap[m_SelectJob]);
-			EnterButtonOn(true);
-		}
-		else
-		{
-			m_CharacterDescWidget->SetDesc(m_SelectJob);
-			EnterButtonOn(false);
-		}
+		m_CharacterDescWidget->SetDesc(m_SelectJob,m_CharacterInfoMap);
 		
 		//컨트롤러 이동 (카메라 위치 이동)		
 		ASelectCharacterPlayerController* PlayerController = Cast<ASelectCharacterPlayerController>(GetWorld()->GetFirstPlayerController());

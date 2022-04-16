@@ -18,7 +18,7 @@ DBCharacterInfoTable::~DBCharacterInfoTable()
 
 DBCharacterInfoTable_SelectCharacterInfoQuery::DBCharacterInfoTable_SelectCharacterInfoQuery(int _UserIdx)
 {
-	std::string str = "SELECT Idx,UserIdx,Nickname,ClassName,LV,HP,MP,ATK FROM unrealserver.characterinfo WHERE UserIdx = '" 
+	std::string str = "SELECT * FROM unrealserver.characterinfo WHERE UserIdx = '" 
 		+ std::to_string(_UserIdx) + "'";
 	m_QueryText = _strdup(str.c_str());
 	m_UserIdx = _UserIdx;
@@ -50,12 +50,19 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 
 
 
-DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(std::string _NickName)
+DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(
+	int _UserIdx, std::string _Nickname, std::string _ClassName,
+	int _LV, float _HP, float _MP, float _ATK)
 {
-	//std::string str = "INSERT INTO unrealserver.characterinfo (ID,PW) VALUES ('" + _ID + "','" + _PW + "');";
-	//m_QueryText = _strdup(str.c_str());
-	//m_ID = _ID;
-	//m_PW = _PW;
+	std::string str = "INSERT INTO unrealserver.characterinfo (UserIdx,Nickname,ClassName,LV,HP,MP,ATK) VALUES ('"
+		+ std::to_string(_UserIdx) + "','" 
+		+ _Nickname + "','"
+		+ _ClassName + "','"
+		+ std::to_string(_LV) + "','"
+		+ std::to_string(_HP) + "','"
+		+ std::to_string(_MP) + "','"
+		+ std::to_string(_ATK) + "');";
+	m_QueryText = _strdup(str.c_str());
 }
 
 bool DBCharacterInfoTable_InsertCharacterInfoQuery::DoQuery()

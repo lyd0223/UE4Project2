@@ -3,7 +3,8 @@
 #include "Project1/SelectCharacterGameModeBase.h"
 #include "Project1/UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
 
-ReplyCharacterInfoMessageHandler::ReplyCharacterInfoMessageHandler(std::shared_ptr<ReplyCharacterInfoMessage> _ReplyCharacterInfoMessage)
+ReplyCharacterInfoMessageHandler::ReplyCharacterInfoMessageHandler(
+	std::shared_ptr<ReplyCharacterInfoMessage> _ReplyCharacterInfoMessage)
 {
 	m_GameInstance = nullptr;
 	m_World = nullptr;
@@ -18,13 +19,9 @@ void ReplyCharacterInfoMessageHandler::Init(UProject1GameInstance* _GameInstance
 
 void ReplyCharacterInfoMessageHandler::Start()
 {
-	for(auto& CharacterInfo : m_ReplyCharacterInfoMessage->m_CharacterInfoList)
-	{
-		ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
-		if(GameMode == nullptr)
-			return;
-		USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
-		SelectCharacterMainWidget->UIInitialize(m_ReplyCharacterInfoMessage->m_CharacterInfoList);
-	}
-	
+	ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
+	if (GameMode == nullptr)
+		return;
+	USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
+	SelectCharacterMainWidget->UIInitialize(m_ReplyCharacterInfoMessage->m_CharacterInfoList);
 }

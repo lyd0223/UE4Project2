@@ -1,7 +1,6 @@
 ﻿#include "SignInResultMessageHandler.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "Project1/GameInfo.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/StartGameModeBase.h"
 #include "Project1/UI/StartLevel/StartMainWidget.h"

@@ -35,12 +35,4 @@ void CreateCharacterInfoResultMessageHandler::Start()
 			break;
 	}
 	
-	// for(auto& CharacterInfo : m_CreateCharacterInfoResultMessage->m_CharacterInfoList)
-	// {
-	// 	ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
-	// 	if(GameMode == nullptr)
-	// 		return;
-	// 	USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
-	// 	SelectCharacterMainWidget->UIInitialize(m_ReplyCharacterInfoMessage->m_CharacterInfoList);
-	// }
 }

@@ -31,21 +31,16 @@ void CreateCharacterInfoMessageHandler::Start()
 
 void CreateCharacterInfoMessageHandler::DBCheck()
 {
-	DBCharacterInfoTable_InsertCharacterInfoQuery InsertQuery(m_CreateCharacterInfoMessage->m_CharacterInfo.m_Nickname);
+	FCharacterInfo& CharacterInfo = m_CreateCharacterInfoMessage->m_CharacterInfo;
+	DBCharacterInfoTable_InsertCharacterInfoQuery InsertQuery(
+		CharacterInfo.m_UserIdx, CharacterInfo.m_Nickname, CharacterInfo.m_ClassName,
+		CharacterInfo.m_LV, CharacterInfo.m_HP, CharacterInfo.m_MP, CharacterInfo.m_ATK);
 	if (InsertQuery.DoQuery() == false)
 	{
 		//쿼리 실패. 바로 에러띄우고, 리턴때려버림.
 		GameServerDebug::LogInfo("DBCharacterInfoTable_SelectCharacterInfoQuery Error");
 		return;
 	}
-
-	//for (auto& RowData : SelectQuery.m_RowDataList)
-	//{
-	//	std::shared_ptr<FCharacterInfo> CharacterInfo =
-	//		std::make_shared<FCharacterInfo>(RowData->m_Idx, RowData->m_UserIndx, RowData->m_Nickname, RowData->m_ClassName, RowData->m_LV,
-	//			RowData->m_HP, RowData->m_MP, RowData->m_ATK);
-	//	m_ReplyCharacterInfoMessage.m_CharacterInfoList.push_back(*CharacterInfo);
-	//}
 
 	NetQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::ResultSend, shared_from_this()));
 }

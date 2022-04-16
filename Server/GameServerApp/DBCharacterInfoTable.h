@@ -33,7 +33,7 @@ public:
 	{
 		m_Idx = _Idx;
 		m_UserIndx = _UserIndx;
-		m_Nickname = _UserIndx;
+		m_Nickname = _Nickname;
 		m_ClassName = _ClassName;
 		m_LV = _LV;
 		m_HP = _HP;
@@ -90,7 +90,8 @@ class DBCharacterInfoTable_InsertCharacterInfoQuery : public DBQuery, DBCharacte
 public:
 
 public:
-	DBCharacterInfoTable_InsertCharacterInfoQuery(std::string _NickName);
+	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, std::string _Nickname, std::string _ClassName,
+		int _LV, float _HP, float _MP, float _ATK);
 	bool DoQuery() override;
 
 };

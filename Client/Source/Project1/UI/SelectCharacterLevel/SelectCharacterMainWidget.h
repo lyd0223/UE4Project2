@@ -42,7 +42,7 @@ protected:
 	class UCanvasPanelSlot* m_SelectPanelSlot;
 
 	std::vector<FCharacterInfo> m_CharacterInfoList;
-	TMap<EPlayerJob, FString> m_CharacterDescMap;
+	TMap<EPlayerJob, FCharacterInfo> m_CharacterInfoMap;
 
 	bool m_IsCanEnter;
 

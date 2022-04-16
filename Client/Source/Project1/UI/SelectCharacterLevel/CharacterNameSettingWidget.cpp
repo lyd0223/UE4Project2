@@ -16,6 +16,7 @@ void UCharacterNameSettingWidget::NativeConstruct()
 	m_CloseButton->OnClicked.AddDynamic(this, &UCharacterNameSettingWidget::CloseButtonClicked);
 
 	m_NameTextBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("NameTextBox")));
+	m_NameTextBox->OnTextChanged.AddDynamic(this, &UCharacterNameSettingWidget::NameTextBoxChanged);
 	m_NameString = TEXT("");
 
 	m_OwnerWidget = nullptr;
@@ -52,13 +53,13 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 		break;
 	}
 
-	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(ClassName);
+	const FPlayerTableInfo* Info = GameInst->FindPlayerInfo(ClassName);
 
 	FCharacterInfo& CharacterInfo = Message.m_CharacterInfo;
 	if (Info)
 	{
-		UClientBlueprintFunctionLibrary::FStringToUTF8(Info->Name, CharacterInfo.m_Nickname);
+		CharacterInfo.m_UserIdx = GameInst->GetUserIdx();
+		UClientBlueprintFunctionLibrary::FStringToUTF8(m_NameString, CharacterInfo.m_Nickname);
 		UClientBlueprintFunctionLibrary::FStringToUTF8(ClassName, CharacterInfo.m_ClassName);
 		CharacterInfo.m_LV = Info->Level;
 		CharacterInfo.m_HP = Info->HPMax;
