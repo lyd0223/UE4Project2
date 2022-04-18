@@ -78,4 +78,5 @@ public:
 	void BackButtonClick();
 
 	void EnterButtonOn(bool _IsOn);
+	void CharacterStatGraphOn(bool _IsOn);
 };

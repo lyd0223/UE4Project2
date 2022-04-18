@@ -5,6 +5,7 @@
 #include "../../GameInfo.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Image.h"
 #include "Project1/Global/Message/ContentsStruct.h"
 #include "CharacterDescWidget.generated.h"
 
@@ -20,6 +21,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_DescText;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UImage* m_BackgroundImage1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UImage* m_BackgroundImage2;
+	
 	TMap<EPlayerJob, FSelectPlayerTableInfo> m_SelectPlayerTableInfoMap;
 	class USelectCharacterMainWidget* m_OwnerWidget;
 

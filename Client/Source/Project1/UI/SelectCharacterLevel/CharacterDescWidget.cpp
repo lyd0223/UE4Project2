@@ -5,6 +5,7 @@
 
 #include "SelectCharacterMainWidget.h"
 #include "../../Project1GameInstance.h"
+#include "Components/CanvasPanelSlot.h"
 
 
 void UCharacterDescWidget::NativeConstruct()
@@ -13,7 +14,9 @@ void UCharacterDescWidget::NativeConstruct()
 
 	m_NameText = Cast<UTextBlock>(GetWidgetFromName(TEXT("NameText")));
 	m_DescText = Cast<UTextBlock>(GetWidgetFromName(TEXT("DescText")));
-
+	m_BackgroundImage1 = Cast<UImage>(GetWidgetFromName(TEXT("BackgroundImage1")));
+	m_BackgroundImage2 = Cast<UImage>(GetWidgetFromName(TEXT("BackgroundImage2")));
+	
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
 	UDataTable* DataTable = GameInstance->GetSelectPlayerInfoTable();
 	TArray<FName> NameArray = DataTable->GetRowNames();
@@ -39,6 +42,14 @@ void UCharacterDescWidget::SetDesc(EPlayerJob PlayerJob, const TMap<EPlayerJob, 
 		FSelectPlayerTableInfo* TableInfo = m_SelectPlayerTableInfoMap.Find(PlayerJob);
 		m_NameText->SetText(FText::FromString(TableInfo->Name));
 		m_DescText->SetText(FText::FromString(TableInfo->Desc));
+		
+		//크기 변경
+		m_BackgroundImage1->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		m_BackgroundImage2->SetVisibility(ESlateVisibility::Collapsed);
+
+		//스탯그래프 off
+		m_OwnerWidget->CharacterStatGraphOn(true);
+
 		m_OwnerWidget->EnterButtonOn(false);
 		return;
 	}
@@ -60,5 +71,13 @@ void UCharacterDescWidget::SetDesc(EPlayerJob PlayerJob, const TMap<EPlayerJob, 
 	
 	m_NameText->SetText(FText::FromString(ClassName));
 	m_DescText->SetText(FText::FromString(String));
+
+	//크기 변경
+	m_BackgroundImage1->SetVisibility(ESlateVisibility::Collapsed);
+	m_BackgroundImage2->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	
+	//스탯그래프 off
+	m_OwnerWidget->CharacterStatGraphOn(false);
+	
 	m_OwnerWidget->EnterButtonOn(true);
 }

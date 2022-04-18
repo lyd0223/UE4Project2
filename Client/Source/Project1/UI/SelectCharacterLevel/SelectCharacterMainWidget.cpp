@@ -255,3 +255,16 @@ void USelectCharacterMainWidget::EnterButtonOn(bool _IsOn)
 		
 	}
 }
+
+
+void USelectCharacterMainWidget::CharacterStatGraphOn(bool _IsOn)
+{
+	if(_IsOn)
+	{
+		m_CharacterStatGraphWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+	else
+	{
+		m_CharacterStatGraphWidget->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
