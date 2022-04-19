@@ -43,6 +43,8 @@ void CreateCharacterInfoMessageHandler::DBCheck()
 		return;
 	}
 
+	m_CreateCharacterInfoResultMessage.m_CharacterInfo = m_CreateCharacterInfoMessage->m_CharacterInfo;
+
 	NetQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::ResultSend, shared_from_this()));
 }
 

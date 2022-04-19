@@ -123,7 +123,17 @@ public:
 	{
 		m_SelectJob = Job;
 	}
-
+	void SetSelectJob(const FString& JobStr)
+	{
+		if(JobStr == TEXT("Belica"))
+			m_SelectJob = EPlayerJob::Belica;
+		else if(JobStr == TEXT("Revenant"))
+			m_SelectJob = EPlayerJob::Revenant;
+		else if(JobStr == TEXT("Wraith"))
+			m_SelectJob = EPlayerJob::Wraith;
+		else if(JobStr == TEXT("TwinBlaster"))
+			m_SelectJob = EPlayerJob::TwinBlaster;
+	}
 	class UInventoryManager* GetInventoryManager() const
 	{
 		return m_InventoryManager;

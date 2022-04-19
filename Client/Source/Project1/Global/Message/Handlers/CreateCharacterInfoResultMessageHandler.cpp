@@ -3,7 +3,8 @@
 #include "Project1/Project1GameInstance.h"
 
 
-CreateCharacterInfoResultMessageHandler::CreateCharacterInfoResultMessageHandler(std::shared_ptr<CreateCharacterInfoResultMessage> _CreateCharacterInfoResultMessage)
+CreateCharacterInfoResultMessageHandler::CreateCharacterInfoResultMessageHandler(
+	std::shared_ptr<CreateCharacterInfoResultMessage> _CreateCharacterInfoResultMessage)
 {
 	m_GameInstance = nullptr;
 	m_World = nullptr;
@@ -19,20 +20,29 @@ void CreateCharacterInfoResultMessageHandler::Init(UProject1GameInstance* _GameI
 void CreateCharacterInfoResultMessageHandler::Start()
 {
 	ECreateCharacterInfoResultType ResultType = m_CreateCharacterInfoResultMessage->m_CreateCharacterInfoResultType;
-	switch(ResultType)
+	switch (ResultType)
 	{
-		case ECreateCharacterInfoResultType::Error:
+	case ECreateCharacterInfoResultType::Error:
+		{
 			PrintViewport(2.f, FColor::Red, TEXT("CreateCharacterInfoResultMessageHandler Error!"));
 			return;
-			break;
-		case ECreateCharacterInfoResultType::OK:
+		}
+	case ECreateCharacterInfoResultType::OK:
+		{
 			m_GameInstance->SetPlayingCharacterInfo(m_CreateCharacterInfoResultMessage->m_CharacterInfo);
+
+			FString Str = TEXT("");
+			UClientBlueprintFunctionLibrary::UTF8ToFString(m_CreateCharacterInfoResultMessage->m_CharacterInfo.m_ClassName,
+														Str);
+
+			m_GameInstance->SetSelectJob(Str);
 			UGameplayStatics::OpenLevel(m_World, TEXT("WaitingRoom"));
 			break;
-		case ECreateCharacterInfoResultType::MAX :
+		}
+	case ECreateCharacterInfoResultType::MAX:
+		{
 			PrintViewport(2.f, FColor::Red, TEXT("CreateCharacterInfoResultMessageHandler Result Type Max!"));
 			return;
-			break;
+		}
 	}
-	
 }
