@@ -3,7 +3,8 @@
 
 #include "StoreMainWidget.h"
 #include "StoreWidget.h"
-#include "../../Inventory/InventoryWidget.h"
+#include "Project1/UI/MenuWidget.h"
+#include "Project1/UI/Inventory/InventoryWidget.h"
 
 void UStoreMainWidget::NativeConstruct()
 {
@@ -11,11 +12,12 @@ void UStoreMainWidget::NativeConstruct()
 
 	m_StoreWidget = Cast<UStoreWidget>(GetWidgetFromName(TEXT("UI_Store")));
 	m_InventoryWidget = Cast<UInventoryWidget>(GetWidgetFromName(TEXT("UI_Inventory")));
-	
+	m_CloseButton = Cast<UButton>(GetWidgetFromName(TEXT("CloseButton")));
+
+	m_CloseButton->OnClicked.AddDynamic(this, &UStoreMainWidget::CloseButtonClicked);
 }
 
-void UStoreMainWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UStoreMainWidget::CloseButtonClicked()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
-	
+	this->SetVisibility(ESlateVisibility::Collapsed);
 }

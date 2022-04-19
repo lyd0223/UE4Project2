@@ -20,8 +20,11 @@ class PROJECT1_API UWaitingRoomMainWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class URelicMainWidget* m_RelicMainWidget;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//class UChatWidget* m_ChatWidget;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UButton* m_CloseButton;
+	class UMenuWidget* m_MenuWidget;
 	
 	public:
 	class UStoreMainWidget* GetStoreMainWidget() const
@@ -32,12 +35,13 @@ class PROJECT1_API UWaitingRoomMainWidget : public UUserWidget
 	{
 		return m_RelicMainWidget;
 	}
+	class UMenuWidget* GetMenuWidget() const
+	{
+		return m_MenuWidget;
+	}
 	
 	protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	public:
-	UFUNCTION()
-	void CloseButtonClicked();
 };

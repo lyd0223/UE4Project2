@@ -51,12 +51,6 @@ void UMenuWidget::NativeConstruct()
 
 }
 
-void UMenuWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-
-}
-
 void UMenuWidget::InventoryButtonClick()
 {
 	if(m_PrevWidget != m_InventoryWidget)

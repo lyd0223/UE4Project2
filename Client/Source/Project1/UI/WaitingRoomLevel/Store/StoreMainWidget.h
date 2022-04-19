@@ -4,6 +4,7 @@
 
 #include "../../../GameInfo.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/Button.h"
 #include "StoreMainWidget.generated.h"
 
 UCLASS()
@@ -16,8 +17,14 @@ class PROJECT1_API UStoreMainWidget : public UUserWidget
 	class UStoreWidget* m_StoreWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UInventoryWidget* m_InventoryWidget;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UButton* m_CloseButton;
 
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
+
+	public:
+	UFUNCTION()
+	void CloseButtonClicked();
 };

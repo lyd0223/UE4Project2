@@ -73,8 +73,10 @@ void AWaitingRoomPlayerController::OpenWidget()
 					if (m_TargetNPC->GetNPCName() == "Goat")
 					{
 						//PrintViewport(2.f, FColor::Blue, "Store Open");
-						GameModeBase->GetMainWidget()->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-						GameModeBase->GetMainWidget()->GetStoreMainWidget()->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+						UWaitingRoomMainWidget* WaitingRoomMainWidget = GameModeBase->GetMainWidget();
+						if(WaitingRoomMainWidget == nullptr)
+							return;
+						WaitingRoomMainWidget->GetStoreMainWidget()->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 					}
 					//유물
 					else if (m_TargetNPC->GetNPCName() == "Gremlin")

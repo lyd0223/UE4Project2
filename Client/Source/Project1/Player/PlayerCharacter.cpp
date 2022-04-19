@@ -8,6 +8,7 @@
 #include "SelectCharacterPlayerController.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
+#include "Project1/WaitingRoomGameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
 #include "Project1/Manager/InventoryManager.h"
 #include "Project1/UI/MainHUDWidget.h"
@@ -16,6 +17,7 @@
 #include "Project1/UI/MenuCommonWidget.h"
 #include "Project1/UI/QuickItemSlotWidget.h"
 #include "WaitingRoomLevel/WaitingRoomPlayerController.h"
+#include "Project1/UI/WaitingRoomLevel/WaitingRoomMainWidget.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -43,15 +45,16 @@ APlayerCharacter::APlayerCharacter()
 	m_IsUIMode = false;
 
 	m_IsWaitingRoom = false;
-	
+
 	//대쉬 리본트레일 효과
 	m_TrailParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("TrailParticle"));
 	m_TrailParticle->SetupAttachment(GetMesh());
-	static ConstructorHelpers::FObjectFinder<UParticleSystem> TrailAsset(TEXT("ParticleSystem'/Game/01Resources/Effect/PSPlayerDashTrail2.PSPlayerDashTrail2'"));
-	if(TrailAsset.Succeeded())
+	static ConstructorHelpers::FObjectFinder<UParticleSystem> TrailAsset(
+		TEXT("ParticleSystem'/Game/01Resources/Effect/PSPlayerDashTrail2.PSPlayerDashTrail2'"));
+	if (TrailAsset.Succeeded())
 		m_TrailParticle->SetTemplate(TrailAsset.Object);
 	m_TrailParticle->SetVisibility(false);
-	
+
 	//대쉬 잔상효과
 	m_GhostTrailTime = 0.1f;
 	m_Mesh = nullptr;
@@ -72,12 +75,13 @@ APlayerCharacter::APlayerCharacter()
 	m_SceneCaputreComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
 	m_SceneCaputreComponent->SetupAttachment(GetMesh());
 
-	ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D> RTTextureAsset(TEXT("TextureRenderTarget2D'/Game/01Resources/Player/RTPlayer.RTPlayer'"));
-	if(RTTextureAsset.Succeeded())
+	ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D> RTTextureAsset(
+		TEXT("TextureRenderTarget2D'/Game/01Resources/Player/RTPlayer.RTPlayer'"));
+	if (RTTextureAsset.Succeeded())
 		m_SceneCaputreComponent->TextureTarget = RTTextureAsset.Object;
 	m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f,150.f,110.f));
-	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f,0.f,-90.f));
+	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
+	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -85,7 +89,7 @@ void APlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	if(GameInstance == nullptr)
+	if (GameInstance == nullptr)
 		return;
 	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
 	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(m_JobName);
@@ -94,7 +98,7 @@ void APlayerCharacter::BeginPlay()
 	m_PlayerInfo.Gold = Info->Gold;
 	m_PlayerInfo.AttackAngle = Info->AttackAngle;
 	m_PlayerInfo.AttackDistance = Info->AttackDistance;
-	
+
 	FCharacterInfo CharacterInfo = GameInstance->GetPlayingCharacterInfo();
 	UClientBlueprintFunctionLibrary::UTF8ToFString(CharacterInfo.m_Nickname, m_PlayerInfo.Name);
 	m_PlayerInfo.Level = CharacterInfo.m_LV;
@@ -108,7 +112,7 @@ void APlayerCharacter::BeginPlay()
 	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
 	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
 	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
-		
+
 
 	//UI 변경
 	SetUI();
@@ -130,10 +134,8 @@ void APlayerCharacter::BeginPlay()
 
 	Effect->LoadParticleAsync(TEXT("PlayerSpawn"));
 	Effect->LoadSoundAsync(TEXT("PlayerSpawn"));
-	
+
 	m_SceneCaputreComponent->ShowOnlyActors.Add(this);
-
-
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -374,40 +376,54 @@ void APlayerCharacter::AttackKey()
 
 void APlayerCharacter::MenuKey()
 {
-	if (!m_IsWaitingRoom)
+	UMenuWidget* MenuWidget = nullptr;
+	if (m_IsWaitingRoom)
+	{
+		AWaitingRoomGameModeBase* gameMode = Cast<AWaitingRoomGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (gameMode)
+		{
+			UWaitingRoomMainWidget* WaitingRoomMainWidget = Cast<UWaitingRoomMainWidget>(gameMode->GetMainWidget());
+			if (WaitingRoomMainWidget)
+				MenuWidget = Cast<UMenuWidget>(WaitingRoomMainWidget->GetMenuWidget());
+		}
+	}
+	else
 	{
 		AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 		if (gameMode)
 		{
 			UMainHUDWidget* MainHUDWidget = Cast<UMainHUDWidget>(gameMode->GetMainHUDWidget());
 			if (MainHUDWidget)
-			{
-				UMenuWidget* MenuWidget = Cast<UMenuWidget>(MainHUDWidget->GetMenuWidget());
-				if (MenuWidget)
-				{
-					APlayerController* playerController = Cast<APlayerController>(Controller);
-					if (MenuWidget->GetVisibility() == ESlateVisibility::Collapsed)
-					{
-						MenuWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-						playerController->bShowMouseCursor = true;
-						m_IsUIMode = true;
-					}
-					else
-					{
-						MenuWidget->SetVisibility(ESlateVisibility::Collapsed);
-						playerController->bShowMouseCursor = false;
-						m_IsUIMode = false;
-					}
-					FActorSpawnParameters param;
-					param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-					ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(), GetActorLocation(),
-						FRotator::ZeroRotator, param);
-					Effect->LoadSoundAsync(TEXT("OpenWidget"));
-					Effect->SetLifeTime(1.f);
-				}
-			}
+				MenuWidget = Cast<UMenuWidget>(MainHUDWidget->GetMenuWidget());
 		}
 	}
+	if (MenuWidget == nullptr)
+		return;
+	APlayerController* playerController = Cast<APlayerController>(Controller);
+	if (MenuWidget->GetVisibility() == ESlateVisibility::Collapsed)
+	{
+		MenuWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		if (!m_IsWaitingRoom)
+		{
+			playerController->bShowMouseCursor = true;
+		}
+		m_IsUIMode = true;
+	}
+	else
+	{
+		MenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+		if (!m_IsWaitingRoom)
+		{
+			playerController->bShowMouseCursor = false;
+		}
+		m_IsUIMode = false;
+	}
+	FActorSpawnParameters param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(), GetActorLocation(),
+	                                                              FRotator::ZeroRotator, param);
+	Effect->LoadSoundAsync(TEXT("OpenWidget"));
+	Effect->SetLifeTime(1.f);
 }
 
 void APlayerCharacter::DashKey()
@@ -435,7 +451,7 @@ void APlayerCharacter::DashKey()
 			m_TrailParticle->SetVisibility(true);
 			//Dash GhostTrail
 			GhostTrailFunc();
-			
+
 			//UMG 기력 변경
 			AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 			if (IsValid(gameMode))
@@ -526,7 +542,7 @@ void APlayerCharacter::ItemQuickSlot1Key()
 					QuickItemSlotWidget->SlotRefresh(m_ItemQuickSlotsArray[0]->Count);
 					//인벤토리 갯수변경
 					UInventoryWidget* InventoryWidget = GameModeBase->GetMainHUDWidget()->GetMenuWidget()->
-																	GetInventoryWidget();
+					                                                  GetInventoryWidget();
 					InventoryWidget->DeductItemCount(m_ItemQuickSlotsArray[0]);
 				}
 			}
@@ -589,18 +605,17 @@ void APlayerCharacter::ItemQuickSlot3Key()
 				{
 					//QuickSlot갯수변경
 					UQuickItemSlotWidget* QuickItemSlotWidget = GameModeBase->GetMainHUDWidget()->GetQuickSlotWidget()->
-																			GetQuickItemSlotWidget(2);
+					                                                          GetQuickItemSlotWidget(2);
 					QuickItemSlotWidget->SlotRefresh(m_ItemQuickSlotsArray[2]->Count);
 
 					//인벤토리 갯수변경
 					UInventoryWidget* InventoryWidget = GameModeBase->GetMainHUDWidget()->GetMenuWidget()->
-																	GetInventoryWidget();
+					                                                  GetInventoryWidget();
 					InventoryWidget->DeductItemCount(m_ItemQuickSlotsArray[2]);
 				}
 			}
 			//else //아이템퀵슬롯이 비어잇을때
-				//PrintViewport(2.f, FColor::Yellow, TEXT("3번 슬롯이 비어있습니다"));
-				
+			//PrintViewport(2.f, FColor::Yellow, TEXT("3번 슬롯이 비어있습니다"));
 		}
 	}
 }
@@ -622,17 +637,17 @@ void APlayerCharacter::ItemQuickSlot4Key()
 				{
 					//QuickSlot갯수변경
 					UQuickItemSlotWidget* QuickItemSlotWidget = GameModeBase->GetMainHUDWidget()->GetQuickSlotWidget()->
-																			GetQuickItemSlotWidget(3);
+					                                                          GetQuickItemSlotWidget(3);
 					QuickItemSlotWidget->SlotRefresh(m_ItemQuickSlotsArray[3]->Count);
 
 					//인벤토리 갯수변경
 					UInventoryWidget* InventoryWidget = GameModeBase->GetMainHUDWidget()->GetMenuWidget()->
-																	GetInventoryWidget();
+					                                                  GetInventoryWidget();
 					InventoryWidget->DeductItemCount(m_ItemQuickSlotsArray[3]);
 				}
 			}
 			//else //아이템퀵슬롯이 비어잇을때
-				//PrintViewport(2.f, FColor::Yellow, TEXT("4번 슬롯이 비어있습니다"));
+			//PrintViewport(2.f, FColor::Yellow, TEXT("4번 슬롯이 비어있습니다"));
 		}
 	}
 }
@@ -707,51 +722,70 @@ void APlayerCharacter::SPRecovery()
 
 void APlayerCharacter::GhostTrailOn()
 {
-	GetWorldTimerManager().SetTimer(m_GhostTrailTimerHandle, this, &APlayerCharacter::GhostTrailFunc, m_GhostTrailTime, true);
+	GetWorldTimerManager().SetTimer(m_GhostTrailTimerHandle, this, &APlayerCharacter::GhostTrailFunc, m_GhostTrailTime,
+	                                true);
 }
+
 void APlayerCharacter::GhostTrailOff()
 {
 	GetWorldTimerManager().ClearTimer(m_GhostTrailTimerHandle);
 }
+
 void APlayerCharacter::GhostTrailFunc()
 {
-	FActorSpawnParameters	param;
+	FActorSpawnParameters param;
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	AGhostCharacter* GhostCharacter = GetWorld()->SpawnActor<AGhostCharacter>(AGhostCharacter::StaticClass(),
-		GetMesh()->GetComponentLocation(), GetMesh()->GetComponentRotation(),param);
+	                                                                          GetMesh()->GetComponentLocation(),
+	                                                                          GetMesh()->GetComponentRotation(), param);
 	GhostCharacter->SetMesh(m_Mesh);
 	GhostCharacter->CopyAnimation(GetMesh());
 }
 
 void APlayerCharacter::SetUI()
 {
-	AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
-	if (GameModeBase)
+	UMenuWidget* MenuWidget = nullptr;
+	if (m_IsWaitingRoom)
 	{
-		UMainHUDWidget* MainHUDWidget = GameModeBase->GetMainHUDWidget();
-		if (MainHUDWidget)
+		AWaitingRoomGameModeBase* gameMode = Cast<AWaitingRoomGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (gameMode)
 		{
-			UPlayerHUDWidget* PlayerHUDWidget = MainHUDWidget->GetPlayerHUDWidget();
-			if (PlayerHUDWidget)
+			UWaitingRoomMainWidget* WaitingRoomMainWidget = Cast<UWaitingRoomMainWidget>(gameMode->GetMainWidget());
+			if (WaitingRoomMainWidget)
+				MenuWidget = Cast<UMenuWidget>(WaitingRoomMainWidget->GetMenuWidget());
+		}
+	}
+	else
+	{
+		AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (gameMode)
+		{
+			UMainHUDWidget* MainHUDWidget = Cast<UMainHUDWidget>(gameMode->GetMainHUDWidget());
+			if (MainHUDWidget)
 			{
-				PlayerHUDWidget->SetCharacterImage(m_PlayerInfo.CharacterTexture);
-				PlayerHUDWidget->SetHPPercent(m_PlayerInfo.HP / (float)m_PlayerInfo.HPMax);
-				PlayerHUDWidget->SetSPPercent(m_PlayerInfo.SP / (float)m_PlayerInfo.SPMax);
-				PlayerHUDWidget->SetEXPPercent(m_PlayerInfo.EXP / (float)m_PlayerInfo.EXPMax);
-				PlayerHUDWidget->SetHPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.HP, m_PlayerInfo.HPMax));
-				PlayerHUDWidget->SetSPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.SP, m_PlayerInfo.SPMax));
-				PlayerHUDWidget->SetLevelText(FString::FromInt(m_PlayerInfo.Level));
-				PlayerHUDWidget->SetEXPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.EXP, m_PlayerInfo.EXPMax));
-			}
+				MenuWidget = Cast<UMenuWidget>(MainHUDWidget->GetMenuWidget());
 
-			UMenuWidget* MenuWidget = MainHUDWidget->GetMenuWidget();
-			if (MenuWidget)
-			{
-				MenuWidget->GetMenuCommonWidget()->GetStatsWidget()->SetDatas(m_PlayerInfo);
+				UPlayerHUDWidget* PlayerHUDWidget = MainHUDWidget->GetPlayerHUDWidget();
+				if (PlayerHUDWidget)
+				{
+					PlayerHUDWidget->SetCharacterImage(m_PlayerInfo.CharacterTexture);
+					PlayerHUDWidget->SetHPPercent(m_PlayerInfo.HP / (float)m_PlayerInfo.HPMax);
+					PlayerHUDWidget->SetSPPercent(m_PlayerInfo.SP / (float)m_PlayerInfo.SPMax);
+					PlayerHUDWidget->SetEXPPercent(m_PlayerInfo.EXP / (float)m_PlayerInfo.EXPMax);
+					PlayerHUDWidget->SetHPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.HP, m_PlayerInfo.HPMax));
+					PlayerHUDWidget->SetSPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.SP, m_PlayerInfo.SPMax));
+					PlayerHUDWidget->SetLevelText(FString::FromInt(m_PlayerInfo.Level));
+					PlayerHUDWidget->
+						SetEXPText(FString::Printf(TEXT("%d / %d"), m_PlayerInfo.EXP, m_PlayerInfo.EXPMax));
+				}
 			}
 		}
 	}
+	if (MenuWidget == nullptr)
+		return;
+	
+	MenuWidget->GetMenuCommonWidget()->GetStatsWidget()->SetDatas(m_PlayerInfo);
 }
 
 
@@ -766,7 +800,6 @@ void APlayerCharacter::DashEnd()
 	m_TrailParticle->SetVisibility(false);
 	GhostTrailOff();
 }
-
 
 
 void APlayerCharacter::DetectMonster()

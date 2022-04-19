@@ -3,7 +3,7 @@
 
 #include "WaitingRoomMainWidget.h"
 #include "Store/StoreMainWidget.h"
-
+#include "Project1/UI/MenuWidget.h"
 
 void UWaitingRoomMainWidget::NativeConstruct()
 {
@@ -11,22 +11,8 @@ void UWaitingRoomMainWidget::NativeConstruct()
 
 	m_StoreMainWidget = Cast<UStoreMainWidget>(GetWidgetFromName(TEXT("UI_StoreMain")));
 	m_RelicMainWidget = nullptr;
-	m_CloseButton = Cast<UButton>(GetWidgetFromName(TEXT("CloseButton")));
-
-	m_CloseButton->OnClicked.AddDynamic(this, &UWaitingRoomMainWidget::CloseButtonClicked);
-	
-}
-
-void UWaitingRoomMainWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-
-
+	m_MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("UI_Menu")));
 }
 
 
 
-void UWaitingRoomMainWidget::CloseButtonClicked()
-{
-	this->SetVisibility(ESlateVisibility::Collapsed);
-}

@@ -44,8 +44,6 @@ void AWaitingRoomGameModeBase::BeginPlay()
 
 		if (m_MainWidget)
 			m_MainWidget->AddToViewport();
-			
-		m_MainWidget->SetVisibility(ESlateVisibility::Collapsed);
 	}
 
 
