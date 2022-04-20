@@ -25,8 +25,6 @@ public: //Default
 
 	ChatMessageHandler(const ChatMessageHandler& _Other) = delete;
 	ChatMessageHandler(ChatMessageHandler&& _Other)		noexcept = delete;
-
-protected:
 	ChatMessageHandler& operator=(const ChatMessageHandler& _Other) = delete;
 	ChatMessageHandler& operator=(ChatMessageHandler&& _Other) = delete;
 

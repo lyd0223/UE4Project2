@@ -16,7 +16,6 @@ class TCPListener : public GameServerObjectBase
 {
 	friend TCPSession;
 
-
 public: // Default
 	TCPListener();
 	~TCPListener();
@@ -24,25 +23,11 @@ public: // Default
 	TCPListener(const TCPListener& _Other) = delete;
 	TCPListener(TCPListener&& _Other) noexcept;
 
-	// 리스닝 하기전 준비를 하는 함수
-	bool Initialize(const IPEndPoint& _EndPoint, const std::function<void(std::shared_ptr<TCPSession>)>& CallBack_);
-
-	bool BindQueue(const GameServerQueue& _JobQueue);
-
-	bool StartAccept(int _BackLog);
-
-	void Close();
-
 protected:
 	TCPListener& operator=(const TCPListener& _Other) = delete;
 	TCPListener& operator=(TCPListener&& _Other) = delete;
 
-	// 1000명까지 받는서버인데.
-	// 시작부터 1000개 만들어 놓고 시작하면 안될까?
-	// 사실 그대로 되기는 하는데.
-	void AsyncAccept();
-
-private: // Member Function
+private : //Member
 	SOCKET ListenSocket_;
 
 	IPEndPoint ListenEndPoint_;
@@ -71,15 +56,31 @@ private: // Member Function
 	std::mutex connectPoolLock_;
 	std::deque<std::shared_ptr<TCPSession>> connectionPool_;
 
-	// 전체한테 뭔가 날릴때.
+	// 전체한테 뭔가 날릴때
 	std::mutex connectsLock_;
 	std::unordered_map<__int64, std::shared_ptr<TCPSession>> connections_;
 
-	// 이걸 사용하는 사람이 접속자한테 어떤 
-	// 특별한 일을 할지 우리는 알수 있을까요?
+
+private: // Member Function
 
 	void CloseSession(PtrSTCPSession _Session);
 
 	void OnAccept(BOOL, DWORD, LPOVERLAPPED);
+
+protected:
+	void AsyncAccept();
+
+public:
+	// 리스닝 하기전 준비를 하는 함수
+	bool Initialize(const IPEndPoint& _EndPoint, const std::function<void(std::shared_ptr<TCPSession>)>& CallBack_);
+
+	bool BindQueue(const GameServerQueue& _JobQueue);
+
+	bool StartAccept(int _BackLog);
+
+	void Close();
+
+	void BroadCast(std::vector<unsigned char> _Data, std::shared_ptr<TCPSession> _Ignore);
+
 };
 

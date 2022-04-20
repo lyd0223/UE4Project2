@@ -20,8 +20,8 @@ class PROJECT1_API UWaitingRoomMainWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class URelicMainWidget* m_RelicMainWidget;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	//class UChatWidget* m_ChatWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UChatWidget* m_ChatWidget;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UMenuWidget* m_MenuWidget;
@@ -30,6 +30,10 @@ class PROJECT1_API UWaitingRoomMainWidget : public UUserWidget
 	class UStoreMainWidget* GetStoreMainWidget() const
 	{
 		return m_StoreMainWidget;
+	}
+	class UChatWidget* GetChatWidget() const
+	{
+		return m_ChatWidget;
 	}
 	class URelicMainWidget* GetRelicMainWidget() const
 	{

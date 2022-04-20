@@ -87,6 +87,21 @@ void TCPListener::Close()
 	}
 }
 
+void TCPListener::BroadCast(std::vector<unsigned char> _Data, std::shared_ptr<TCPSession> _Ignore)
+{
+	connectsLock_.lock();
+	for (auto& Session : connections_)
+	{
+		if (_Ignore == Session.second)
+		{
+			continue;
+		}
+
+		Session.second->Send(_Data);
+	}
+	connectsLock_.unlock();
+}
+
 bool TCPListener::BindQueue(const GameServerQueue& _JobQueue)
 {
 	JobQueue_ = &_JobQueue;

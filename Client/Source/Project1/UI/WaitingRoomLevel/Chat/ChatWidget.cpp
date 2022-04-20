@@ -25,11 +25,17 @@ void UChatWidget::OnChatTextChanged(const FText& _Text, ETextCommit::Type _Commi
 	
 	//서버로 채팅 패킷 보내기.--------------------------------------------------------
 	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInst == nullptr)
+		return;
 	if(GameInst->GetIsClientMode())
 		return;		
 	ChatMessage Message;
-	//Message.m_NickName =
-	//Message.m_Chat =
+
+	//메시지에 닉네임 담기
+	Message.m_NickName = GameInst->GetPlayingCharacterInfo().m_Nickname;
+	//메시지에 채팅 담기
+	FString ChatString = _Text.ToString();
+	UClientBlueprintFunctionLibrary::FStringToUTF8(ChatString,Message.m_Chat);
 	
 	GameServerSerializer Serializer;
 	Message.Serialize(Serializer);
@@ -48,9 +54,7 @@ void UChatWidget::AddItemChatListView(const FString& _NickName, const FString& _
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
 	if(GameInstance == nullptr)
 		return;
-	FString NickNameString = TEXT("");
-	UClientBlueprintFunctionLibrary::UTF8ToFString(GameInstance->GetPlayingCharacterInfo().m_Nickname,NickNameString);
-	ItemData->SetNickNameString(NickNameString);
+	ItemData->SetNickNameString(_NickName);
 	ItemData->SetChatString(_Chat);
 	m_ChatListView->AddItem(ItemData);
 	
