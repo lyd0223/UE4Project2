@@ -42,12 +42,14 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 		//DBCharacterInfoTableRow(int _Idx, int _UserIdx, std::string _Nickname, std::string _ClassName,
 		//						int _LV, int _EXP,
 		//						float _HP, float _SP, float _ATK, float _DEF,
-		//						float _AttackSpeed, float _MoveSpeed)
+		//						float _AttackSpeed, float _MoveSpeed, 
+		//						std::vector<char> _InventoryData)
 		m_RowDataList.push_back(std::make_shared<DBCharacterInfoTableRow>(
 			std::stoi(MysqlRow[0]), std::stoi(MysqlRow[1]), MysqlRow[2], MysqlRow[3],
 			std::stoi(MysqlRow[4]), std::stoi(MysqlRow[5]), 
 			std::stof(MysqlRow[6]), std::stof(MysqlRow[7]), std::stof(MysqlRow[8]), std::stof(MysqlRow[9]),
-			std::stof(MysqlRow[10]), std::stof(MysqlRow[11])));
+			std::stof(MysqlRow[10]), std::stof(MysqlRow[11]), 
+			MysqlRow[12]));
 	}
 
 	return true;
@@ -58,9 +60,11 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 
 DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(
 	int _UserIdx, std::string _Nickname, std::string _ClassName,
-	int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed)
+	int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed,
+	std::vector<char> _InventoryData)
 {
-	std::string str = "INSERT INTO unrealserver.characterinfo (UserIdx,Nickname,ClassName,LV,EXP,HP,SP,ATK,DEF,AttackSpeed,MoveSpeed) VALUES ('"
+	std::string InventoryDataStr(_InventoryData.begin(), _InventoryData.end());
+	std::string str = "INSERT INTO unrealserver.characterinfo (UserIdx,Nickname,ClassName,LV,EXP,HP,SP,ATK,DEF,AttackSpeed,MoveSpeed,InventoryData) VALUES ('"
 		+ std::to_string(_UserIdx) + "','" 
 		+ _Nickname + "','"
 		+ _ClassName + "','"
@@ -71,7 +75,8 @@ DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharac
 		+ std::to_string(_ATK) + "','"
 		+ std::to_string(_DEF) + "','"
 		+ std::to_string(_AttackSpeed) + "','"
-		+ std::to_string(_MoveSpeed) + "');";
+		+ std::to_string(_MoveSpeed) + "',"
+		+ InventoryDataStr + "');";
 	m_QueryText = _strdup(str.c_str());
 }
 

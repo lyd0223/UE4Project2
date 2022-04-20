@@ -71,7 +71,7 @@ protected:
 	//렌더타겟
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	USceneCaptureComponent2D* m_SceneCaputreComponent;
-
+	
 	
 	public:
 	FPlayerInfo& GetPlayerInfo()
@@ -124,6 +124,7 @@ public:
 	void ItemQuickSlot3Key();
 	void ItemQuickSlot4Key();
 	void ItemQuickSlot5Key();
+	void SaveTestKey();
 
 protected:
 	virtual void Attack();
@@ -131,6 +132,9 @@ protected:
 	virtual void GhostTrailOn();
 	virtual void GhostTrailOff();
 	void GhostTrailFunc();
+
+	void SaveCharacterInfoToGameInstance();
+	void SaveCharacterInfoFromGameInstance();
 	
 public:
 	void SetUI();

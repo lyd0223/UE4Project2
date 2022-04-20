@@ -10,6 +10,7 @@
 #include "Project1/Project1GameModeBase.h"
 #include "Project1/WaitingRoomGameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
+#include "Project1/Global/Message/ClientToServer.h"
 #include "Project1/Manager/InventoryManager.h"
 #include "Project1/UI/MainHUDWidget.h"
 #include "Project1/Map/Room.h"
@@ -88,31 +89,7 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	if (GameInstance == nullptr)
-		return;
-	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
-	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(m_JobName);
-	m_PlayerInfo.Job = Info->Job;
-	m_PlayerInfo.CharacterTexture = Info->CharacterTexture;
-	m_PlayerInfo.Gold = Info->Gold;
-	m_PlayerInfo.AttackAngle = Info->AttackAngle;
-	m_PlayerInfo.AttackDistance = Info->AttackDistance;
-
-	FCharacterInfo CharacterInfo = GameInstance->GetPlayingCharacterInfo();
-	UClientBlueprintFunctionLibrary::UTF8ToFString(CharacterInfo.m_Nickname, m_PlayerInfo.Name);
-	m_PlayerInfo.Level = CharacterInfo.m_LV;
-	m_PlayerInfo.EXP = CharacterInfo.m_EXP;
-	//m_PlayerInfo.EXPMax = info->EXPMax;
-	m_PlayerInfo.ATK = CharacterInfo.m_ATK;
-	m_PlayerInfo.DEF = CharacterInfo.m_DEF;
-	m_PlayerInfo.HP = CharacterInfo.m_HP;
-	m_PlayerInfo.HPMax = CharacterInfo.m_HP;
-	m_PlayerInfo.SP = CharacterInfo.m_SP;
-	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
-	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
-	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
-
+	SaveCharacterInfoFromGameInstance();
 
 	//UI 변경
 	SetUI();
@@ -743,6 +720,41 @@ void APlayerCharacter::GhostTrailFunc()
 	GhostCharacter->CopyAnimation(GetMesh());
 }
 
+void APlayerCharacter::SaveCharacterInfoToGameInstance()
+{
+	
+
+}
+
+void APlayerCharacter::SaveCharacterInfoFromGameInstance()
+{
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
+	if (GameInstance == nullptr)
+		return;
+	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
+	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(m_JobName);
+	m_PlayerInfo.Job = Info->Job;
+	m_PlayerInfo.CharacterTexture = Info->CharacterTexture;
+	m_PlayerInfo.Gold = Info->Gold;
+	m_PlayerInfo.AttackAngle = Info->AttackAngle;
+	m_PlayerInfo.AttackDistance = Info->AttackDistance;
+
+	FCharacterInfo CharacterInfo = GameInstance->GetPlayingCharacterInfo();
+	UClientBlueprintFunctionLibrary::UTF8ToFString(CharacterInfo.m_Nickname, m_PlayerInfo.Name);
+	m_PlayerInfo.Level = CharacterInfo.m_LV;
+	m_PlayerInfo.EXP = CharacterInfo.m_EXP;
+	//m_PlayerInfo.EXPMax = info->EXPMax;
+	m_PlayerInfo.ATK = CharacterInfo.m_ATK;
+	m_PlayerInfo.DEF = CharacterInfo.m_DEF;
+	m_PlayerInfo.HP = CharacterInfo.m_HP;
+	m_PlayerInfo.HPMax = CharacterInfo.m_HP;
+	m_PlayerInfo.SP = CharacterInfo.m_SP;
+	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
+	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
+	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
+
+}
+
 void APlayerCharacter::SetUI()
 {
 	UMenuWidget* MenuWidget = nullptr;
@@ -885,4 +897,26 @@ void APlayerCharacter::DetectDoor()
 			}
 		}
 	}
+}
+
+
+void APlayerCharacter::SaveTestKey()
+{
+	
+	//서버로 세이브 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInst->GetIsClientMode())
+		return;		
+	SaveCharacterInfoMessage Message;
+	Message.m_UserIdx = GameInst->GetUserIdx();
+	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
+	
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+	
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
 }

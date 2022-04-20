@@ -22,6 +22,9 @@ MessageConverter::MessageConverter(const std::vector<unsigned char>&_Buffer)
 	case EMessageType::RequestCharacterInfo:
 		m_Message = std::make_shared<RequestCharacterInfoMessage>();
 		break;
+	case EMessageType::SaveCharacterInfo:
+		m_Message = std::make_shared<SaveCharacterInfoMessage>();
+		break;
 	case EMessageType::SignInResult:
 		m_Message = std::make_shared<SignInResultMessage>();
 		break;

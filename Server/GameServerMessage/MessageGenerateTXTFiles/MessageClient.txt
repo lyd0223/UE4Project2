@@ -11,3 +11,7 @@ FCharacterInfo m_CharacterInfo;
 
 |RequestCharacterInfo-
 int m_UserIdx;
+
+|SaveCharacterInfo-
+int m_UserIdx;
+FCharacterInfo m_CharacterInfo;

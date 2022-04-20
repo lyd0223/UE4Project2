@@ -45,7 +45,8 @@ void RequestCharacterInfoMessageHandler::DBCheck()
 			std::make_shared<FCharacterInfo>(RowData->m_Idx, RowData->m_UserIdx, RowData->m_Nickname, RowData->m_ClassName,
 				RowData->m_LV, RowData->m_EXP,
 				RowData->m_HP, RowData->m_SP, RowData->m_ATK, RowData->m_DEF,
-				RowData->m_AttackSpeed, RowData->m_MoveSpeed);
+				RowData->m_AttackSpeed, RowData->m_MoveSpeed,
+				RowData->m_InventoryData);
 		m_ReplyCharacterInfoMessage.m_CharacterInfoList.push_back(*CharacterInfo);
 	}
 

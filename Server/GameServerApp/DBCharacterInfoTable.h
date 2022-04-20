@@ -25,11 +25,12 @@ public:
 		m_DEF = 0.f;
 		m_AttackSpeed = 0.f;
 		m_MoveSpeed = 0.f;
+		m_InventoryData.reserve(800);
 	}
 	DBCharacterInfoTableRow(int _Idx, int _UserIdx, std::string _Nickname, std::string _ClassName,
 		int _LV, int _EXP,
 		float _HP, float _SP, float _ATK, float _DEF,
-		float _AttackSpeed, float _MoveSpeed)
+		float _AttackSpeed, float _MoveSpeed, std::vector<char> _InventoryData)
 	{
 		m_Idx = _Idx;
 		m_UserIdx = _UserIdx;
@@ -43,6 +44,7 @@ public:
 		m_DEF = _DEF;
 		m_AttackSpeed = _AttackSpeed;
 		m_MoveSpeed = _MoveSpeed;
+		m_InventoryData = _InventoryData;
 	}
 public:
 	int m_Idx;
@@ -57,6 +59,7 @@ public:
 	float m_DEF;
 	float m_AttackSpeed;
 	float m_MoveSpeed;
+	std::vector<char> m_InventoryData;
 
 
 };
@@ -99,7 +102,8 @@ public:
 
 public:
 	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, std::string _Nickname, std::string _ClassName,
-		int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed);
+		int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed,
+		std::vector<char> _InventoryData);
 	bool DoQuery() override;
 
 };

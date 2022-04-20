@@ -6,6 +6,7 @@ enum class EMessageType
 	SignUp,
 	CreateCharacterInfo,
 	RequestCharacterInfo,
+	SaveCharacterInfo,
 	SignInResult,
 	ServerDestroy,
 	SignUpResult,

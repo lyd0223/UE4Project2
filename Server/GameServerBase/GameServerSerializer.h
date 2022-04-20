@@ -59,11 +59,25 @@ public:
 		}
 	}
 
+	template<typename T>
+	void operator<<(const std::vector<T>& _Value)
+	{
+		operator<<(static_cast<int>(_Value.size()));
+		Write(reinterpret_cast<const void*>(&_Value[0]), static_cast<unsigned int>(_Value.size()));
+	}
 	void operator<<(const std::string& _Value);
 	void operator<<(const int _Value);
 	void operator<<(const unsigned int _Value);
 	void operator<<(const float _Value);
 
+	template<typename T>
+	void operator>>(std::vector<T>& _Value)
+	{
+		int size = 0;
+		operator>>(size);
+		_Value.resize(size);
+		Read(&_Value[0], size);
+	}
 	void operator>>(std::string& _Value);
 	void operator>>(int& _Value);
 	void operator>>(unsigned int& _Value);

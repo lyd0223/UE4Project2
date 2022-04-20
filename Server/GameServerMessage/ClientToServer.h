@@ -151,3 +151,42 @@ public:
     }                                                           
 };                                                              
 
+class SaveCharacterInfoMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	int m_UserIdx;
+	FCharacterInfo m_CharacterInfo;
+                                                                
+public:                                                         
+    SaveCharacterInfoMessage()                                               
+        : GameServerMessage(EMessageType::SaveCharacterInfo)                    
+        , m_UserIdx()
+        , m_CharacterInfo()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~SaveCharacterInfoMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_UserIdx) + DataSizeCheck(m_CharacterInfo);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer << m_UserIdx;
+        m_CharacterInfo.Serialize(_Serializer);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        _Serializer >> m_UserIdx;
+        m_CharacterInfo.DeSerialize(_Serializer);
+
+    }                                                           
+};                                                              
+

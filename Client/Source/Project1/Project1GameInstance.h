@@ -99,13 +99,26 @@ public:
 	{
 		m_UserIdx = _UserIdx;
 	}
+	
+	FCharacterInfo GetPlayingCharacterInfo() const
+	{
+		return m_PlayingCharacterInfo;
+	}
 	void SetPlayingCharacterInfo(FCharacterInfo _CharacterInfo)
 	{
 		m_PlayingCharacterInfo = _CharacterInfo;
 	}
-	FCharacterInfo GetPlayingCharacterInfo() const
+	void SetPlayingCharacterInfo(const FPlayerTableInfo& PlayerTableInfo)
 	{
-		return m_PlayingCharacterInfo;
+		m_PlayingCharacterInfo.m_LV = PlayerTableInfo.Level;
+		m_PlayingCharacterInfo.m_EXP = PlayerTableInfo.EXP;
+		m_PlayingCharacterInfo.m_ATK = PlayerTableInfo.ATK;
+		m_PlayingCharacterInfo.m_DEF = PlayerTableInfo.DEF;
+		m_PlayingCharacterInfo.m_HP = PlayerTableInfo.HPMax;
+		m_PlayingCharacterInfo.m_SP = PlayerTableInfo.SPMax;
+		m_PlayingCharacterInfo.m_AttackSpeed = PlayerTableInfo.AttackSpeed;
+		m_PlayingCharacterInfo.m_MoveSpeed = PlayerTableInfo.MoveSpeed;
+		//InventoryData
 	}
 	// ---------------------------------------------------
 	
