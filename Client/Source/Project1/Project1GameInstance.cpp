@@ -148,6 +148,13 @@ const FItemTableInfo* UProject1GameInstance::FindItemTableInfo(const FString& Na
 {
 	return m_ItemInfoTable->FindRow<FItemTableInfo>(*Name, "");
 }
+
+const FItemTableInfo* UProject1GameInstance::FindItemTableInfo(int Index)
+{
+	TArray<FName> NameArray = m_ItemInfoTable->GetRowNames();
+	return m_ItemInfoTable->FindRow<FItemTableInfo>(NameArray[Index], "");
+}
+
 const FBulletTableInfo* UProject1GameInstance::FindBulletTableInfo(const FString& Name)
 {
 	return m_BulletInfoTable->FindRow<FBulletTableInfo>(*Name, "");
@@ -271,4 +278,24 @@ void UProject1GameInstance::Close()
 
 	m_Socket->Close();
 	m_Socket = nullptr;
+}
+
+void UProject1GameInstance::SetPlayingCharacterInfo(const FPlayerInfo& PlayerInfo)
+{
+	m_PlayingCharacterInfo.m_LV = PlayerInfo.Level;
+	m_PlayingCharacterInfo.m_EXP = PlayerInfo.EXP;
+	m_PlayingCharacterInfo.m_ATK = PlayerInfo.ATK;
+	m_PlayingCharacterInfo.m_DEF = PlayerInfo.DEF;
+	m_PlayingCharacterInfo.m_HP = PlayerInfo.HPMax;
+	m_PlayingCharacterInfo.m_SP = PlayerInfo.SPMax;
+	m_PlayingCharacterInfo.m_AttackSpeed = PlayerInfo.AttackSpeed;
+	m_PlayingCharacterInfo.m_MoveSpeed = PlayerInfo.MoveSpeed;
+	//InventoryData
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
+	if(GameInstance == nullptr)
+		return;
+	UInventoryManager* InventoryManager = GameInstance->GetInventoryManager();
+	if(InventoryManager == nullptr)
+		return;
+	InventoryManager->SaveCharacterInfoInventoryData(m_PlayingCharacterInfo);
 }

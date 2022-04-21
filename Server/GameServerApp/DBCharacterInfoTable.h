@@ -1,6 +1,6 @@
 #pragma once
 #include <GameServerNet/DBQuery.h>
-
+#include <GameServerMessage/ContentsStruct.h>
 /*
 Usage		:  DB CharacterInfo Table Äõ¸®¿ë
 Category	:  DB
@@ -101,9 +101,20 @@ class DBCharacterInfoTable_InsertCharacterInfoQuery : public DBQuery, DBCharacte
 public:
 
 public:
-	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, std::string _Nickname, std::string _ClassName,
-		int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed,
-		std::vector<char> _InventoryData);
+	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, const FCharacterInfo& _CharacterInfo);
+		//std::string _Nickname, std::string _ClassName,
+		//int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed,
+		//std::vector<char> _InventoryData);
+	bool DoQuery() override;
+
+};
+
+class DBCharacterInfoTable_UpdateCharacterInfoQuery : public DBQuery, DBCharacterInfoTable
+{
+public:
+
+public:
+	DBCharacterInfoTable_UpdateCharacterInfoQuery(int _UserIdx, const FCharacterInfo& _CharacterInfo);
 	bool DoQuery() override;
 
 };

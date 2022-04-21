@@ -89,7 +89,13 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SaveCharacterInfoFromGameInstance();
+	//인벤토리 정보 불러오기.
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
+	if (GameInstance == nullptr)
+		return;
+	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
+	//캐릭터 정보 불러오기
+	SetCharacterInfoFromGameInstance();
 
 	//UI 변경
 	SetUI();
@@ -149,6 +155,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	                                 &APlayerCharacter::ItemQuickSlot4Key);
 	PlayerInputComponent->BindAction(TEXT("ItemQuickSlot5"), EInputEvent::IE_Pressed, this,
 	                                 &APlayerCharacter::ItemQuickSlot5Key);
+	PlayerInputComponent->BindAction(TEXT("Test"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SaveTestKey);
 }
 
 float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
@@ -720,18 +727,11 @@ void APlayerCharacter::GhostTrailFunc()
 	GhostCharacter->CopyAnimation(GetMesh());
 }
 
-void APlayerCharacter::SaveCharacterInfoToGameInstance()
-{
-	
-
-}
-
-void APlayerCharacter::SaveCharacterInfoFromGameInstance()
+void APlayerCharacter::SetCharacterInfoFromGameInstance()
 {
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
 	if (GameInstance == nullptr)
 		return;
-	GameInstance->GetInventoryManager()->SetOwnerCharacter(this);
 	const FPlayerTableInfo* Info = GameInstance->FindPlayerInfo(m_JobName);
 	m_PlayerInfo.Job = Info->Job;
 	m_PlayerInfo.CharacterTexture = Info->CharacterTexture;
@@ -906,7 +906,11 @@ void APlayerCharacter::SaveTestKey()
 	//서버로 세이브 패킷 보내기.--------------------------------------------------------
 	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
 	if(GameInst->GetIsClientMode())
-		return;		
+		return;
+
+	//현재 CharacterInfo를 GameInstance에 저장.
+	GameInst->SetPlayingCharacterInfo(m_PlayerInfo);
+	
 	SaveCharacterInfoMessage Message;
 	Message.m_UserIdx = GameInst->GetUserIdx();
 	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
@@ -916,7 +920,7 @@ void APlayerCharacter::SaveTestKey()
 	
 	if (!GameInst->Send(Serializer.GetData()))
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
+		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfo Message Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 }

@@ -5,6 +5,7 @@
 #include "../GameInfo.h"
 #include "UObject/NoExportTypes.h"
 #include "Tickable.h"
+#include "Project1/Global/Message/ContentsStruct.h"
 
 #include "InventoryManager.generated.h"
 
@@ -39,5 +40,7 @@ private:
 public:
 	void AddItem(FItem* Item);
 	void DeductItem(FItem* Item);
+	void SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo);
+	void LoadCharacterInfoInventoryData(const FCharacterInfo& CharacterInfo);
 
 };

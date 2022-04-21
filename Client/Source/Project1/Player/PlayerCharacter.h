@@ -133,8 +133,7 @@ protected:
 	virtual void GhostTrailOff();
 	void GhostTrailFunc();
 
-	void SaveCharacterInfoToGameInstance();
-	void SaveCharacterInfoFromGameInstance();
+	void SetCharacterInfoFromGameInstance();
 	
 public:
 	void SetUI();

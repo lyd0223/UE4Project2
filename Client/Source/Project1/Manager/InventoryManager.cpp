@@ -3,6 +3,7 @@
 
 #include "InventoryManager.h"
 
+#include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
 #include "Project1/Player/PlayerCharacter.h"
@@ -130,3 +131,43 @@ void UInventoryManager::DeductItem(FItem* Item)
 	}
 }
 
+
+void UInventoryManager::SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo)
+{
+	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
+	InventoryData.clear();
+	InventoryData.resize(800);
+
+	//InventoryData는 vector<char>형태인데, 여기에 ItemIdx(int)/ItemCount(int)를 밀어넣는다.
+	int pivot = 0;
+	for(auto Item : m_ItemArray)
+	{
+		memcpy(&InventoryData[pivot], &Item->ItemTableInfo->Idx, sizeof(int));
+		pivot += sizeof(int);
+		memcpy(&InventoryData[pivot], &Item->Count, sizeof(int));
+		pivot += sizeof(int);
+	}
+}
+
+void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& CharacterInfo)
+{
+	m_ItemArray.Reset();
+	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
+	for(int i = 0; i<InventoryData.size(); i+=sizeof(int))
+	{
+		if(m_OwnerCharacter ==nullptr)
+			return;
+		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(m_OwnerCharacter->GetGameInstance());
+		if(GameInstance == nullptr)
+			return;
+
+		FItem* LoadItem = new FItem();
+		//ItemTableInfo 설정.
+		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(static_cast<int>(InventoryData[i]));
+		//ItemCount 설정
+		LoadItem->Count = static_cast<int>(InventoryData[i+sizeof(int)]);
+
+		//인벤토리에 추가.
+		m_ItemArray.Add(LoadItem);
+	}
+}

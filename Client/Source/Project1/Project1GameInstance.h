@@ -108,18 +108,7 @@ public:
 	{
 		m_PlayingCharacterInfo = _CharacterInfo;
 	}
-	void SetPlayingCharacterInfo(const FPlayerTableInfo& PlayerTableInfo)
-	{
-		m_PlayingCharacterInfo.m_LV = PlayerTableInfo.Level;
-		m_PlayingCharacterInfo.m_EXP = PlayerTableInfo.EXP;
-		m_PlayingCharacterInfo.m_ATK = PlayerTableInfo.ATK;
-		m_PlayingCharacterInfo.m_DEF = PlayerTableInfo.DEF;
-		m_PlayingCharacterInfo.m_HP = PlayerTableInfo.HPMax;
-		m_PlayingCharacterInfo.m_SP = PlayerTableInfo.SPMax;
-		m_PlayingCharacterInfo.m_AttackSpeed = PlayerTableInfo.AttackSpeed;
-		m_PlayingCharacterInfo.m_MoveSpeed = PlayerTableInfo.MoveSpeed;
-		//InventoryData
-	}
+	void SetPlayingCharacterInfo(const FPlayerInfo& PlayerInfo);
 	// ---------------------------------------------------
 	
 	UDataTable* GetSelectPlayerInfoTable() const
@@ -176,6 +165,7 @@ public:
 	const FPlayerTableInfo* FindPlayerInfo(const FString& Name);
 	const FSelectPlayerTableInfo* FindSelectPlayerTableInfo(const FString& Name);
 	const FItemTableInfo* FindItemTableInfo(const FString& Name);
+	const FItemTableInfo* FindItemTableInfo(int Index);
 	const FBulletTableInfo* FindBulletTableInfo(const FString& Name);
 	//const FQuestTableInfo* FindQuestTableInfo(const FString& Name);
 };
