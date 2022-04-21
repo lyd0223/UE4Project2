@@ -134,17 +134,16 @@ void UInventoryManager::DeductItem(FItem* Item)
 
 void UInventoryManager::SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo)
 {
-	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
-	InventoryData.clear();
-	InventoryData.resize(800);
+	CharacterInfo.m_InventoryData.clear();
+	CharacterInfo.m_InventoryData.resize(800);
 
 	//InventoryData는 vector<char>형태인데, 여기에 ItemIdx(int)/ItemCount(int)를 밀어넣는다.
 	int pivot = 0;
 	for(auto Item : m_ItemArray)
 	{
-		memcpy(&InventoryData[pivot], &Item->ItemTableInfo->Idx, sizeof(int));
+		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->ItemTableInfo->Idx, sizeof(int));
 		pivot += sizeof(int);
-		memcpy(&InventoryData[pivot], &Item->Count, sizeof(int));
+		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->Count, sizeof(int));
 		pivot += sizeof(int);
 	}
 }

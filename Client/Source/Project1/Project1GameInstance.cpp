@@ -264,6 +264,11 @@ bool UProject1GameInstance::ThreadAvailableCheck()
 	return true;
 }
 
+void UProject1GameInstance::InventorySetting()
+{
+	m_InventoryManager->LoadCharacterInfoInventoryData(m_PlayingCharacterInfo);	
+}
+
 void UProject1GameInstance::Close() 
 {
 	if(m_RecvThread)

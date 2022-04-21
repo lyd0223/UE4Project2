@@ -158,6 +158,8 @@ public:
 	virtual void FinishDestroy() override;
 	
 	bool ThreadAvailableCheck();
+
+	void InventorySetting();
 	
 	// -----------------------------------------------------------------------
 	

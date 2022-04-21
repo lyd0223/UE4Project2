@@ -752,7 +752,8 @@ void APlayerCharacter::SetCharacterInfoFromGameInstance()
 	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
 	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
 	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
-
+	
+	GameInstance->InventorySetting();
 }
 
 void APlayerCharacter::SetUI()

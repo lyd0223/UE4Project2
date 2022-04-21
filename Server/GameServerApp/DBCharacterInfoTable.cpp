@@ -46,7 +46,12 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 		//						float _AttackSpeed, float _MoveSpeed, 
 		//						std::vector<char> _InventoryData)
 		
-		std::vector<char> InventoryData(*MysqlRow[12], 800);
+		std::string InventoryDataString = MysqlRow[12];
+		std::vector<char> InventoryData(InventoryDataString.begin(), InventoryDataString.end());
+		for (int i = 0; i < InventoryData.size(); i++)
+		{
+			InventoryData[i]--;
+		}
 		
 		m_RowDataList.push_back(std::make_shared<DBCharacterInfoTableRow>(
 			std::stoi(MysqlRow[0]), std::stoi(MysqlRow[1]), MysqlRow[2], MysqlRow[3],
@@ -75,8 +80,12 @@ DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharac
 		+ std::to_string(_CharacterInfo.m_DEF) + "','"
 		+ std::to_string(_CharacterInfo.m_AttackSpeed) + "','"
 		+ std::to_string(_CharacterInfo.m_MoveSpeed) + "',";
-	std::string InventoryDataStr(_CharacterInfo.m_InventoryData.begin(), _CharacterInfo.m_InventoryData.end());
-	str += InventoryDataStr + "');";
+	std::string InventoryDataString(_CharacterInfo.m_InventoryData.begin(), _CharacterInfo.m_InventoryData.end());
+	for (int i = 0; i < InventoryDataString.size(); i++)
+	{
+		InventoryDataString[i]++;
+	}
+	str += InventoryDataString + "');";
 
 	m_QueryText = _strdup(str.c_str());
 }
@@ -106,12 +115,16 @@ DBCharacterInfoTable_UpdateCharacterInfoQuery::DBCharacterInfoTable_UpdateCharac
 	str += ",DEF = " + std::to_string(_CharacterInfo.m_DEF);
 	str += ",AttackSpeed = " + std::to_string(_CharacterInfo.m_AttackSpeed);
 	str += ",MoveSpeed = " + std::to_string(_CharacterInfo.m_MoveSpeed);
-	//str += InventoryData
+	std::string InventoryDataString(_CharacterInfo.m_InventoryData.begin(), _CharacterInfo.m_InventoryData.end());
+	for (int i = 0; i < InventoryDataString.size(); i++)
+	{
+		InventoryDataString[i]++;
+	}
+	str += ",InventoryData = \"" + InventoryDataString + "\"";
 	//utf-8로 할시 인식이 안된다. 인코딩방식을 Ansi로 바꾼다.
 	std::string Nickname = "";
 	GameServerString::UTF8ToAnsi(_CharacterInfo.m_Nickname, Nickname);
 	str += " WHERE Nickname = \"" +_CharacterInfo.m_Nickname + "\";";
-	//str += " WHERE Nickname = \"ffffff\";";
 	
 	m_QueryText = _strdup(str.c_str());
 }
