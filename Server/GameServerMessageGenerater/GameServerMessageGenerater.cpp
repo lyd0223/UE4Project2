@@ -646,8 +646,8 @@ int main()
 			DisText += "		return;																									  \n";
 			DisText += "	}																											  \n";
 			DisText += "																												  \n";
-			DisText += "	MessageHandler Cmd = MessageHandler(ConvertMessage);														  \n";
-			DisText += "	Cmd.Init(_Inst, _World);																					  \n";
+			DisText += "	MessageHandler Cmd = MessageHandler();														  \n";
+			DisText += "	Cmd.Init(_Inst, _World, ConvertMessage);																					  \n";
 			DisText += "	Cmd.Start();																								  \n";
 			DisText += "}																												  \n";
 			DisText += "																												  \n";

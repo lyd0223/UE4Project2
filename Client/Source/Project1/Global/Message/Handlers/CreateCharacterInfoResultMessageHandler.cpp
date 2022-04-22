@@ -3,23 +3,9 @@
 #include "Project1/Project1GameInstance.h"
 
 
-CreateCharacterInfoResultMessageHandler::CreateCharacterInfoResultMessageHandler(
-	std::shared_ptr<CreateCharacterInfoResultMessage> _CreateCharacterInfoResultMessage)
-{
-	m_GameInstance = nullptr;
-	m_World = nullptr;
-	m_CreateCharacterInfoResultMessage = _CreateCharacterInfoResultMessage;
-}
-
-void CreateCharacterInfoResultMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
-{
-	m_GameInstance = _GameInstance;
-	m_World = _World;
-}
-
 void CreateCharacterInfoResultMessageHandler::Start()
 {
-	ECreateCharacterInfoResultType ResultType = m_CreateCharacterInfoResultMessage->m_CreateCharacterInfoResultType;
+	ECreateCharacterInfoResultType ResultType = m_Message->m_CreateCharacterInfoResultType;
 	switch (ResultType)
 	{
 	case ECreateCharacterInfoResultType::Error:
@@ -29,10 +15,10 @@ void CreateCharacterInfoResultMessageHandler::Start()
 		}
 	case ECreateCharacterInfoResultType::OK:
 		{
-			m_GameInstance->SetPlayingCharacterInfo(m_CreateCharacterInfoResultMessage->m_CharacterInfo);
+			m_GameInstance->SetPlayingCharacterInfo(m_Message->m_CharacterInfo);
 
 			FString Str = TEXT("");
-			UClientBlueprintFunctionLibrary::UTF8ToFString(m_CreateCharacterInfoResultMessage->m_CharacterInfo.m_ClassName,
+			UClientBlueprintFunctionLibrary::UTF8ToFString(m_Message->m_CharacterInfo.m_ClassName,
 														Str);
 
 			m_GameInstance->SetSelectJob(Str);

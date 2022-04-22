@@ -19,8 +19,8 @@ void OnMessageProcess(std::shared_ptr<GameServerMessage> _Message, class UProjec
 		return;																									  
 	}																											  
 																												  
-	MessageHandler Cmd = MessageHandler(ConvertMessage);														  
-	Cmd.Init(_Inst, _World);																					  
+	MessageHandler Cmd = MessageHandler();														  
+	Cmd.Init(_Inst, _World, ConvertMessage);																					  
 	Cmd.Start();																								  
 }																												  
 																												  

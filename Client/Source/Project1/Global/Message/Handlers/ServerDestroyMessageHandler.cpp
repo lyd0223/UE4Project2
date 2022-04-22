@@ -2,20 +2,6 @@
 
 #include "Kismet/GameplayStatics.h"
 
-
-ServerDestroyMessageHandler::ServerDestroyMessageHandler(std::shared_ptr<ServerDestroyMessage> _ServerDestroyMessage)
-{
-	m_GameInstance = nullptr;
-	m_World = nullptr;
-	m_ServerDestroyMessage = _ServerDestroyMessage;
-}
-
-void ServerDestroyMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
-{
-	m_GameInstance = _GameInstance;
-	m_World = _World;
-}
-
 void ServerDestroyMessageHandler::Start()
 {
 	if(m_World->GetName() != TEXT("LoginLevel"))

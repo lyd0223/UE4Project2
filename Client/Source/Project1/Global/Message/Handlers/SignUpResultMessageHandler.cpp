@@ -3,22 +3,9 @@
 #include "Project1/StartGameModeBase.h"
 #include "Project1/UI/StartLevel/StartMainWidget.h"
 
-SignUpResultMessageHandler::SignUpResultMessageHandler(std::shared_ptr<SignUpResultMessage> _SignUpResultMessage)
-{
-	m_GameInstance = nullptr;
-	m_World = nullptr;
-	m_SignUpResultMessage = _SignUpResultMessage;
-}
-
-void SignUpResultMessageHandler::Init(UProject1GameInstance* _GameInstance, UWorld* _World)
-{
-	m_GameInstance = _GameInstance;
-	m_World = _World;
-}
-
 void SignUpResultMessageHandler::Start()
 {
-	ESignUpResultType SignUpResultType = m_SignUpResultMessage->m_SignUpResultType;
+	ESignUpResultType SignUpResultType = m_Message->m_SignUpResultType;
 	switch (SignUpResultType)
 	{
 	case ESignUpResultType::OK:
