@@ -40,6 +40,7 @@ private:
 public:
 	void AddItem(FItem* Item);
 	void DeductItem(FItem* Item);
+	void SetUI(FItem* Item);
 	void SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo);
 	void LoadCharacterInfoInventoryData(const FCharacterInfo& CharacterInfo);
 

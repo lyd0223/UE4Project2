@@ -93,6 +93,11 @@ protected:
 			m_ItemQuickSlotsArray[Index] = Item;
 		}
 	}
+
+	bool GetIsWaitingRoom() const
+	{
+		return m_IsWaitingRoom;
+	}
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

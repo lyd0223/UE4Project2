@@ -152,7 +152,7 @@ const FItemTableInfo* UProject1GameInstance::FindItemTableInfo(const FString& Na
 const FItemTableInfo* UProject1GameInstance::FindItemTableInfo(int Index)
 {
 	TArray<FName> NameArray = m_ItemInfoTable->GetRowNames();
-	return m_ItemInfoTable->FindRow<FItemTableInfo>(NameArray[Index], "");
+	return m_ItemInfoTable->FindRow<FItemTableInfo>(NameArray[Index-1], "");
 }
 
 const FBulletTableInfo* UProject1GameInstance::FindBulletTableInfo(const FString& Name)

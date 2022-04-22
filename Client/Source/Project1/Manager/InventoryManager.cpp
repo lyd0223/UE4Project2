@@ -5,9 +5,11 @@
 
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
+#include "Project1/WaitingRoomGameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
 #include "Project1/Player/PlayerCharacter.h"
 #include "Project1/UI/MainHUDWidget.h"
+#include "Project1/UI/WaitingRoomLevel/WaitingRoomMainWidget.h"
 #include "Project1/UI/QuickItemSlotWidget.h"
 
 
@@ -42,19 +44,7 @@ void UInventoryManager::AddItem(FItem* Item)
 	if (!IsAlreadyHave)
 		m_ItemArray.Add(Item);
 
-	if (m_OwnerCharacter)
-	{
-		UWorld* World = m_OwnerCharacter->GetWorld();
-		if (World)
-		{
-			AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(World->GetAuthGameMode());
-			if (GameModeBase)
-			{
-				GameModeBase->GetMainHUDWidget()->GetMenuWidget()->GetInventoryWidget()->AddItem(Item);
-				GameModeBase->GetMainHUDWidget()->GetQuickSlotWidget()->RefreshItems(Item);
-			}
-		}
-	}
+	SetUI(Item);
 	//게임모드에맞는 UI 수정.
 	/*
 	 WaitingRoom	-> 
@@ -131,6 +121,35 @@ void UInventoryManager::DeductItem(FItem* Item)
 	}
 }
 
+void UInventoryManager::SetUI(FItem* Item)
+{
+	if (m_OwnerCharacter == nullptr)
+		return;
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(m_OwnerCharacter);
+	if(PlayerCharacter == nullptr)
+		return;
+	UWorld* World = PlayerCharacter->GetWorld();
+	if(World ==nullptr)
+		return;
+	//WaitingRoom Level
+	if(PlayerCharacter->GetIsWaitingRoom() == true)
+	{
+		AWaitingRoomGameModeBase* GameMode = Cast<AWaitingRoomGameModeBase>(World->GetAuthGameMode());
+		if (GameMode == nullptr)
+			return;
+		GameMode->GetMainWidget()->GetMenuWidget()->GetInventoryWidget()->AddItem(Item);
+	}
+	//Main Level
+	else
+	{
+		AProject1GameModeBase* GameMode = Cast<AProject1GameModeBase>(World->GetAuthGameMode());
+		if (GameMode == nullptr)
+			return;
+		GameMode->GetMainHUDWidget()->GetMenuWidget()->GetInventoryWidget()->AddItem(Item);
+		GameMode->GetMainHUDWidget()->GetQuickSlotWidget()->RefreshItems(Item);
+		
+	}
+}
 
 void UInventoryManager::SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo)
 {
@@ -152,7 +171,7 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 {
 	m_ItemArray.Reset();
 	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
-	for(int i = 0; i<InventoryData.size(); i+=sizeof(int))
+	for(int i = 0; i<InventoryData.size(); i+=sizeof(int)*2)
 	{
 		if(m_OwnerCharacter ==nullptr)
 			return;
@@ -162,11 +181,14 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 
 		FItem* LoadItem = new FItem();
 		//ItemTableInfo 설정.
+		if(InventoryData[i] == 0)
+			return;
 		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(static_cast<int>(InventoryData[i]));
 		//ItemCount 설정
 		LoadItem->Count = static_cast<int>(InventoryData[i+sizeof(int)]);
-
+		
 		//인벤토리에 추가.
 		m_ItemArray.Add(LoadItem);
+		SetUI(LoadItem);
 	}
 }
