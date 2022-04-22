@@ -6,18 +6,6 @@
 #include "DBCharacterInfoTable.h"
 #include "GameServerMessage/ContentsStruct.h"
 
-CreateCharacterInfoMessageHandler::CreateCharacterInfoMessageHandler(std::shared_ptr<TCPSession> _TCPSession,
-	std::shared_ptr<CreateCharacterInfoMessage> _CreateCharacterInfoMessage)
-{
-	m_TCPSession = _TCPSession;
-	m_CreateCharacterInfoMessage = _CreateCharacterInfoMessage;
-}
-
-CreateCharacterInfoMessageHandler::~CreateCharacterInfoMessageHandler()
-{
-
-}
-
 void CreateCharacterInfoMessageHandler::Start()
 {
 	if (m_TCPSession == nullptr)
@@ -26,12 +14,12 @@ void CreateCharacterInfoMessageHandler::Start()
 		return;
 	}
 
-	DBQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::DBCheck, shared_from_this()));
+	DBQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::DBCheck, std::dynamic_pointer_cast<CreateCharacterInfoMessageHandler>(shared_from_this())));
 }
 
 void CreateCharacterInfoMessageHandler::DBCheck()
 {
-	FCharacterInfo& CharacterInfo = m_CreateCharacterInfoMessage->m_CharacterInfo;
+	FCharacterInfo& CharacterInfo = m_Message->m_CharacterInfo;
 	DBCharacterInfoTable_InsertCharacterInfoQuery InsertQuery(
 		CharacterInfo.m_UserIdx, CharacterInfo);
 	if (InsertQuery.DoQuery() == false)
@@ -41,9 +29,9 @@ void CreateCharacterInfoMessageHandler::DBCheck()
 		return;
 	}
 
-	m_CreateCharacterInfoResultMessage.m_CharacterInfo = m_CreateCharacterInfoMessage->m_CharacterInfo;
+	m_CreateCharacterInfoResultMessage.m_CharacterInfo = m_Message->m_CharacterInfo;
 
-	NetQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::ResultSend, shared_from_this()));
+	NetQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::ResultSend, std::dynamic_pointer_cast<CreateCharacterInfoMessageHandler>(shared_from_this())));
 }
 
 void CreateCharacterInfoMessageHandler::ResultSend()

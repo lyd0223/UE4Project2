@@ -6,17 +6,6 @@
 #include "NetQueue.h"
 #include "DBUserInfoTable.h"
 
-SignInMessageHandler::SignInMessageHandler(std::shared_ptr<TCPSession> _TCPSession, std::shared_ptr<SignInMessage> _SignInMessage)
-{
-	m_TCPSession = _TCPSession;
-	m_SignInMessage = _SignInMessage;
-}
-
-SignInMessageHandler::~SignInMessageHandler()
-{
-
-}
-
 void SignInMessageHandler::Start()
 {
 	if (m_TCPSession == nullptr)
@@ -26,7 +15,7 @@ void SignInMessageHandler::Start()
 	}
 	m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
 
-	DBQueue::EnQueue(std::bind(&SignInMessageHandler::DBCheck, shared_from_this()));
+	DBQueue::EnQueue(std::bind(&SignInMessageHandler::DBCheck, std::dynamic_pointer_cast<SignInMessageHandler>(shared_from_this())));
 	
 }
 
@@ -34,7 +23,7 @@ void SignInMessageHandler::DBCheck()
 {
 	std::string Name = GameServerThread::GetName();
 
-	UserInfoTable_SelectIDQuery SelectQuery(m_SignInMessage->m_ID, m_SignInMessage->m_PW);
+	UserInfoTable_SelectIDQuery SelectQuery(m_Message->m_ID, m_Message->m_PW);
 	if (SelectQuery.DoQuery() == false)
 	{
 		//쿼리 실패. (ID 존재하지않음.)
@@ -54,7 +43,7 @@ void SignInMessageHandler::DBCheck()
 		}
 	}
 
-	NetQueue::EnQueue(std::bind(&SignInMessageHandler::ResultSend, shared_from_this()));
+	NetQueue::EnQueue(std::bind(&SignInMessageHandler::ResultSend, std::dynamic_pointer_cast<SignInMessageHandler>(shared_from_this())));
 }
 
 void SignInMessageHandler::ResultSend()

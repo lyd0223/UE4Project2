@@ -5,17 +5,6 @@
 #include "NetQueue.h"
 #include <GameServerNet/TCPListener.h>
 
-ChatMessageHandler::ChatMessageHandler(std::shared_ptr<TCPSession> _TCPSession, std::shared_ptr<ChatMessage> _ChatMessage)
-{
-	m_TCPSession = _TCPSession;
-	m_ChatMessage = _ChatMessage;
-}
-
-ChatMessageHandler::~ChatMessageHandler()
-{
-
-}
-
 void ChatMessageHandler::Start()
 {
 	if (m_TCPSession == nullptr)
@@ -24,14 +13,14 @@ void ChatMessageHandler::Start()
 		return;
 	}
 	
-	NetQueue::EnQueue(std::bind(&ChatMessageHandler::ResultSend, shared_from_this()));
+	NetQueue::EnQueue(std::bind(&ChatMessageHandler::ResultSend, std::dynamic_pointer_cast<ChatMessageHandler>(shared_from_this())));
 }
 
 
 void ChatMessageHandler::ResultSend()
 {
 	GameServerSerializer Serializer;
-	m_ChatMessage->Serialize(Serializer);
+	m_Message->Serialize(Serializer);
 	
 	//m_TCPSession->Send(Serializer.GetData());
 	TCPListener* Listener = m_TCPSession->GetParent<TCPListener>();

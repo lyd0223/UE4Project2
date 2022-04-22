@@ -21,7 +21,8 @@ void OnMessageProcess(std::shared_ptr<TCPSession> _Session, std::shared_ptr<Game
 		return;																																										
 	}																																												
 																																													
-	std::shared_ptr<MessageHandler> Cmd = std::make_shared<MessageHandler>(_Session, ConvertMessage);																				
+	std::shared_ptr<MessageHandler> Cmd = std::make_shared<MessageHandler>();																				
+	Cmd->Init(_Session, ConvertMessage);																																			
 	Cmd->Start();																																									
 }																																													
 																																													

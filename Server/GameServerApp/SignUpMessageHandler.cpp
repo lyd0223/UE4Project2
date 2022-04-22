@@ -1,23 +1,11 @@
 #include "PreCompile.h"
 #include "SignUpMessageHandler.h"
-
-
 #include <GameServerBase/GameServerDebug.h>
 #include <GameServerBase/GameServerString.h>
 #include "DBQueue.h"
 #include "NetQueue.h"
 #include "DBUserInfoTable.h"
 
-SignUpMessageHandler::SignUpMessageHandler(std::shared_ptr<TCPSession> _TCPSession, std::shared_ptr<SignUpMessage> _SignUpMessage)
-{
-	m_TCPSession = _TCPSession;
-	m_SignUpMessage = _SignUpMessage;
-}
-
-SignUpMessageHandler::~SignUpMessageHandler()
-{
-
-}
 
 void SignUpMessageHandler::Start()
 {
@@ -28,7 +16,7 @@ void SignUpMessageHandler::Start()
 	}
 	m_SignUpResultMessage.m_SignUpResultType = ESignUpResultType::MAX;
 
-	DBQueue::EnQueue(std::bind(&SignUpMessageHandler::DBCheck, shared_from_this()));
+	DBQueue::EnQueue(std::bind(&SignUpMessageHandler::DBCheck, std::dynamic_pointer_cast<SignUpMessageHandler>(shared_from_this())));
 
 }
 
@@ -36,12 +24,12 @@ void SignUpMessageHandler::DBCheck()
 {
 	std::string Name = GameServerThread::GetName();
 	
-	UserInfoTable_InsertUserInfoQuery InsertUserInfoQuery(m_SignUpMessage->m_ID, m_SignUpMessage->m_PW);
+	UserInfoTable_InsertUserInfoQuery InsertUserInfoQuery(m_Message->m_ID, m_Message->m_PW);
 	
 	bool CheckResult = InsertUserInfoQuery.DoQuery();
 	m_SignUpResultMessage.m_SignUpResultType = CheckResult == true ? ESignUpResultType::OK : ESignUpResultType::Error_NonAvailableID;
 
-	NetQueue::EnQueue(std::bind(&SignUpMessageHandler::ResultSend, shared_from_this()));
+	NetQueue::EnQueue(std::bind(&SignUpMessageHandler::ResultSend, std::dynamic_pointer_cast<SignUpMessageHandler>(shared_from_this())));
 }
 
 void SignUpMessageHandler::ResultSend()

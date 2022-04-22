@@ -6,18 +6,6 @@
 #include "DBCharacterInfoTable.h"
 #include "GameServerMessage/ContentsStruct.h"
 
-RequestCharacterInfoMessageHandler::RequestCharacterInfoMessageHandler(std::shared_ptr<TCPSession> _TCPSession,
-	std::shared_ptr<RequestCharacterInfoMessage> _RequestCharacterInfoMessage)
-{
-	m_TCPSession = _TCPSession;
-	m_RequestCharacterInfoMessage = _RequestCharacterInfoMessage;
-}
-
-RequestCharacterInfoMessageHandler::~RequestCharacterInfoMessageHandler()
-{
-
-}
-
 void RequestCharacterInfoMessageHandler::Start()
 {
 	if (m_TCPSession == nullptr)
@@ -26,12 +14,12 @@ void RequestCharacterInfoMessageHandler::Start()
 		return;
 	}
 
-	DBQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::DBCheck, shared_from_this()));
+	DBQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::DBCheck, std::dynamic_pointer_cast<RequestCharacterInfoMessageHandler>(shared_from_this())));
 }
 
 void RequestCharacterInfoMessageHandler::DBCheck()
 {
-	DBCharacterInfoTable_SelectCharacterInfoQuery SelectQuery(m_RequestCharacterInfoMessage->m_UserIdx);
+	DBCharacterInfoTable_SelectCharacterInfoQuery SelectQuery(m_Message->m_UserIdx);
 	if (SelectQuery.DoQuery() == false)
 	{
 		//쿼리 실패. 바로 에러띄우고, 리턴때려버림.
@@ -50,7 +38,7 @@ void RequestCharacterInfoMessageHandler::DBCheck()
 		m_ReplyCharacterInfoMessage.m_CharacterInfoList.push_back(*CharacterInfo);
 	}
 
-	NetQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::ResultSend, shared_from_this()));
+	NetQueue::EnQueue(std::bind(&RequestCharacterInfoMessageHandler::ResultSend, std::dynamic_pointer_cast<RequestCharacterInfoMessageHandler>(shared_from_this())));
 }
 
 void RequestCharacterInfoMessageHandler::ResultSend()

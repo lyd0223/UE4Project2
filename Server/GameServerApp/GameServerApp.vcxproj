@@ -33,6 +33,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MessageHandlerBase.h" />
     <ClInclude Include="NetQueue.h">
       <SubType>
       </SubType>
@@ -68,6 +69,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MessageHandlerBase.cpp" />
     <ClCompile Include="NetQueue.cpp">
       <SubType>
       </SubType>

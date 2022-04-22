@@ -406,7 +406,8 @@ int main()
 			DisText += "		return;																																										\n";
 			DisText += "	}																																												\n";
 			DisText += "																																													\n";
-			DisText += "	std::shared_ptr<MessageHandler> Cmd = std::make_shared<MessageHandler>(_Session, ConvertMessage);																				\n";
+			DisText += "	std::shared_ptr<MessageHandler> Cmd = std::make_shared<MessageHandler>();																				\n";
+			DisText += "	Cmd->Init(_Session, ConvertMessage);																																			\n";
 			DisText += "	Cmd->Start();																																									\n";
 			DisText += "}																																													\n";
 			DisText += "																																													\n";
