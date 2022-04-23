@@ -141,6 +141,7 @@ protected:
 	void SetCharacterInfoFromGameInstance();
 	
 public:
+	void EarnEXP(int _EXP);
 	void SetUI();
 	
 	virtual void AttackEnd();

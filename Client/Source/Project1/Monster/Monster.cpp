@@ -8,6 +8,7 @@
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
 #include "../UI/MainHUDWidget.h"
+#include "../Player/PlayerCharacter.h"
 
 AMonster::AMonster()
 {
@@ -114,6 +115,11 @@ float AMonster::TakeDamage(float DamageAmount,
 		
 		if (MonsterController)
 			MonsterController->BrainComponent->StopLogic(TEXT("Dead"));
+
+		//Player EXP획득
+		APlayerCharacter* Player = Cast<APlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+		Player->EarnEXP(m_MonsterInfo.Exp);
+		
 	}
 
 	return Damage;
@@ -126,6 +132,7 @@ void AMonster::Death()
 	// 객체를 제거한다.
 	Destroy();
 	m_SpawnPoint->Death();
+	 
 
 	// FActorSpawnParameters	param;
 	// param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;

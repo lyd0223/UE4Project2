@@ -756,6 +756,18 @@ void APlayerCharacter::SetCharacterInfoFromGameInstance()
 	GameInstance->InventorySetting();
 }
 
+void APlayerCharacter::EarnEXP(int _EXP)
+{
+	m_PlayerInfo.EXP += _EXP;
+	//Level Up 레벨업
+	if(m_PlayerInfo.EXP >= m_PlayerInfo.EXPMax)
+	{
+		m_PlayerInfo.Level++;
+		m_PlayerInfo.EXP = 0;
+		m_PlayerInfo.EXPMax = 100 * pow(1.1f,m_PlayerInfo.Level);
+	}
+}
+
 void APlayerCharacter::SetUI()
 {
 	UMenuWidget* MenuWidget = nullptr;
