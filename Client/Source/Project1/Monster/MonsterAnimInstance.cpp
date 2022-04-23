@@ -58,7 +58,10 @@ void UMonsterAnimInstance::AnimNotify_AttackEnd()
 	AMonster* Monster = Cast<AMonster>(TryGetPawnOwner());
 
 	if (Monster)
+	{
 		Monster->SetAttackEnd(true);
+	}
+		
 }
 
 

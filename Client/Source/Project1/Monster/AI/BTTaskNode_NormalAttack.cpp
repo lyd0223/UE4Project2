@@ -36,12 +36,6 @@ EBTNodeResult::Type UBTTaskNode_NormalAttack::ExecuteTask(
 		return EBTNodeResult::Failed;
 	}
 	
-	FVector MonsterLoc = Monster->GetActorLocation();
-	FVector TargetLoc = Target->GetActorLocation();
-	FVector Dir = TargetLoc - MonsterLoc;
-	Dir.Normalize();
-
-	Monster->SetActorRotation(FRotator(0.f, Dir.Rotation().Yaw, 0.f));
 	Monster->GetAnim()->ChangeAnimType(EMonsterAnimType::Attack);
 
 	return EBTNodeResult::InProgress;
@@ -98,23 +92,19 @@ void UBTTaskNode_NormalAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	float Distance = FVector::Distance(MonsterLoc, TargetLoc);
 
-
 	if (Monster->GetAttackEnd())
 	{
 		if (Distance > MonsterInfo.AttackDistance)
 		{
-			FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+			return;
 		}
-
-		else
-		{
-			FVector Dir = TargetLoc - MonsterLoc;
-			Dir.Normalize();
-
-			Monster->SetActorRotation(FRotator(0.f, Dir.Rotation().Yaw, 0.f));
-		}
-
+		
+		FVector Dir = TargetLoc - MonsterLoc;
+		Dir.Normalize();
+		Monster->SetActorRotation(FRotator(0.f, Dir.Rotation().Yaw, 0.f));
+		
 		Monster->SetAttackEnd(false);
 	}
-	FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
+
 }

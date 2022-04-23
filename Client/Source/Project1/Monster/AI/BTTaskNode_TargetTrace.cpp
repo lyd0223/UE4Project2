@@ -17,7 +17,7 @@ UBTTaskNode_TargetTrace::UBTTaskNode_TargetTrace()
 EBTNodeResult::Type UBTTaskNode_TargetTrace::ExecuteTask(
 	UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	EBTNodeResult::Type	result = Super::ExecuteTask(OwnerComp, NodeMemory);
+	EBTNodeResult::Type result = Super::ExecuteTask(OwnerComp, NodeMemory);
 
 	AMonsterAIController* Controller = Cast<AMonsterAIController>(OwnerComp.GetAIOwner());
 
@@ -29,7 +29,8 @@ EBTNodeResult::Type UBTTaskNode_TargetTrace::ExecuteTask(
 	if (!Monster)
 		return EBTNodeResult::Failed;
 
-	APlayerCharacter* Target = Cast<APlayerCharacter>(Controller->GetBlackboardComponent()->GetValueAsObject(TEXT("Target")));
+	APlayerCharacter* Target = Cast<APlayerCharacter>(
+		Controller->GetBlackboardComponent()->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
 	{
@@ -39,29 +40,26 @@ EBTNodeResult::Type UBTTaskNode_TargetTrace::ExecuteTask(
 		return EBTNodeResult::Failed;
 	}
 
+	if(Monster->GetAttackEnd() == false)
+		Monster->SetAttackEnd(true);
+	Monster->GetCharacterMovement()->MaxWalkSpeed = Monster->GetMonsterInfo().MoveSpeed;
+	UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, Target);
 
-	if(Monster->GetAttackEnd())
-	{
-		Monster->GetCharacterMovement()->MaxWalkSpeed = Monster->GetMonsterInfo().MoveSpeed;
-		UAIBlueprintHelperLibrary::SimpleMoveToActor(Controller, Target);
+	Monster->GetAnim()->ChangeAnimType(EMonsterAnimType::Run);
 
-		Monster->GetAnim()->ChangeAnimType(EMonsterAnimType::Run);
-	
-		return EBTNodeResult::InProgress;
-	}
-	return EBTNodeResult::Failed;
+	return EBTNodeResult::InProgress;
 }
 
 EBTNodeResult::Type UBTTaskNode_TargetTrace::AbortTask(
 	UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	EBTNodeResult::Type	result = Super::AbortTask(OwnerComp, NodeMemory);
+	EBTNodeResult::Type result = Super::AbortTask(OwnerComp, NodeMemory);
 
 	return result;
 }
 
 void UBTTaskNode_TargetTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
-	uint8* NodeMemory, float DeltaSeconds)
+                                       uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
 
@@ -81,7 +79,8 @@ void UBTTaskNode_TargetTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	APlayerCharacter* Target = Cast<APlayerCharacter>(Controller->GetBlackboardComponent()->GetValueAsObject(TEXT("Target")));
+	APlayerCharacter* Target = Cast<APlayerCharacter>(
+		Controller->GetBlackboardComponent()->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
 	{
@@ -94,15 +93,14 @@ void UBTTaskNode_TargetTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	const FMonsterInfo& MonsterInfo = Monster->GetMonsterInfo();
 
-	FVector	MonsterLoc = Monster->GetActorLocation();
-	FVector	TargetLoc = Target->GetActorLocation();
+	FVector MonsterLoc = Monster->GetActorLocation();
+	FVector TargetLoc = Target->GetActorLocation();
 
 	MonsterLoc.Z = TargetLoc.Z;
 
-	float	Distance = FVector::Distance(MonsterLoc, TargetLoc);
+	float Distance = FVector::Distance(MonsterLoc, TargetLoc);
 	
-
-	if(Distance <= MonsterInfo.AttackDistance)
+	if (Distance <= MonsterInfo.AttackDistance)
 	{
 		Controller->StopMovement();
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
