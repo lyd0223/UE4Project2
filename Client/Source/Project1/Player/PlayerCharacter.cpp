@@ -743,7 +743,7 @@ void APlayerCharacter::SetCharacterInfoFromGameInstance()
 	UClientBlueprintFunctionLibrary::UTF8ToFString(CharacterInfo.m_Nickname, m_PlayerInfo.Name);
 	m_PlayerInfo.Level = CharacterInfo.m_LV;
 	m_PlayerInfo.EXP = CharacterInfo.m_EXP;
-	//m_PlayerInfo.EXPMax = info->EXPMax;
+	m_PlayerInfo.EXPMax = 100 * pow(1.1f, m_PlayerInfo.Level);
 	m_PlayerInfo.ATK = CharacterInfo.m_ATK;
 	m_PlayerInfo.DEF = CharacterInfo.m_DEF;
 	m_PlayerInfo.HP = CharacterInfo.m_HP;
@@ -766,6 +766,7 @@ void APlayerCharacter::EarnEXP(int _EXP)
 		m_PlayerInfo.EXP = 0;
 		m_PlayerInfo.EXPMax = 100 * pow(1.1f,m_PlayerInfo.Level);
 	}
+	SetUI();
 }
 
 void APlayerCharacter::SetUI()
