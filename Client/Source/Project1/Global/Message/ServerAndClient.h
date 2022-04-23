@@ -42,3 +42,46 @@ public:
     }                                                           
 };                                                              
 
+class CharacterMoveMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	int m_UserIdx;
+	FVector m_Pos;
+	FVector m_Rot;
+                                                                
+public:                                                         
+    CharacterMoveMessage()                                               
+        : GameServerMessage(EMessageType::CharacterMove)                    
+        , m_UserIdx()
+        , m_Pos()
+        , m_Rot()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~CharacterMoveMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_UserIdx) + DataSizeCheck(m_Pos) + DataSizeCheck(m_Rot);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer << m_UserIdx;
+        m_Pos.Serialize(_Serializer);
+        m_Rot.Serialize(_Serializer);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        _Serializer >> m_UserIdx;
+        m_Pos.DeSerialize(_Serializer);
+        m_Rot.DeSerialize(_Serializer);
+
+    }                                                           
+};                                                              
+

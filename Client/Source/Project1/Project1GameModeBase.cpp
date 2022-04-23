@@ -113,7 +113,7 @@ void AProject1GameModeBase::BeginPlay()
 			BulletWidget->AddBulletListView(BulletListItemData4);
 		}
 	}
-
+	
 	//InputMode
 	APlayerController* Controller = GetWorld()->GetFirstPlayerController();
 	FInputModeGameOnly	Mode;

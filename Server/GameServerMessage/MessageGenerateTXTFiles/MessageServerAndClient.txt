@@ -1,3 +1,8 @@
 |Chat-
 std::string m_NickName;
 std::string m_Chat;
+
+|CharacterMove-
+int m_UserIdx;
+FVector m_Pos;
+FVector m_Rot;

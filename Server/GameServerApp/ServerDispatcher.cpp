@@ -8,6 +8,7 @@
 #include "RequestCharacterInfoMessageHandler.h"
 #include "SaveCharacterInfoMessageHandler.h"
 #include "ChatMessageHandler.h"
+#include "CharacterMoveMessageHandler.h"
 																																													
 Dispatcher<TCPSession> gDispatcher;																																							
 																																													
@@ -34,4 +35,5 @@ void DispatcherRegistration()
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::RequestCharacterInfo), std::bind(&OnMessageProcess<RequestCharacterInfoMessageHandler, RequestCharacterInfoMessage>, std::placeholders::_1, std::placeholders::_2));	
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::SaveCharacterInfo), std::bind(&OnMessageProcess<SaveCharacterInfoMessageHandler, SaveCharacterInfoMessage>, std::placeholders::_1, std::placeholders::_2));	
 	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::Chat), std::bind(&OnMessageProcess<ChatMessageHandler, ChatMessage>, std::placeholders::_1, std::placeholders::_2));	
+	gDispatcher.AddHandler(static_cast<uint32_t>(EMessageType::CharacterMove), std::bind(&OnMessageProcess<CharacterMoveMessageHandler, CharacterMoveMessage>, std::placeholders::_1, std::placeholders::_2));	
 }																																													

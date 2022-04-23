@@ -42,6 +42,9 @@ MessageConverter::MessageConverter(const std::vector<unsigned char>&_Buffer)
 	case EMessageType::Chat:
 		m_Message = std::make_shared<ChatMessage>();
 		break;
+	case EMessageType::CharacterMove:
+		m_Message = std::make_shared<CharacterMoveMessage>();
+		break;
 	default:
 		return;
 	}

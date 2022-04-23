@@ -46,6 +46,9 @@
     <ClInclude Include="MessageHandlerBase.h">
       <Filter>Messages\Handlers</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterMoveMessageHandler.h">
+      <Filter>Messages\Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -92,6 +95,9 @@
       <Filter>Messages\Handlers</Filter>
     </ClCompile>
     <ClCompile Include="MessageHandlerBase.cpp">
+      <Filter>Messages\Handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterMoveMessageHandler.cpp">
       <Filter>Messages\Handlers</Filter>
     </ClCompile>
   </ItemGroup>

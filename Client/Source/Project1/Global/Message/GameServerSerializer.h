@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 
+
 class GameServerSerializer
 {
 public:
@@ -69,6 +70,7 @@ public:
 	void operator<<(const int _Value);
 	void operator<<(const unsigned int _Value);
 	void operator<<(const float _Value);
+	void operator<<(const FVector _Value);
 
 	template<typename T>
 	void operator>>(std::vector<T>& _Value)
@@ -82,4 +84,5 @@ public:
 	void operator>>(int& _Value);
 	void operator>>(unsigned int& _Value);
 	void operator>>(float& _Value);
+	void operator>>(FVector& _Value);
 };

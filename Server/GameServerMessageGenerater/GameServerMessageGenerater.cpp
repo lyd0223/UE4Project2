@@ -462,8 +462,8 @@ int main()
 			GameServerFile LoadFile = { LoadFilePath , "rt" };
 			std::string Code = LoadFile.GetString();
 
-			/*Code.replace(Code.find("#include \"GameServerMathStruct.h\"\n")
-				, strlen("#include \"GameServerMathStruct.h\"\n"), "\n");*/
+			Code.replace(Code.find("#include \"GameServerFVector.h\"\n")
+				, strlen("#include \"GameServerFVector.h\"\n"), "\n");
 
 			GameServerFile SaveFile = GameServerFile{ SavePath, "wt" };
 			SaveFile.Write(Code.c_str(), Code.size());

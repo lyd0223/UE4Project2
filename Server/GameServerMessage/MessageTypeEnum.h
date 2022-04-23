@@ -13,5 +13,6 @@ enum class EMessageType
 	CreateCharacterInfoResult,
 	ReplyCharacterInfo,
 	Chat,
+	CharacterMove,
 	MAX
 };

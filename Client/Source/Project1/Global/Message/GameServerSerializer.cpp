@@ -43,6 +43,10 @@ void GameServerSerializer::operator << (const float _Value)
 {
 	Write(&_Value, sizeof(float));
 }
+void GameServerSerializer::operator<<(const FVector _Value)
+{
+	Write(&_Value, sizeof(FVector));
+}
 
 void GameServerSerializer::operator>>(std::string& _Value)
 {
@@ -62,4 +66,8 @@ void GameServerSerializer::operator>>(unsigned int& _Value)
 void GameServerSerializer::operator>>(float& _Value)
 {
 	Read(&_Value, sizeof(float));
+}
+void GameServerSerializer::operator>>(FVector& _Value)
+{
+	Read(&_Value, sizeof(FVector));
 }

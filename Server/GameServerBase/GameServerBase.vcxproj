@@ -28,6 +28,7 @@
     <ClInclude Include="GameServerDebugReleasePool.h" />
     <ClInclude Include="GameServerDirectory.h" />
     <ClInclude Include="GameServerFile.h" />
+    <ClInclude Include="GameServerFVector.h" />
     <ClInclude Include="GameServerIocp.h">
       <SubType>
       </SubType>

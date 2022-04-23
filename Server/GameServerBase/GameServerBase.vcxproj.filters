@@ -55,6 +55,7 @@
     <ClInclude Include="GameServerPath.h">
       <Filter>IO</Filter>
     </ClInclude>
+    <ClInclude Include="GameServerFVector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
