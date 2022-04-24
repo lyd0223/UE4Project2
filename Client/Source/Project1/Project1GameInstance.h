@@ -73,7 +73,9 @@ private:
 
 	UPROPERTY()
 	class UInventoryManager* m_InventoryManager;
-	
+
+	TMap<int, class AOtherPlayerCharacter*> m_PlayingOtherPlayerMap;
+	TMap<FString, TSubclassOf<class AOtherPlayerCharacter>> m_OtherPlayerCharacterClassMap;
 public:
 	//Getter & Setter
 	//------------------------서버용-----------------------
@@ -109,6 +111,32 @@ public:
 		m_PlayingCharacterInfo = _CharacterInfo;
 	}
 	void SetPlayingCharacterInfo(const FPlayerInfo& PlayerInfo);
+
+	
+	void AddPlayingOtherCharacter(int _UserIdx, class AOtherPlayerCharacter* _Character)
+	{
+		m_PlayingOtherPlayerMap.Add(_UserIdx, _Character);
+	}
+	void RemovePlayingOtherCharacter(int _UserIdx)
+	{
+		m_PlayingOtherPlayerMap.Remove(_UserIdx);
+	}
+	class AOtherPlayerCharacter* GetPlayingOtherCharacter(int _UserIdx) const
+	{
+		if(m_PlayingOtherPlayerMap.Find(_UserIdx) == nullptr)
+			return nullptr;
+		return m_PlayingOtherPlayerMap[_UserIdx];
+	}
+
+	TSubclassOf<AOtherPlayerCharacter> GetOtherPlayerCharacterClass(std::string _Class) const
+	{
+		FString Class = TEXT("");
+		UClientBlueprintFunctionLibrary::UTF8ToFString(_Class, Class);
+		if(m_OtherPlayerCharacterClassMap.Find(Class) == nullptr)
+			return nullptr;
+		return m_OtherPlayerCharacterClassMap[Class];
+	}
+	
 	// ---------------------------------------------------
 	
 	UDataTable* GetSelectPlayerInfoTable() const
@@ -160,7 +188,7 @@ public:
 	bool ThreadAvailableCheck();
 
 	void InventorySetting();
-	
+
 	// -----------------------------------------------------------------------
 	
 	const FMonsterTableInfo* FindMonsterInfo(const FString& Name);

@@ -11,6 +11,7 @@
 #include "Interfaces/IPv4/IPv4Endpoint.h"
 //#include "GenericPlatform/GenericPlatformProcess.h"
 #include "Global/Message/MessageConverter.h"
+#include "Project1/Player/WaitingRoomLevel/OtherPlayerCharacter.h"
 
 
 //ClientRecvThread -----------------------------------------------------------------------
@@ -111,6 +112,14 @@ UProject1GameInstance::UProject1GameInstance()
 	m_IsClientMode = false;
 
 	m_UserIdx = -1;
+
+
+	static ConstructorHelpers::FClassFinder<AOtherPlayerCharacter> OtherPlayerCharacterClass(
+		TEXT("Blueprint'/Game/01Resources/Player/WaitingRoomLevel/BPOtherPlayerCharacter.BPOtherPlayerCharacter_C'"));
+	if (OtherPlayerCharacterClass.Succeeded())
+		m_OtherPlayerCharacterClassMap.Add("Test", OtherPlayerCharacterClass.Class);
+
+
 }
 
 UProject1GameInstance::~UProject1GameInstance()

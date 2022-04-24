@@ -69,6 +69,7 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 		CharacterInfo.m_DEF = Info->DEF;
 		CharacterInfo.m_AttackSpeed = Info->AttackSpeed;
 		CharacterInfo.m_MoveSpeed = Info->MoveSpeed;
+		CharacterInfo.m_InventoryData.push_back(0);
 	}
 
 	GameServerSerializer Serializer;

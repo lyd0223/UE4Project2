@@ -70,8 +70,8 @@ public:
     {                                                           
         GameServerMessage::Serialize(_Serializer);              
         _Serializer << m_UserIdx;
-        m_Pos.Serialize(_Serializer);
-        m_Rot.Serialize(_Serializer);
+        _Serializer << m_Pos;
+        _Serializer << m_Rot;
 
     }                                                           
                                                                 
@@ -79,8 +79,8 @@ public:
     {                                                           
         GameServerMessage::DeSerialize(_Serializer);            
         _Serializer >> m_UserIdx;
-        m_Pos.DeSerialize(_Serializer);
-        m_Rot.DeSerialize(_Serializer);
+        _Serializer >> m_Pos;
+        _Serializer >> m_Rot;
 
     }                                                           
 };                                                              

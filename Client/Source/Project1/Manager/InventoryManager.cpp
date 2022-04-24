@@ -171,6 +171,11 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 {
 	m_ItemArray.Reset();
 	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
+
+	//인벤토리가 비어있는경우.
+	if(InventoryData.size() < sizeof(int))
+		return;
+	
 	for(int i = 0; i<InventoryData.size(); i+=sizeof(int)*2)
 	{
 		if(m_OwnerCharacter ==nullptr)

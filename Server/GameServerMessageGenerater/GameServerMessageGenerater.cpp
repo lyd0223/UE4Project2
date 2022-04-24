@@ -41,6 +41,10 @@ void SerializerTypeCheck(std::string& _Text, MemberInfo& _MemberInfo)
 	{
 		_Text += "        _Serializer << " + _MemberInfo.Name + ";\n";
 	}
+	else if (_MemberInfo.Type == "FVector")
+	{
+		_Text += "        _Serializer << " + _MemberInfo.Name + ";\n";
+	}
 	else if (std::string::npos != _MemberInfo.Type.find("std::vector<"))
 	{
 		_Text += "        _Serializer.WriteVector( " + _MemberInfo.Name + ");\n";
@@ -69,6 +73,10 @@ void DeSerializerTypeCheck(std::string& _Text, MemberInfo& _MemberInfo)
 		_Text += "        _Serializer >> " + _MemberInfo.Name + ";\n";
 	}
 	else if (_MemberInfo.Type == "int")
+	{
+		_Text += "        _Serializer >> " + _MemberInfo.Name + ";\n";
+	}
+	else if (_MemberInfo.Type == "FVector")
 	{
 		_Text += "        _Serializer >> " + _MemberInfo.Name + ";\n";
 	}
