@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
@@ -23,10 +24,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* m_Arm;
 
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	// USceneCaptureComponent2D* m_MinimapSceneCapture2D;
-
-	
 	class UPlayerAnimInstance* m_AnimInstance;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))

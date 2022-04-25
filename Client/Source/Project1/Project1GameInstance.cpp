@@ -114,10 +114,18 @@ UProject1GameInstance::UProject1GameInstance()
 	m_UserIdx = -1;
 
 
-	static ConstructorHelpers::FClassFinder<AOtherPlayerCharacter> OtherPlayerCharacterClass(
-		TEXT("Blueprint'/Game/01Resources/Player/WaitingRoomLevel/BPOtherPlayerCharacter.BPOtherPlayerCharacter_C'"));
+	static ConstructorHelpers::FClassFinder<AOtherPlayerCharacter> OtherPlayerCharacterClass
+		(TEXT("Blueprint'/Game/01Resources/Player/WaitingRoomLevel/BPOtherPlayerCharacter.BPOtherPlayerCharacter_C'"));
 	if (OtherPlayerCharacterClass.Succeeded())
-		m_OtherPlayerCharacterClassMap.Add("Test", OtherPlayerCharacterClass.Class);
+		m_OtherPlayerCharacterClassMap.Add(TEXT("Test"), OtherPlayerCharacterClass.Class);
+	static ConstructorHelpers::FClassFinder<AOtherPlayerCharacter> OtherBelicaClass
+		(TEXT("Blueprint'/Game/01Resources/Player/WaitingRoomLevel/BPOtherBelica.BPOtherBelica_C'"));
+	if (OtherBelicaClass.Succeeded())
+		m_OtherPlayerCharacterClassMap.Add(TEXT("Belica"), OtherBelicaClass.Class);
+	static ConstructorHelpers::FClassFinder<AOtherPlayerCharacter> OtherRevenantClass
+		(TEXT("Blueprint'/Game/01Resources/Player/WaitingRoomLevel/BPOtherRevenant.BPOtherRevenant_C'"));
+	if (OtherRevenantClass.Succeeded())
+		m_OtherPlayerCharacterClassMap.Add(TEXT("Revenant"), OtherRevenantClass.Class);
 
 
 }

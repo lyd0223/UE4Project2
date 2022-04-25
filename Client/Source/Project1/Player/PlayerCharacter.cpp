@@ -6,11 +6,13 @@
 #include "GhostCharacter.h"
 #include "PlayerAnimInstance.h"
 #include "SelectCharacterPlayerController.h"
+#include "Components/WidgetComponent.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
 #include "Project1/WaitingRoomGameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
 #include "Project1/Global/Message/ClientToServer.h"
+#include "Project1/Global/Message/ServerAndClient.h"
 #include "Project1/Manager/InventoryManager.h"
 #include "Project1/UI/MainHUDWidget.h"
 #include "Project1/Map/Room.h"
@@ -83,6 +85,7 @@ APlayerCharacter::APlayerCharacter()
 	m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
 	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
 	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
+
 }
 
 void APlayerCharacter::BeginPlay()
@@ -124,6 +127,26 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//서버로 CharacterMove 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInst->GetIsClientMode())
+		return;		
+	CharacterMoveMessage Message;
+	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
+	Message.m_Pos = GetActorLocation();
+	FRotator Rotator = GetActorRotation();
+	Message.m_Rot = FVector(Rotator.Pitch, Rotator.Yaw, Rotator.Roll);
+	
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+	
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("CharacterMove Message Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
+	
 }
 
 // Called to bind functionality to input

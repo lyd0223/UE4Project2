@@ -3,6 +3,6 @@ std::string m_NickName;
 std::string m_Chat;
 
 |CharacterMove-
-int m_UserIdx;
+FCharacterInfo m_CharacterInfo;
 FVector m_Pos;
 FVector m_Rot;

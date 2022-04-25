@@ -45,14 +45,14 @@ public:
 class CharacterMoveMessage : public GameServerMessage                    
 {                                                               
 public:                                                         
-	int m_UserIdx;
+	FCharacterInfo m_CharacterInfo;
 	FVector m_Pos;
 	FVector m_Rot;
                                                                 
 public:                                                         
     CharacterMoveMessage()                                               
         : GameServerMessage(EMessageType::CharacterMove)                    
-        , m_UserIdx()
+        , m_CharacterInfo()
         , m_Pos()
         , m_Rot()
     {                                                           
@@ -63,13 +63,13 @@ public:
                                                                 
     virtual int SizeCheck()                                     
     {                                                           
-		return DataSizeCheck(m_UserIdx) + DataSizeCheck(m_Pos) + DataSizeCheck(m_Rot);
+		return DataSizeCheck(m_CharacterInfo) + DataSizeCheck(m_Pos) + DataSizeCheck(m_Rot);
     }                                                           
                                                                 
     void Serialize(GameServerSerializer& _Serializer)           
     {                                                           
         GameServerMessage::Serialize(_Serializer);              
-        _Serializer << m_UserIdx;
+        m_CharacterInfo.Serialize(_Serializer);
         _Serializer << m_Pos;
         _Serializer << m_Rot;
 
@@ -78,7 +78,7 @@ public:
     void DeSerialize(GameServerSerializer& _Serializer)         
     {                                                           
         GameServerMessage::DeSerialize(_Serializer);            
-        _Serializer >> m_UserIdx;
+        m_CharacterInfo.DeSerialize(_Serializer);
         _Serializer >> m_Pos;
         _Serializer >> m_Rot;
 

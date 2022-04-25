@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../GameInfo.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Character.h"
 #include "OtherPlayerCharacter.generated.h"
 
@@ -12,6 +13,13 @@ class PROJECT1_API AOtherPlayerCharacter : public ACharacter
 protected:
 	int m_UserIdx;
 	
+	//NicknameWidget
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* m_NicknameWidgetComponent;
+
+	TSubclassOf<UUserWidget> m_NicknameWidgetClass;
+	
+	class UPlayerAnimInstance* m_AnimInstance;
 public:
 	AOtherPlayerCharacter();
 

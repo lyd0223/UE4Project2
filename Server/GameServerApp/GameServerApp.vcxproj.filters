@@ -22,9 +22,6 @@
     <ClInclude Include="ChatMessageHandler.h">
       <Filter>Messages\Handlers</Filter>
     </ClInclude>
-    <ClInclude Include="GameServerUser.h">
-      <Filter>Contents</Filter>
-    </ClInclude>
     <ClInclude Include="DBUserInfoTable.h">
       <Filter>DBTable</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
     </ClCompile>
     <ClCompile Include="ChatMessageHandler.cpp">
       <Filter>Messages\Handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="GameServerUser.cpp">
-      <Filter>Contents</Filter>
     </ClCompile>
     <ClCompile Include="DBUserInfoTable.cpp">
       <Filter>DBTable</Filter>
