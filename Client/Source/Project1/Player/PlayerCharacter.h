@@ -69,7 +69,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	USceneCaptureComponent2D* m_SceneCaputreComponent;
 	
-	
 	public:
 	FPlayerInfo& GetPlayerInfo()
 	{
@@ -137,7 +136,7 @@ protected:
 
 	void SetCharacterInfoFromGameInstance();
 
-	//이동시 서버로 패킷보내는 함수.
+	//서버로 플레이어 이동 패킷보내는 함수.
 	void SendMovementToServer();
 	
 public:

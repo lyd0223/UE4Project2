@@ -22,33 +22,35 @@ class PROJECT1_API UPlayerAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	UPlayerAnimInstance();
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	m_Direction;
+	float m_Direction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float	m_Speed;
+	float m_Speed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	bool	m_IsAttack;
-	bool	m_IsOnGround;
+	bool m_IsAttack;
+	bool m_IsOnGround;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	bool m_IsHit;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EPlayerAnimType	m_AnimType;
+	EPlayerAnimType m_AnimType;
 
 	// UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	// float	m_FallRecoveryAdditive;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float m_Pitch;
-	
-	public:
+
+	FVector m_PrevLoc;
+
+public:
 	float GetDirection()
 	{
 		return m_Direction;
@@ -68,12 +70,13 @@ class PROJECT1_API UPlayerAnimInstance : public UAnimInstance
 	{
 		return m_Pitch;
 	}
+
 	void SetPitch(float Pitch)
 	{
 		m_Pitch = Pitch;
 	}
-	
-	bool GetIsAttack()	const
+
+	bool GetIsAttack() const
 	{
 		return m_IsAttack;
 	}
@@ -93,11 +96,11 @@ class PROJECT1_API UPlayerAnimInstance : public UAnimInstance
 		m_IsHit = IsHit;
 	}
 
-	public:
-	virtual void NativeInitializeAnimation();
-	virtual void NativeUpdateAnimation(float DeltaSeconds);
+public:
+	virtual void NativeBeginPlay() override;
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
-	public:
+public:
 	UFUNCTION()
 	void AnimNotify_AttackEnd();
 	UFUNCTION()
@@ -106,5 +109,4 @@ class PROJECT1_API UPlayerAnimInstance : public UAnimInstance
 	void AnimNotify_DashEnd();
 	UFUNCTION()
 	void AnimNotify_HitEnd();
-
 };

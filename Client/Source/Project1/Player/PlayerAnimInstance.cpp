@@ -20,10 +20,12 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	m_IsHit = false;
 }
 
-
-void UPlayerAnimInstance::NativeInitializeAnimation()
+void UPlayerAnimInstance::NativeBeginPlay()
 {
-	Super::NativeInitializeAnimation();
+	ACharacter* Character = Cast<ACharacter>(TryGetPawnOwner());
+	if (Character == nullptr)
+		return;
+	m_PrevLoc = Character->GetActorLocation();
 }
 
 void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -38,22 +40,22 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		if (Movement)
 		{
-			// 속도를 구한다.
-			m_Speed = Movement->Velocity.Size();
-
+			//속도계산.
+			FVector NowLoc = Character->GetActorLocation();
+			FVector Dir = NowLoc - m_PrevLoc;
+			m_Speed = abs(Dir.Size()) / DeltaSeconds;
+			
+				PrintViewport(5.f, FColor::White, FString::Printf(TEXT("%f"), m_Speed));
+			
 			// 땅을 밟고 있는지 구한다.
 			bool OnGround = Movement->IsMovingOnGround();
 			
 			if(!m_IsOnGround && OnGround && m_AnimType != EPlayerAnimType::Dash)
 				m_AnimType = EPlayerAnimType::Ground;
 			m_IsOnGround = OnGround;
-
-			// if (!m_IsOnGround && m_AnimType != EPlayerAnimType::Jump)
-			// {
-			// 	m_AnimType = EPlayerAnimType::Fall;
-			// 	//m_FallRecoveryAdditive = 0.f;
-			// }
 		}
+		
+		m_PrevLoc = Character->GetActorLocation();
 	}
 }
 

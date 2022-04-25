@@ -122,14 +122,14 @@ void APlayerCharacter::BeginPlay()
 	Effect->LoadSoundAsync(TEXT("PlayerSpawn"));
 
 	m_SceneCaputreComponent->ShowOnlyActors.Add(this);
+
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	SendMovementToServer();
 	
+	SendMovementToServer();
 }
 
 // Called to bind functionality to input
@@ -246,21 +246,30 @@ void APlayerCharacter::MoveRightKey(float Scale)
 
 		if (Scale == 1.f)
 		{
-			m_MoveKey = true;
-			if (Direction == 0.f)
-				m_AnimInstance->SetDirection(45.f);
-
+			if(!m_MoveKey)
+				m_AnimInstance->SetDirection(90.f);
 			else
-				m_AnimInstance->SetDirection(135.f);
+			{
+				if (Direction == 0.f)
+					m_AnimInstance->SetDirection(45.f);
+				else
+					m_AnimInstance->SetDirection(135.f);
+			}
+			
+			m_MoveKey = true;
 		}
 		else if (Scale == -1.f)
 		{
-			m_MoveKey = true;
-			if (Direction == 0.f)
-				m_AnimInstance->SetDirection(-45.f);
-
+			if(!m_MoveKey)
+				m_AnimInstance->SetDirection(-90.f);
 			else
-				m_AnimInstance->SetDirection(-135.f);
+			{
+				if (Direction == 0.f)
+					m_AnimInstance->SetDirection(-45.f);
+				else
+					m_AnimInstance->SetDirection(-135.f);
+			}
+			m_MoveKey = true;
 		}
 	}
 }

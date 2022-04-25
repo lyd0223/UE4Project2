@@ -54,12 +54,13 @@ void AOtherPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
 {
+	//방향회전
 	SetActorRotation(_Rot);
 
 	FVector Dir = _Pos - GetActorLocation();
-	float Dot = FVector::DotProduct(GetActorForwardVector(), Dir);
-
+	
 	//목표지점과 현재 바라보는방향 사잇각구하기
+	float Dot = FVector::DotProduct(GetActorForwardVector(), Dir);
 	float RadianAngle = FMath::Acos(Dot);
 	float DegreesAngle = FMath::RadiansToDegrees(RadianAngle);
 
@@ -71,8 +72,9 @@ void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
 	}
 	m_AnimInstance->SetDirection(DegreesAngle);
 
-	AAIController* AIController = Cast<AAIController>(Controller);
-	AIController->MoveToLocation(_Pos);
+	//AAIController* AIController = Cast<AAIController>(Controller);
+	//AIController->MoveToLocation(_Pos,1.f);
+	SetActorLocation(_Pos);
 }
 
 void AOtherPlayerCharacter::NickNameWidgetCallBackFunc()
