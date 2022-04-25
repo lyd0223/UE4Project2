@@ -25,7 +25,9 @@ void CharacterMoveMessageHandler::Start()
 			m_Message->m_Pos,
 			FRotator(m_Message->m_Rot.X, m_Message->m_Rot.Y, m_Message->m_Rot.Z),
 			param);
+		OtherPlayerCharacter->SetCharacterInfo(m_Message->m_CharacterInfo);
 		m_GameInstance->AddPlayingOtherCharacter(m_Message->m_CharacterInfo.m_UserIdx, OtherPlayerCharacter);
+		
 		return;
 	}
 	AOtherPlayerCharacter* OtherPlayerCharacter = m_GameInstance->GetPlayingOtherCharacter(m_Message->m_CharacterInfo.m_UserIdx);
