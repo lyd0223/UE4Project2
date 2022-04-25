@@ -45,8 +45,6 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			FVector Dir = NowLoc - m_PrevLoc;
 			m_Speed = abs(Dir.Size()) / DeltaSeconds;
 			
-				PrintViewport(5.f, FColor::White, FString::Printf(TEXT("%f"), m_Speed));
-			
 			// 땅을 밟고 있는지 구한다.
 			bool OnGround = Movement->IsMovingOnGround();
 			

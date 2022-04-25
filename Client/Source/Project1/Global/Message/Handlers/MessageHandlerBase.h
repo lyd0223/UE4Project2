@@ -12,10 +12,7 @@ public:
 		m_World = nullptr;
 		m_Message = nullptr;
 	}
-	virtual ~MessageHandlerBase()
-	{
-		
-	}
+	virtual ~MessageHandlerBase() {}
 
 protected:
 	class UWorld* m_World;

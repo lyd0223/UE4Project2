@@ -56,8 +56,13 @@ void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
 {
 	//방향회전
 	SetActorRotation(_Rot);
-
+	
 	FVector Dir = _Pos - GetActorLocation();
+	if(Dir.Size() < 1.f)
+	{
+		m_AnimInstance->SetDirection(0.f);
+		return;
+	}
 	
 	//목표지점과 현재 바라보는방향 사잇각구하기
 	float Dot = FVector::DotProduct(GetActorForwardVector(), Dir);
