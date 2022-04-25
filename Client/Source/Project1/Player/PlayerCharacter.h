@@ -136,6 +136,9 @@ protected:
 	void GhostTrailFunc();
 
 	void SetCharacterInfoFromGameInstance();
+
+	//이동시 서버로 패킷보내는 함수.
+	void SendMovementToServer();
 	
 public:
 	void EarnEXP(int _EXP);

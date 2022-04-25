@@ -30,11 +30,11 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	APlayerCharacter* player = Cast<APlayerCharacter>(TryGetPawnOwner());
-
-	if (player)
+	ACharacter* Character = Cast<ACharacter>(TryGetPawnOwner());
+	
+	if (Character)
 	{
-		UCharacterMovementComponent* Movement = player->GetCharacterMovement();
+		UCharacterMovementComponent* Movement = Character->GetCharacterMovement();
 
 		if (Movement)
 		{

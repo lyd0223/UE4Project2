@@ -128,24 +128,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//서버로 CharacterMove 패킷 보내기.--------------------------------------------------------
-	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if(GameInst->GetIsClientMode())
-		return;		
-	CharacterMoveMessage Message;
-	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
-	Message.m_Pos = GetActorLocation();
-	FRotator Rotator = GetActorRotation();
-	Message.m_Rot = FVector(Rotator.Pitch, Rotator.Yaw, Rotator.Roll);
-	
-	GameServerSerializer Serializer;
-	Message.Serialize(Serializer);
-	
-	if (!GameInst->Send(Serializer.GetData()))
-	{
-		PrintViewport(2.f, FColor::Red, TEXT("CharacterMove Message Send Error!"));
-	}
-	//--------------------------------------------------------------------------------------
+	SendMovementToServer();
 	
 }
 
@@ -958,6 +941,29 @@ void APlayerCharacter::SaveTestKey()
 	if (!GameInst->Send(Serializer.GetData()))
 	{
 		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfo Message Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
+}
+
+void APlayerCharacter::SendMovementToServer()
+{
+	
+	//서버로 CharacterMove 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInst->GetIsClientMode())
+		return;		
+	CharacterMoveMessage Message;
+	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
+	Message.m_Pos = GetActorLocation();
+	FRotator Rotator = GetActorRotation();
+	Message.m_Rot = FVector(Rotator.Pitch, Rotator.Yaw, Rotator.Roll);
+	
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+	
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("CharacterMove Message Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 }

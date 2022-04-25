@@ -47,14 +47,24 @@ void AOtherPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
 {
-	AAIController* AIController = Cast<AAIController>(Controller);
-	AIController->MoveToLocation(_Pos);
-
+	
 	SetActorRotation(_Rot);
 
 	FVector Dir = _Pos - GetActorLocation();
 	float Dot = FVector::DotProduct(GetActorForwardVector(),Dir);
+	
+	//목표지점과 현재 바라보는방향 사잇각구하기
 	float RadianAngle = FMath::Acos(Dot);
 	float DegreesAngle = FMath::RadiansToDegrees(RadianAngle);
-	m_AnimInstance;
+
+	//방향 구하기 (Cross Product한 값이 0보다 작을시 왼쪽.)
+	FVector Cross = FVector::CrossProduct(GetActorForwardVector(),Dir);
+	if(Cross.Z < 0)
+	{
+		DegreesAngle *= -1.f;
+	}
+	m_AnimInstance->SetDirection(DegreesAngle);
+	
+	AAIController* AIController = Cast<AAIController>(Controller);
+	AIController->MoveToLocation(_Pos);
 }
