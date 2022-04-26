@@ -426,9 +426,6 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-/Client/Intermediate
-/Client/Binaries/Win64
-/Client/Saved
 /Client/Binaries/Win64
 /Client/Intermediate
 /Client/Saved
@@ -436,4 +433,4 @@ DerivedDataCache/*
 !/Client/Content/01Resources
 
 
-!/PorjectCode/Thirdparty/lib/*
+!/Server/Thirdparty/lib/*
