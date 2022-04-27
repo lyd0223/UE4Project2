@@ -45,7 +45,7 @@ void ALootBoxTrigger::Tick(float DeltaTime)
 				if(Visibility == ESlateVisibility::Collapsed)
 				{
 					ULootHUDWidget* LootHudWidget = GameModeBase->GetMainHUDWidget()->GetLootHUD();
-					LootHudWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+					LootHudWidget->WidgetOpen(true);
 					LootHudWidget->SetLootBox(m_OwnerLootBox);
 
 					LootHudWidget->GetLootListView()->ClearListItems();
@@ -67,7 +67,7 @@ void ALootBoxTrigger::Tick(float DeltaTime)
 				}
 				else
 				{
-					GameModeBase->GetMainHUDWidget()->GetLootHUD()->SetVisibility(ESlateVisibility::Collapsed);
+					GameModeBase->GetMainHUDWidget()->GetLootHUD()->WidgetOpen(false);
 
 					APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
 					FInputModeGameOnly Mode;

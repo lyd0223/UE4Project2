@@ -38,4 +38,6 @@ public:
 
 	UFUNCTION()
 	void ItemHovered(UObject* Data, bool Hovered);
+
+	void WidgetOpen(bool _IsOpen);
 };

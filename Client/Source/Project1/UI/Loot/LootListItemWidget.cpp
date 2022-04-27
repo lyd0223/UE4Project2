@@ -29,7 +29,8 @@ void ULootListItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 	ListItem->SetOwnerItemWidget(this);
 	
 	FItem* Item = ListItem->GetItem();
-	
+
+	m_BorderImage->SetVisibility(ESlateVisibility::Collapsed);
 	m_ItemImage->SetBrushFromTexture(Item->ItemTableInfo->IconTexture);
 	m_CountText->SetText(FText::FromString(FString::FromInt(Item->Count)));
 	m_NameText->SetText(FText::FromString(Item->ItemTableInfo->Name));

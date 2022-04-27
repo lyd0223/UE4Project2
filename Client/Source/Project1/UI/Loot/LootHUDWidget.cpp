@@ -64,3 +64,20 @@ void ULootHUDWidget::ItemHovered(UObject* Data, bool Hovered)
 			ItemData->GetOwnerItemWidget()->UnHovered();
 	}
 }
+
+void ULootHUDWidget::WidgetOpen(bool _IsOpen)
+{
+	if(_IsOpen)
+	{
+		this->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		for(auto& ItemData : m_LootListView->GetListItems())
+		{
+			ULootListItemData* LootListItemData = Cast<ULootListItemData>(ItemData);
+			LootListItemData->GetOwnerItemWidget()->UnHovered();
+		}
+	}
+	else
+	{
+		this->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
