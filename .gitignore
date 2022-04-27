@@ -430,6 +430,7 @@ DerivedDataCache/*
 /Client/Intermediate
 /Client/Saved
 /Client/Content/*
+/Client/WindowsNoEditor
 !/Client/Content/01Resources
 
 
