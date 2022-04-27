@@ -34,6 +34,8 @@ protected:
 	bool m_MoveKey;
 	bool m_AttackEnable;
 
+	bool m_IsDeath;
+	
 	//UI모드일시 화면회전, 키입력 등을 막기 위한 용도
 	bool m_IsUIMode;
 

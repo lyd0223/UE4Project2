@@ -31,4 +31,8 @@ public:
 public:
 	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
 	virtual void BeginPlay() override;
+
+	public:
+	void GameOver();
+	void GameClear();
 };

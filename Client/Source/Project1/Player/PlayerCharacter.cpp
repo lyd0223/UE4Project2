@@ -11,6 +11,7 @@
 #include "Project1/Project1GameModeBase.h"
 #include "Project1/WaitingRoomGameModeBase.h"
 #include "Project1/Effect/NormalEffect.h"
+#include "Project1/Effect/CameraShake/HitCameraShake.h"
 #include "Project1/Global/Message/ClientToServer.h"
 #include "Project1/Global/Message/ServerAndClient.h"
 #include "Project1/Manager/InventoryManager.h"
@@ -44,6 +45,8 @@ APlayerCharacter::APlayerCharacter()
 
 	m_MoveKey = false;
 	m_AttackEnable = true;
+
+	m_IsDeath = false;
 
 	m_IsUIMode = false;
 
@@ -85,7 +88,6 @@ APlayerCharacter::APlayerCharacter()
 	m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
 	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
 	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
-
 }
 
 void APlayerCharacter::BeginPlay()
@@ -122,14 +124,22 @@ void APlayerCharacter::BeginPlay()
 	Effect->LoadSoundAsync(TEXT("PlayerSpawn"));
 
 	m_SceneCaputreComponent->ShowOnlyActors.Add(this);
-
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	SendMovementToServer();
+
+	if (m_IsWaitingRoom)
+		SendMovementToServer();
+
+	if (m_IsDeath)
+	{
+		if(m_Arm->TargetArmLength > 4000.f)
+			return;
+		m_Arm->TargetArmLength += 5.f;
+		
+	}
 }
 
 // Called to bind functionality to input
@@ -180,7 +190,20 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	// �÷��̾ �׾��� ���
 	if (m_PlayerInfo.HP <= 0)
 	{
+		m_IsDeath = true;
+
+		FRotator Rot = m_Arm->GetRelativeRotation();
+		Rot.Pitch = -45.f;
+		m_Arm->SetRelativeRotation(Rot);
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		m_AnimInstance->ChangeAnimType(EPlayerAnimType::Death);
+		AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
+		if (IsValid(gameMode))
+		{
+			UMainHUDWidget* mainHUDWidget = gameMode->GetMainHUDWidget();
+			if(mainHUDWidget)
+				mainHUDWidget->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 	else
 	{
@@ -205,9 +228,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 		}
 	}
 
-	// GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(
-	// 	UHitCameraShake::StaticClass());
-
+	GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(UHitCameraShake::StaticClass());
 
 	return Damage;
 }
@@ -215,6 +236,9 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 
 void APlayerCharacter::MoveFrontKey(float Scale)
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsUIMode)
 	{
 		AddMovementInput(GetActorForwardVector(), Scale);
@@ -239,6 +263,9 @@ void APlayerCharacter::MoveFrontKey(float Scale)
 
 void APlayerCharacter::MoveRightKey(float Scale)
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsUIMode)
 	{
 		AddMovementInput(GetActorRightVector(), Scale);
@@ -246,7 +273,7 @@ void APlayerCharacter::MoveRightKey(float Scale)
 
 		if (Scale == 1.f)
 		{
-			if(!m_MoveKey)
+			if (!m_MoveKey)
 				m_AnimInstance->SetDirection(90.f);
 			else
 			{
@@ -255,12 +282,12 @@ void APlayerCharacter::MoveRightKey(float Scale)
 				else
 					m_AnimInstance->SetDirection(135.f);
 			}
-			
+
 			m_MoveKey = true;
 		}
 		else if (Scale == -1.f)
 		{
-			if(!m_MoveKey)
+			if (!m_MoveKey)
 				m_AnimInstance->SetDirection(-90.f);
 			else
 			{
@@ -276,17 +303,13 @@ void APlayerCharacter::MoveRightKey(float Scale)
 
 void APlayerCharacter::RotationZKey(float Scale)
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsUIMode)
 	{
 		if (m_IsWaitingRoom)
 		{
-			// AWaitingRoomPlayerController* WaitingRoomPlayerController =
-			// 	Cast<AWaitingRoomPlayerController>(GetWorld()->GetFirstPlayerController());
-			//
-			// if(WaitingRoomPlayerController)
-			// {
-			// 	WaitingRoomPlayerController->AddYawInput(Scale);
-			// }
 			if (GetWorld()->GetFirstPlayerController()->IsInputKeyDown(EKeys::RightMouseButton))
 				AddControllerYawInput(Scale);
 		}
@@ -313,6 +336,9 @@ void APlayerCharacter::RotationZKey(float Scale)
 
 void APlayerCharacter::CameraZoomKey(float Scale)
 {
+	if(m_IsDeath)
+		return;
+	
 	m_Arm->TargetArmLength -= Scale * 20.f;
 
 	if (m_Arm->TargetArmLength < 100.f)
@@ -324,6 +350,9 @@ void APlayerCharacter::CameraZoomKey(float Scale)
 
 void APlayerCharacter::CameraRotationYKey(float Scale)
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsUIMode)
 	{
 		FRotator Rot = m_Arm->GetRelativeRotation();
@@ -344,9 +373,9 @@ void APlayerCharacter::CameraRotationYKey(float Scale)
 
 void APlayerCharacter::JumpKey()
 {
-	// if (m_Death)
-	// 	return;
-	//
+	if(m_IsDeath)
+	return;
+	
 
 	if (m_AnimInstance->GetAnimType() == EPlayerAnimType::Ground)
 	{
@@ -358,6 +387,9 @@ void APlayerCharacter::JumpKey()
 
 void APlayerCharacter::AttackKey()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom)
 	{
 		if (m_AttackEnable && !m_IsUIMode)
@@ -375,6 +407,9 @@ void APlayerCharacter::AttackKey()
 
 void APlayerCharacter::MenuKey()
 {
+	if(m_IsDeath)
+		return;
+	
 	UMenuWidget* MenuWidget = nullptr;
 	if (m_IsWaitingRoom)
 	{
@@ -427,6 +462,9 @@ void APlayerCharacter::MenuKey()
 
 void APlayerCharacter::DashKey()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		if (m_AnimInstance->GetAnimType() == EPlayerAnimType::Ground)
@@ -440,7 +478,7 @@ void APlayerCharacter::DashKey()
 			FowardVector.Normalize();
 			FowardVector = FowardVector.FVector::RotateAngleAxis(DirAngle, FVector::UpVector);
 
-			float dashPower = 3000.f;
+			float dashPower = 2000.f;
 
 			LaunchCharacter(FowardVector * dashPower, false, false);
 
@@ -475,6 +513,9 @@ void APlayerCharacter::DashKey()
 
 void APlayerCharacter::BulletQuickSlotLeftKey()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
@@ -499,6 +540,9 @@ void APlayerCharacter::BulletQuickSlotLeftKey()
 
 void APlayerCharacter::BulletQuickSlotRightKey()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
@@ -523,6 +567,9 @@ void APlayerCharacter::BulletQuickSlotRightKey()
 
 void APlayerCharacter::ItemQuickSlot1Key()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
@@ -555,6 +602,9 @@ void APlayerCharacter::ItemQuickSlot1Key()
 
 void APlayerCharacter::ItemQuickSlot2Key()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
@@ -589,6 +639,9 @@ void APlayerCharacter::ItemQuickSlot2Key()
 
 void APlayerCharacter::ItemQuickSlot3Key()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
@@ -621,6 +674,9 @@ void APlayerCharacter::ItemQuickSlot3Key()
 
 void APlayerCharacter::ItemQuickSlot4Key()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
@@ -653,6 +709,9 @@ void APlayerCharacter::ItemQuickSlot4Key()
 
 void APlayerCharacter::ItemQuickSlot5Key()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (!m_IsWaitingRoom && !m_IsUIMode)
 	{
 		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
@@ -691,6 +750,9 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::SPRecovery()
 {
+	if(m_IsDeath)
+		return;
+	
 	if (m_PlayerInfo.SP < m_PlayerInfo.SPMax)
 	{
 		//기력회복은 초당 전체 기력의 1/100
@@ -767,7 +829,7 @@ void APlayerCharacter::SetCharacterInfoFromGameInstance()
 	m_PlayerInfo.SPMax = CharacterInfo.m_SP;
 	m_PlayerInfo.AttackSpeed = CharacterInfo.m_AttackSpeed;
 	m_PlayerInfo.MoveSpeed = CharacterInfo.m_MoveSpeed;
-	
+
 	GameInstance->InventorySetting();
 }
 
@@ -775,11 +837,11 @@ void APlayerCharacter::EarnEXP(int _EXP)
 {
 	m_PlayerInfo.EXP += _EXP;
 	//Level Up 레벨업
-	if(m_PlayerInfo.EXP >= m_PlayerInfo.EXPMax)
+	if (m_PlayerInfo.EXP >= m_PlayerInfo.EXPMax)
 	{
 		m_PlayerInfo.Level++;
 		m_PlayerInfo.EXP = 0;
-		m_PlayerInfo.EXPMax = 100 * pow(1.1f,m_PlayerInfo.Level);
+		m_PlayerInfo.EXPMax = 100 * pow(1.1f, m_PlayerInfo.Level);
 	}
 	SetUI();
 }
@@ -825,7 +887,7 @@ void APlayerCharacter::SetUI()
 	}
 	if (MenuWidget == nullptr)
 		return;
-	
+
 	MenuWidget->GetMenuCommonWidget()->GetStatsWidget()->SetDatas(m_PlayerInfo);
 }
 
@@ -931,22 +993,21 @@ void APlayerCharacter::DetectDoor()
 
 void APlayerCharacter::SaveTestKey()
 {
-	
 	//서버로 세이브 패킷 보내기.--------------------------------------------------------
 	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if(GameInst->GetIsClientMode())
+	if (GameInst->GetIsClientMode())
 		return;
 
 	//현재 CharacterInfo를 GameInstance에 저장.
 	GameInst->SetPlayingCharacterInfo(m_PlayerInfo);
-	
+
 	SaveCharacterInfoMessage Message;
 	Message.m_UserIdx = GameInst->GetUserIdx();
 	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
-	
+
 	GameServerSerializer Serializer;
 	Message.Serialize(Serializer);
-	
+
 	if (!GameInst->Send(Serializer.GetData()))
 	{
 		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfoMessage Send Error!"));
@@ -956,20 +1017,19 @@ void APlayerCharacter::SaveTestKey()
 
 void APlayerCharacter::SendMovementToServer()
 {
-	
 	//서버로 CharacterMove 패킷 보내기.--------------------------------------------------------
 	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if(GameInst->GetIsClientMode())
-		return;		
+	if (GameInst->GetIsClientMode())
+		return;
 	CharacterMoveMessage Message;
 	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
 	Message.m_Pos = GetActorLocation();
 	FRotator Rotator = GetActorRotation();
 	Message.m_Rot = FVector(Rotator.Pitch, Rotator.Yaw, Rotator.Roll);
-	
+
 	GameServerSerializer Serializer;
 	Message.Serialize(Serializer);
-	
+
 	if (!GameInst->Send(Serializer.GetData()))
 	{
 		PrintViewport(2.f, FColor::Red, TEXT("CharacterMoveMessage Send Error!"));
