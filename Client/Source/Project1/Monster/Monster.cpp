@@ -4,7 +4,6 @@
 #include "DamageFloating.h"
 #include "MonsterAIController.h"
 #include "MonsterAnimInstance.h"
-#include "SpawnPoint.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Project1GameModeBase.h"
 #include "../UI/MainHUDWidget.h"
@@ -130,16 +129,8 @@ void AMonster::Death()
 	// 죽었을때 처리할 내용을 처리한다.
 	// 죽었을때의 효과나 아이템 생성 등을 처리한다.
 	// 객체를 제거한다.
-	Destroy();
-	m_SpawnPoint->Death();
-	 
 
-	// FActorSpawnParameters	param;
-	// param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	//
-	// AItemBox* ItemBox = GetWorld()->SpawnActor<AItemBox>(AItemBox::StaticClass(),
-	// 	GetActorLocation(), FRotator::ZeroRotator, param);
-
+	//override된 함수들에서 처리.
 }
 
 void AMonster::NormalAttack()

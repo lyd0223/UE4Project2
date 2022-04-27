@@ -3,6 +3,9 @@
 
 #include "BossMonster.h"
 
+#include "Project1/Project1GameModeBase.h"
+#include "Project1/Player/PlayerCharacter.h"
+
 ABossMonster::ABossMonster()
 {
 	m_IsSkillOn = true;
@@ -21,6 +24,16 @@ void ABossMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+}
+
+void ABossMonster::Death()
+{
+	Super::Death();
+
+	AProject1GameModeBase* GameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
+	if(GameMode == nullptr)
+		return;
+	GameMode->GameClear(m_Target->GetPlayerInfo());
 }
 
 void ABossMonster::NormalAttack()

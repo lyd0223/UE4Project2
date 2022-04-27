@@ -191,19 +191,18 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	if (m_PlayerInfo.HP <= 0)
 	{
 		m_IsDeath = true;
+		m_PlayerInfo.HP = 0;
 
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		m_AnimInstance->ChangeAnimType(EPlayerAnimType::Death);
+		
 		FRotator Rot = m_Arm->GetRelativeRotation();
 		Rot.Pitch = -45.f;
 		m_Arm->SetRelativeRotation(Rot);
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		m_AnimInstance->ChangeAnimType(EPlayerAnimType::Death);
+		
 		AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
-		if (IsValid(gameMode))
-		{
-			UMainHUDWidget* mainHUDWidget = gameMode->GetMainHUDWidget();
-			if(mainHUDWidget)
-				mainHUDWidget->SetVisibility(ESlateVisibility::Collapsed);
-		}
+		if(gameMode)
+			gameMode->GameOver();
 	}
 	else
 	{

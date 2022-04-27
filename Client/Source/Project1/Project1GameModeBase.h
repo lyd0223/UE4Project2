@@ -17,6 +17,7 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class UMainHUDWidget>	m_MainHUDWidgetClass;
+	
 	class UMainHUDWidget* m_MainHUDWidget;
 	
 	TArray<TSubclassOf<APawn>>	m_PlayerClassArray;
@@ -29,10 +30,11 @@ public:
 		return m_MainHUDWidget;
 	}
 public:
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	public:
 	void GameOver();
-	void GameClear();
+	void GameClear(const FPlayerInfo& _PlayerInfo);
 };

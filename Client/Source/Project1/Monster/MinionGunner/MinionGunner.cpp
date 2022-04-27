@@ -52,3 +52,9 @@ void AMinionGunner::NormalAttack()
 		
 	
 }
+
+void AMinionGunner::Death()
+{
+	Destroy();
+	m_SpawnPoint->Death();
+}

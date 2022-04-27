@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "ClearWidget.h"
 #include "../GameInfo.h"
 #include "PlayerHUDWidget.h"
 #include "MenuWidget.h"
@@ -34,6 +35,9 @@ protected:
 	UMenuWidget* m_MenuWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	ULootHUDWidget* m_LootHUD;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UClearWidget* m_ClearWidget;
+	
 	
 public:
 	UPlayerHUDWidget* GetPlayerHUDWidget() const
@@ -77,5 +81,8 @@ public:
 	}
 protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	public:
+	void GameClear();
+	void GameOver();
 };

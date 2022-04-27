@@ -14,11 +14,30 @@ void UMainHUDWidget::NativeConstruct()
 	m_QuickSlotWidget = Cast<UQuickSlotsWidget>(GetWidgetFromName(TEXT("UI_QuickSlots")));
 	m_MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("UI_Menu")));
 	m_LootHUD = Cast<ULootHUDWidget>(GetWidgetFromName(TEXT("UI_LootHUD")));
+	m_ClearWidget = Cast<UClearWidget>(GetWidgetFromName(TEXT("UI_ClearWidget")));
 }
 
-void UMainHUDWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UMainHUDWidget::GameClear()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
+	m_PlayerHUDWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_BuffMainWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MonsterStateWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MinimapWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_QuickSlotWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_LootHUD->SetVisibility(ESlateVisibility::Collapsed);
+	m_ClearWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 
+}
 
+void UMainHUDWidget::GameOver()
+{
+	m_PlayerHUDWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_BuffMainWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MonsterStateWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MinimapWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_QuickSlotWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_MenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	m_LootHUD->SetVisibility(ESlateVisibility::Collapsed);
+	m_ClearWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }

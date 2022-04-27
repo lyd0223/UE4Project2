@@ -39,6 +39,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	virtual void Death() override;
 	virtual void NormalAttack() override;
 	virtual void UseSkill(int32 Index) override;
 

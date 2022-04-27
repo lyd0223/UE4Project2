@@ -5,6 +5,7 @@
 
 #include "Project1GameInstance.h"
 #include "AssetManager/AssetPathLoader.h"
+#include "Global/Message/ClientToServer.h"
 #include "Manager/InventoryManager.h"
 #include "UI/MainHUDWidget.h"
 #include "UI/MenuCommonWidget.h"
@@ -119,4 +120,50 @@ void AProject1GameModeBase::BeginPlay()
 	FInputModeGameOnly	Mode;
 	Controller->SetInputMode(Mode);
 	Controller->bShowMouseCursor = false;
+}
+
+void AProject1GameModeBase::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	
+}
+
+void AProject1GameModeBase::GameOver()
+{
+	m_MainHUDWidget->GameOver();
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	PlayerController->bShowMouseCursor = true;
+}
+
+void AProject1GameModeBase::GameClear(const FPlayerInfo& _PlayerInfo)
+{
+	m_MainHUDWidget->GameClear();
+	APlayerController* PlayerController = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	PlayerController->bShowMouseCursor = true;
+	
+	//캐릭터정보 저장
+	//서버로 캐릭터정보세이브 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if (GameInst->GetIsClientMode())
+		return;
+
+	//현재 CharacterInfo를 GameInstance에 저장.
+	GameInst->SetPlayingCharacterInfo(_PlayerInfo);
+
+	SaveCharacterInfoMessage Message;
+	Message.m_UserIdx = GameInst->GetUserIdx();
+	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
+
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfoMessage Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
+	
+	
 }

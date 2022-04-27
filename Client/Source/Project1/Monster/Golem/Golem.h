@@ -22,5 +22,6 @@ class PROJECT1_API AGolem : public AMonster
 	virtual void Tick(float DeltaTime) override;
 
 	public:
-	virtual void NormalAttack();
+	virtual void NormalAttack() override;
+	virtual void Death() override;
 };

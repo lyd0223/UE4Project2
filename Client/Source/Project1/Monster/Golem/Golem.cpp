@@ -84,3 +84,9 @@ void AGolem::NormalAttack()
 		float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
 	}
 }
+
+void AGolem::Death()
+{
+	Destroy();
+	m_SpawnPoint->Death();
+}

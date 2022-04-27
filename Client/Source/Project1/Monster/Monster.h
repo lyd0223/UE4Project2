@@ -4,6 +4,7 @@
 
 #include "../GameInfo.h"
 #include "GameFramework/Character.h"
+#include "SpawnPoint.h"
 #include "Monster.generated.h"
 
 UCLASS()
@@ -19,7 +20,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FMonsterInfo	m_MonsterInfo;
 
-	class ASpawnPoint* m_SpawnPoint;
+	ASpawnPoint* m_SpawnPoint;
 
 	FString			m_MonsterInfoName;
 
@@ -69,7 +70,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 	
 	public:
-	void Death();
+	virtual void Death();
 
 	public:
 	virtual void NormalAttack();
