@@ -44,10 +44,10 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 		//						int _LV, int _EXP,
 		//						float _HP, float _SP, float _ATK, float _DEF,
 		//						float _AttackSpeed, float _MoveSpeed, 
-		//						std::vector<char> _InventoryData)
+		//						std::vector<unsigned char> _InventoryData)
 		
 		std::string InventoryDataString = MysqlRow[12];
-		std::vector<char> InventoryData(InventoryDataString.begin(), InventoryDataString.end());
+		std::vector<unsigned char> InventoryData(InventoryDataString.begin(), InventoryDataString.end());
 		for (int i = 0; i < InventoryData.size(); i++)
 		{
 			InventoryData[i]--;
@@ -79,7 +79,7 @@ DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharac
 		+ std::to_string(_CharacterInfo.m_ATK) + "','"
 		+ std::to_string(_CharacterInfo.m_DEF) + "','"
 		+ std::to_string(_CharacterInfo.m_AttackSpeed) + "','"
-		+ std::to_string(_CharacterInfo.m_MoveSpeed) + "',";
+		+ std::to_string(_CharacterInfo.m_MoveSpeed) + "','";
 	std::string InventoryDataString(_CharacterInfo.m_InventoryData.begin(), _CharacterInfo.m_InventoryData.end());
 	for (int i = 0; i < InventoryDataString.size(); i++)
 	{

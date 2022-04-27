@@ -170,7 +170,7 @@ void UInventoryManager::SaveCharacterInfoInventoryData(FCharacterInfo& Character
 void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& CharacterInfo)
 {
 	m_ItemArray.Reset();
-	std::vector<char> InventoryData = CharacterInfo.m_InventoryData;
+	std::vector<unsigned char> InventoryData = CharacterInfo.m_InventoryData;
 
 	//인벤토리가 비어있는경우.
 	if(InventoryData.size() < sizeof(int))
@@ -188,9 +188,9 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 		//ItemTableInfo 설정.
 		if(InventoryData[i] == 0)
 			return;
-		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(static_cast<int>(InventoryData[i]));
+		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(*(int*)&InventoryData[i]);
 		//ItemCount 설정
-		LoadItem->Count = static_cast<int>(InventoryData[i+sizeof(int)]);
+		LoadItem->Count = static_cast<int>(*(int*)&InventoryData[i+sizeof(int)]);
 		
 		//인벤토리에 추가.
 		m_ItemArray.Add(LoadItem);

@@ -77,7 +77,7 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 
 	if (!GameInst->Send(Serializer.GetData()))
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("CreateCharacterInfo Message Send Error!"));
+		PrintViewport(2.f, FColor::Red, TEXT("CreateCharacterInfoMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 }

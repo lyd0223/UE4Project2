@@ -23,7 +23,7 @@ public:
 	FCharacterInfo(int _Idx, int _UserIdx, std::string _Nickname, std::string _ClassName, 
 		int _LV, int _EXP,
 		float _HP, float _SP, float _ATK , float _DEF,
-		float _AttackSpeed, float _MoveSpeed, std::vector<char> _InventoryData)
+		float _AttackSpeed, float _MoveSpeed, std::vector<unsigned char> _InventoryData)
 	{
 		m_Idx = _Idx;
 		m_UserIdx = _UserIdx;
@@ -53,7 +53,7 @@ public:
 	float m_DEF;
 	float m_AttackSpeed;
 	float m_MoveSpeed;
-	std::vector<char> m_InventoryData;
+	std::vector<unsigned char> m_InventoryData;
 
 public:
 	int GetDataSize()

@@ -45,7 +45,7 @@ void ASelectCharacterGameModeBase::BeginPlay()
 	
 	if (!GameInst->Send(Serializer.GetData()))
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("SignUp Message Send Error!"));
+		PrintViewport(2.f, FColor::Red, TEXT("RequestCharacterInfoMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 	

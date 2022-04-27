@@ -949,7 +949,7 @@ void APlayerCharacter::SaveTestKey()
 	
 	if (!GameInst->Send(Serializer.GetData()))
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfo Message Send Error!"));
+		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfoMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 }
@@ -972,7 +972,7 @@ void APlayerCharacter::SendMovementToServer()
 	
 	if (!GameInst->Send(Serializer.GetData()))
 	{
-		PrintViewport(2.f, FColor::Red, TEXT("CharacterMove Message Send Error!"));
+		PrintViewport(2.f, FColor::Red, TEXT("CharacterMoveMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
 }

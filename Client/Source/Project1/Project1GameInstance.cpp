@@ -241,7 +241,8 @@ bool UProject1GameInstance::Send(const std::vector<uint8>& _Data)
 
 	int32 DataSendSize = 0;
 
-	return m_Socket->Send(&_Data[0], _Data.size(), DataSendSize);
+	bool Result = m_Socket->Send(&_Data[0], _Data.size(), DataSendSize);
+	return Result;
 }
 
 //클라이언트모드 전용푸시함수.
