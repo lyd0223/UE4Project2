@@ -3,7 +3,6 @@
 
 #include "ChatListItemData.h"
 #include "ChatListItemWidget.h"
-#include "MaterialEditor/DEditorTextureParameterValue.h"
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Global/Message/ServerAndClient.h"
 
