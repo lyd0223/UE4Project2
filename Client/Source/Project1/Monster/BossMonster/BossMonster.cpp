@@ -33,7 +33,7 @@ void ABossMonster::Death()
 	AProject1GameModeBase* GameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 	if(GameMode == nullptr)
 		return;
-	GameMode->GameClear(m_Target->GetPlayerInfo());
+	GameMode->GameClear();
 }
 
 void ABossMonster::NormalAttack()

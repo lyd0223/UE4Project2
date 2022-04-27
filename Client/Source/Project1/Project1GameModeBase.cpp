@@ -11,6 +11,7 @@
 #include "UI/MenuCommonWidget.h"
 #include "UI/Bullet/BulletListItemData.h"
 #include "UI/Bullet/BulletWidget.h"
+#include "Player/PlayerCharacter.h"
 
 AProject1GameModeBase::AProject1GameModeBase()
 {
@@ -137,11 +138,17 @@ void AProject1GameModeBase::GameOver()
 	PlayerController->bShowMouseCursor = true;
 }
 
-void AProject1GameModeBase::GameClear(const FPlayerInfo& _PlayerInfo)
+void AProject1GameModeBase::GameClear()
 {
 	m_MainHUDWidget->GameClear();
 	APlayerController* PlayerController = Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	if(PlayerController == nullptr)
+		return;
 	PlayerController->bShowMouseCursor = true;
+	APlayerCharacter* Player = Cast<APlayerCharacter>(PlayerController->GetCharacter());
+	if(Player == nullptr)
+		return;
+	Player->SetIsUIMode(true);
 	
 	//캐릭터정보 저장
 	//서버로 캐릭터정보세이브 패킷 보내기.--------------------------------------------------------
@@ -150,7 +157,7 @@ void AProject1GameModeBase::GameClear(const FPlayerInfo& _PlayerInfo)
 		return;
 
 	//현재 CharacterInfo를 GameInstance에 저장.
-	GameInst->SetPlayingCharacterInfo(_PlayerInfo);
+	GameInst->SetPlayingCharacterInfo(Player->GetPlayerInfo());
 
 	SaveCharacterInfoMessage Message;
 	Message.m_UserIdx = GameInst->GetUserIdx();

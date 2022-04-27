@@ -36,5 +36,5 @@ public:
 
 	public:
 	void GameOver();
-	void GameClear(const FPlayerInfo& _PlayerInfo);
+	void GameClear();
 };
