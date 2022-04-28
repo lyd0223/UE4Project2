@@ -30,10 +30,10 @@ public:
 
 public:
 	UFUNCTION()
-	void TriggerBegin();
+	void TriggerBegin(AActor* _OtherActor);
 
 	UFUNCTION()
-	void TriggerEnd();
+	void TriggerEnd(AActor* _OtherActor);
 
 	void SetTriggerSize(float Radious);
 };

@@ -841,6 +841,23 @@ void APlayerCharacter::EarnEXP(int _EXP)
 		m_PlayerInfo.Level++;
 		m_PlayerInfo.EXP = 0;
 		m_PlayerInfo.EXPMax = 100 * pow(1.1f, m_PlayerInfo.Level);
+
+		m_PlayerInfo.HPMax += 50.f;
+		m_PlayerInfo.HP = m_PlayerInfo.HPMax;
+		m_PlayerInfo.SPMax += 10.f;
+		m_PlayerInfo.SP = m_PlayerInfo.SPMax;
+		m_PlayerInfo.ATK += 5.f;
+		m_PlayerInfo.DEF += 1.f;
+		
+		//스폰 이펙트
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
+																	GetActorLocation(), FRotator::ZeroRotator, param);
+
+		Effect->LoadParticleAsync(TEXT("PlayerLevelUp"));
+		Effect->LoadSoundAsync(TEXT("PlayerLevelUp"));
 	}
 	SetUI();
 }

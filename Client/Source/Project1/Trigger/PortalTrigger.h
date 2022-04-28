@@ -21,10 +21,10 @@ class PROJECT1_API APortalTrigger : public ABoxTrigger
 
 	public:
 	UFUNCTION()
-	void TriggerBegin();
+	void TriggerBegin(AActor* _OtherActor);
 
 	UFUNCTION()
-	void TriggerEnd();
+	void TriggerEnd(AActor* _OtherActor);
 
 	void SetTriggerSize(FVector SizeVector);
 };

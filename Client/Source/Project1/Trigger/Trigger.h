@@ -15,7 +15,7 @@ enum class ETriggerType : uint8
 	Capsule
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTriggerDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTriggerDelegate, AActor*, _Actor);
 
 UCLASS()
 class PROJECT1_API ATrigger : public AActor
@@ -32,13 +32,9 @@ class PROJECT1_API ATrigger : public AActor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	ETriggerType	m_ShapeType;
 
-	UPROPERTY(BlueprintAssignable, Category = "Collision")
 	FTriggerDelegate	m_TriggerBeginDelegate;
-
-
-	UPROPERTY(BlueprintAssignable, Category = "Collision")
 	FTriggerDelegate	m_TriggerEndDelegate;
-
+	
 	public:
 	FTriggerDelegate& GetBeginDelegate()
 	{

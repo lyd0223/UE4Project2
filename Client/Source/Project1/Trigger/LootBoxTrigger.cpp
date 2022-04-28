@@ -89,7 +89,7 @@ void ALootBoxTrigger::Tick(float DeltaTime)
 	}
 }
 
-void ALootBoxTrigger::TriggerBegin()
+void ALootBoxTrigger::TriggerBegin(AActor* _OtherActor)
 {
 	//PrintViewport(1.f, FColor::Red, TEXT("Begin LootBoxTrigger"));
 	
@@ -100,7 +100,7 @@ void ALootBoxTrigger::TriggerBegin()
 		m_OwnerLootBox->GetWidgetComponent()->SetVisibility(true);
 }
 
-void ALootBoxTrigger::TriggerEnd()
+void ALootBoxTrigger::TriggerEnd(AActor* _OtherActor)
 {
 	//PrintViewport(1.f, FColor::Red, TEXT("End LootBoxTrigger"));
 

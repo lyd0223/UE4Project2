@@ -32,12 +32,12 @@ void ATrigger::TriggerBeginOverlap(UPrimitiveComponent* OverlapCom, AActor* Othe
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	m_TriggerBeginDelegate.Broadcast();
+	m_TriggerBeginDelegate.Broadcast(OtherActor);
 }
 
 void ATrigger::TriggerEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	m_TriggerEndDelegate.Broadcast();
+	m_TriggerEndDelegate.Broadcast(OtherActor);
 }

@@ -25,7 +25,7 @@ void ARoomTrigger::Tick(float DeltaTime)
 
 }
 
-void ARoomTrigger::TriggerBegin()
+void ARoomTrigger::TriggerBegin(AActor* _OtherActor)
 {
 	//PrintViewport(1.f, FColor::Red, TEXT("Begin Trigger"));
 
@@ -36,7 +36,7 @@ void ARoomTrigger::TriggerBegin()
 	
 }
 
-void ARoomTrigger::TriggerEnd()
+void ARoomTrigger::TriggerEnd(AActor* _OtherActor)
 {
 	//PrintViewport(1.f, FColor::Red, TEXT("End Trigger"));
 }

@@ -4,6 +4,7 @@
 #include "NPCTrigger.h"
 
 #include "Project1/NPC/NPC.h"
+#include "Project1/Player/PlayerCharacter.h"
 
 
 ANPCTrigger::ANPCTrigger()
@@ -27,9 +28,10 @@ void ANPCTrigger::Tick(float DeltaTime)
 
 }
 
-void ANPCTrigger::TriggerBegin()
+void ANPCTrigger::TriggerBegin(AActor* _OtherActor)
 {
-	//PrintViewport(1.f, FColor::Red, TEXT("Begin NPCTrigger"));
+	if(Cast<APlayerCharacter>(_OtherActor) == nullptr)
+		return;
 	
 	if(m_OwnerNPC)
 	{
@@ -38,9 +40,11 @@ void ANPCTrigger::TriggerBegin()
 	}
 }
 
-void ANPCTrigger::TriggerEnd()
+void ANPCTrigger::TriggerEnd(AActor* _OtherActor)
 {
-	//PrintViewport(1.f, FColor::Red, TEXT("End NPCTrigger"));
+	if(Cast<APlayerCharacter>(_OtherActor) == nullptr)
+		return;
+	
 	if(m_OwnerNPC)
 	{
 		m_OwnerNPC->GetBillboard()->SetHiddenInGame(true);

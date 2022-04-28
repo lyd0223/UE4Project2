@@ -3,6 +3,8 @@
 
 #include "PortalTrigger.h"
 
+#include "Project1/Player/PlayerCharacter.h"
+
 
 APortalTrigger::APortalTrigger()
 {
@@ -25,16 +27,20 @@ void APortalTrigger::Tick(float DeltaTime)
 
 }
 
-void APortalTrigger::TriggerBegin()
+void APortalTrigger::TriggerBegin(AActor* _OtherActor)
 {
-	//PrintViewport(1.f, FColor::Red, TEXT("Begin PortalTrigger"));
-	
+	//타 클라이언트 플레이어일때.
+	if(Cast<APlayerCharacter>(_OtherActor) == nullptr)
+	{
+		_OtherActor->Destroy();
+		return;
+	}
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Main"));
 }
 
-void APortalTrigger::TriggerEnd()
+void APortalTrigger::TriggerEnd(AActor* _OtherActor)
 {
-	//PrintViewport(1.f, FColor::Red, TEXT("End PortalTrigger"));
+	
 }
 
 void APortalTrigger::SetTriggerSize(FVector SizeVector)
