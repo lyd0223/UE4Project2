@@ -28,10 +28,16 @@ protected:
 	class UPlayerAnimInstance* m_AnimInstance;
 
 public:
+	FCharacterInfo GetCharacterInfo() const
+	{
+		return m_CharacterInfo;
+	}
+	
 	void SetCharacterInfo(const FCharacterInfo& _CharacterInfo)
 	{
 		m_CharacterInfo = _CharacterInfo;	
 	}
+	
 	
 protected:
 	virtual void BeginPlay() override;

@@ -3,7 +3,10 @@
 
 #include "PortalTrigger.h"
 
+#include "Project1/Project1GameInstance.h"
 #include "Project1/Player/PlayerCharacter.h"
+#include "Project1/Player/WaitingRoomLevel/OtherPlayerCharacter.h"
+
 
 
 APortalTrigger::APortalTrigger()
@@ -33,6 +36,11 @@ void APortalTrigger::TriggerBegin(AActor* _OtherActor)
 	if(Cast<APlayerCharacter>(_OtherActor) == nullptr)
 	{
 		_OtherActor->Destroy();
+		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
+		if(GameInstance == nullptr)
+			return;
+		AOtherPlayerCharacter* OtherPlayerCharacter = Cast<AOtherPlayerCharacter>(_OtherActor);
+		GameInstance->RemovePlayingOtherCharacter(OtherPlayerCharacter->GetCharacterInfo().m_UserIdx);
 		return;
 	}
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Main"));
