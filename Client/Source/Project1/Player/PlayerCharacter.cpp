@@ -171,7 +171,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	                                 &APlayerCharacter::ItemQuickSlot4Key);
 	PlayerInputComponent->BindAction(TEXT("ItemQuickSlot5"), EInputEvent::IE_Pressed, this,
 	                                 &APlayerCharacter::ItemQuickSlot5Key);
-	PlayerInputComponent->BindAction(TEXT("Test"), EInputEvent::IE_Pressed, this, &APlayerCharacter::SaveTestKey);
+	PlayerInputComponent->BindAction(TEXT("Test"), EInputEvent::IE_Pressed, this, &APlayerCharacter::TestKey);
 }
 
 float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
@@ -1007,28 +1007,10 @@ void APlayerCharacter::DetectDoor()
 }
 
 
-void APlayerCharacter::SaveTestKey()
+void APlayerCharacter::TestKey()
 {
-	//서버로 세이브 패킷 보내기.--------------------------------------------------------
-	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if (GameInst->GetIsClientMode())
-		return;
-
-	//현재 CharacterInfo를 GameInstance에 저장.
-	GameInst->SetPlayingCharacterInfo(m_PlayerInfo);
-
-	SaveCharacterInfoMessage Message;
-	Message.m_UserIdx = GameInst->GetUserIdx();
-	Message.m_CharacterInfo = GameInst->GetPlayingCharacterInfo();
-
-	GameServerSerializer Serializer;
-	Message.Serialize(Serializer);
-
-	if (!GameInst->Send(Serializer.GetData()))
-	{
-		PrintViewport(2.f, FColor::Red, TEXT("SaveCharacterInfoMessage Send Error!"));
-	}
-	//--------------------------------------------------------------------------------------
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
+	PrintViewport(2.f, FColor::Green,FString::Printf(TEXT("Num : %d"),GameInstance->GetMap().Num()));
 }
 
 void APlayerCharacter::SendMovementToServer()

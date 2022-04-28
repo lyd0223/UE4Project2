@@ -121,11 +121,21 @@ public:
 	{
 		m_PlayingOtherPlayerMap.Remove(_UserIdx);
 	}
+	void RemoveAllPlayingOtherCharacter()
+	{
+		m_PlayingOtherPlayerMap.Reset();
+	}
 	class AOtherPlayerCharacter* GetPlayingOtherCharacter(int _UserIdx) const
 	{
 		if(m_PlayingOtherPlayerMap.Find(_UserIdx) == nullptr)
 			return nullptr;
 		return m_PlayingOtherPlayerMap[_UserIdx];
+	}
+
+	//임시 -----------
+	TMap<int, class AOtherPlayerCharacter*> GetMap()
+	{
+		return m_PlayingOtherPlayerMap;
 	}
 
 	TSubclassOf<AOtherPlayerCharacter> GetOtherPlayerCharacterClass(std::string _Class) const

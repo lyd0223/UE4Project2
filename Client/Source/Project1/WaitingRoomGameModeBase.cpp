@@ -11,6 +11,7 @@
 
 AWaitingRoomGameModeBase::AWaitingRoomGameModeBase()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	//캐릭터
 	static ConstructorHelpers::FClassFinder<APawn>	GunnerClass(TEXT("Blueprint'/Game/01Resources/Player/Gunner/BPGunner.BPGunner_C'"));
 	if (GunnerClass.Succeeded())
@@ -37,7 +38,10 @@ AWaitingRoomGameModeBase::AWaitingRoomGameModeBase()
 void AWaitingRoomGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInstance == nullptr)
+		return;
+	GameInstance->RemoveAllPlayingOtherCharacter();
 	if (IsValid(m_MainWidgetClass))
 	{
 		m_MainWidget = Cast<UWaitingRoomMainWidget>(CreateWidget(GetWorld(), m_MainWidgetClass));

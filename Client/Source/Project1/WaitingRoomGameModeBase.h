@@ -28,6 +28,7 @@ class PROJECT1_API AWaitingRoomGameModeBase : public AGameModeBase
 	}
 
 	public:
-	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage);
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)override;
 	virtual void BeginPlay() override;
+
 };

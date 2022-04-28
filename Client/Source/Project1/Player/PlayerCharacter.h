@@ -127,7 +127,7 @@ public:
 	void ItemQuickSlot3Key();
 	void ItemQuickSlot4Key();
 	void ItemQuickSlot5Key();
-	void SaveTestKey();
+	void TestKey();
 
 protected:
 	virtual void Attack();

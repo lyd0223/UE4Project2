@@ -32,17 +32,19 @@ void APortalTrigger::Tick(float DeltaTime)
 
 void APortalTrigger::TriggerBegin(AActor* _OtherActor)
 {
+	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
+	if(GameInstance == nullptr)
+		return;
 	//타 클라이언트 플레이어일때.
 	if(Cast<APlayerCharacter>(_OtherActor) == nullptr)
 	{
 		_OtherActor->Destroy();
-		UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
-		if(GameInstance == nullptr)
-			return;
+		
 		AOtherPlayerCharacter* OtherPlayerCharacter = Cast<AOtherPlayerCharacter>(_OtherActor);
 		GameInstance->RemovePlayingOtherCharacter(OtherPlayerCharacter->GetCharacterInfo().m_UserIdx);
 		return;
 	}
+	GameInstance->RemoveAllPlayingOtherCharacter();
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Main"));
 }
 
