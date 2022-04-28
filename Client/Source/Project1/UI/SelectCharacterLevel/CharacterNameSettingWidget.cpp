@@ -80,6 +80,8 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 		PrintViewport(2.f, FColor::Red, TEXT("CreateCharacterInfoMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
+
+	this->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UCharacterNameSettingWidget::CloseButtonClicked()

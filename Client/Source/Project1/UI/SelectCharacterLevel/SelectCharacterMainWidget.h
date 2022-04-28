@@ -61,8 +61,6 @@ public:
 	//DB에서 받아온 정보를 바탕으로 UI 초기화.
 	bool UIInitialize(const std::vector<FCharacterInfo>& CharacterInfoList);
 
-	void SetProfile(EPlayerJob PlayerJob);
-
 	UFUNCTION()
 	void Character1ButtonClick();
 	UFUNCTION()

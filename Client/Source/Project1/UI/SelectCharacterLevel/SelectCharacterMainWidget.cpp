@@ -37,7 +37,6 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_DeleteButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::DeleteButtonClick);
 	m_BackButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::BackButtonClick);
 	m_EnterButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::EnterButtonClick);
-
 	
 	m_SelectJob = EPlayerJob::Belica;
 	
