@@ -9,6 +9,9 @@ std::string m_PW;
 |CreateCharacterInfo-
 FCharacterInfo m_CharacterInfo;
 
+|DeleteCharacterInfo-
+FCharacterInfo m_CharacterInfo;
+
 |RequestCharacterInfo-
 int m_UserIdx;
 

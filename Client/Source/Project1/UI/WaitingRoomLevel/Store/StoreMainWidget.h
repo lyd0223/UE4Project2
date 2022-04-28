@@ -11,20 +11,26 @@ UCLASS()
 class PROJECT1_API UStoreMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UStoreWidget* m_StoreWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UInventoryWidget* m_InventoryWidget;
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_CloseButton;
 
-	protected:
+public:
+	class UInventoryWidget* GetInventoryWidget() const
+	{
+		return m_InventoryWidget;
+	}
+
+protected:
 	virtual void NativeConstruct() override;
 
-	public:
+public:
 	UFUNCTION()
 	void CloseButtonClicked();
 };

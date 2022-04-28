@@ -102,9 +102,16 @@ public:
 
 public:
 	DBCharacterInfoTable_InsertCharacterInfoQuery(int _UserIdx, const FCharacterInfo& _CharacterInfo);
-		//std::string _Nickname, std::string _ClassName,
-		//int _LV, int _EXP, float _HP, float _SP, float _ATK, float _DEF, float _AttackSpeed, float _MoveSpeed,
-		//std::vector<unsigned char> _InventoryData);
+	bool DoQuery() override;
+
+};
+
+class DBCharacterInfoTable_DeleteCharacterInfoQuery : public DBQuery, DBCharacterInfoTable
+{
+public:
+
+public:
+	DBCharacterInfoTable_DeleteCharacterInfoQuery(const FCharacterInfo& _CharacterInfo);
 	bool DoQuery() override;
 
 };

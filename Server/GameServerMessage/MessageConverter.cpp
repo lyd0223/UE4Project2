@@ -19,6 +19,9 @@ MessageConverter::MessageConverter(const std::vector<unsigned char>&_Buffer)
 	case EMessageType::CreateCharacterInfo:
 		m_Message = std::make_shared<CreateCharacterInfoMessage>();
 		break;
+	case EMessageType::DeleteCharacterInfo:
+		m_Message = std::make_shared<DeleteCharacterInfoMessage>();
+		break;
 	case EMessageType::RequestCharacterInfo:
 		m_Message = std::make_shared<RequestCharacterInfoMessage>();
 		break;
@@ -36,6 +39,9 @@ MessageConverter::MessageConverter(const std::vector<unsigned char>&_Buffer)
 		break;
 	case EMessageType::CreateCharacterInfoResult:
 		m_Message = std::make_shared<CreateCharacterInfoResultMessage>();
+		break;
+	case EMessageType::DeleteCharacterInfoResult:
+		m_Message = std::make_shared<DeleteCharacterInfoResultMessage>();
 		break;
 	case EMessageType::ReplyCharacterInfo:
 		m_Message = std::make_shared<ReplyCharacterInfoMessage>();

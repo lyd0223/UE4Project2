@@ -27,6 +27,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_CreateButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UButton* m_DeleteButton;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_EnterButton;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_BackButton;
@@ -72,6 +74,8 @@ public:
 
 	UFUNCTION()
 	void CreateButtonClick();
+	UFUNCTION()
+	void DeleteButtonClick();
 	UFUNCTION()
 	void EnterButtonClick();
 	UFUNCTION()

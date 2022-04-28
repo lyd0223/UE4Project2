@@ -10,6 +10,7 @@
 #include "Project1/Player/PlayerCharacter.h"
 #include "Project1/UI/MainHUDWidget.h"
 #include "Project1/UI/WaitingRoomLevel/WaitingRoomMainWidget.h"
+#include "Project1/UI/WaitingRoomLevel/Store/StoreMainWidget.h"
 #include "Project1/UI/QuickItemSlotWidget.h"
 
 
@@ -138,6 +139,7 @@ void UInventoryManager::SetUI(FItem* Item)
 		if (GameMode == nullptr)
 			return;
 		GameMode->GetMainWidget()->GetMenuWidget()->GetInventoryWidget()->AddItem(Item);
+		GameMode->GetMainWidget()->GetStoreMainWidget()->GetInventoryWidget()->AddItem(Item);
 	}
 	//Main Level
 	else

@@ -20,6 +20,7 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_Character3Button = Cast<UButton>(GetWidgetFromName(TEXT("Character3Button")));
 	m_Character4Button = Cast<UButton>(GetWidgetFromName(TEXT("Character4Button")));
 	m_CreateButton = Cast<UButton>(GetWidgetFromName(TEXT("CreateButton")));
+	m_DeleteButton = Cast<UButton>(GetWidgetFromName(TEXT("DeleteButton")));
 	m_EnterButton = Cast<UButton>(GetWidgetFromName(TEXT("EnterButton")));
 	m_BackButton = Cast<UButton>(GetWidgetFromName(TEXT("BackButton")));
 	m_CharacterDescWidget = Cast<UCharacterDescWidget>(GetWidgetFromName(TEXT("UI_CharacterDescWidget")));
@@ -33,6 +34,7 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_Character3Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character3ButtonClick);
 	m_Character4Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character4ButtonClick);
 	m_CreateButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::CreateButtonClick);
+	m_DeleteButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::DeleteButtonClick);
 	m_BackButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::BackButtonClick);
 	m_EnterButton->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::EnterButtonClick);
 
@@ -47,6 +49,9 @@ void USelectCharacterMainWidget::NativeConstruct()
 
 bool USelectCharacterMainWidget::UIInitialize(const std::vector<FCharacterInfo>& CharacterInfoList)
 {
+	if(m_CharacterInfoMap.Num() != 0)
+		m_CharacterInfoMap.Reset();
+	
 	m_CharacterInfoList = CharacterInfoList;
 	for(auto& CharacterInfo :CharacterInfoList)
 	{
@@ -208,10 +213,30 @@ void USelectCharacterMainWidget::Character4ButtonClick()
 
 void USelectCharacterMainWidget::CreateButtonClick()
 {
-	if(m_IsCanEnter == true)
-		return;
 	m_CharacterNameSettingWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
+
+void USelectCharacterMainWidget::DeleteButtonClick()
+{
+	//서버로 캐릭터인포삭제 패킷 보내기.--------------------------------------------------------
+	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
+	if (GameInst->GetIsClientMode())
+		return;
+	DeleteCharacterInfoMessage Message;
+
+	FCharacterInfo* CharacterInfo = m_CharacterInfoMap.Find(m_SelectJob);
+	Message.m_CharacterInfo = *CharacterInfo;
+
+	GameServerSerializer Serializer;
+	Message.Serialize(Serializer);
+
+	if (!GameInst->Send(Serializer.GetData()))
+	{
+		PrintViewport(2.f, FColor::Red, TEXT("DeleteCharacterInfoMessage Send Error!"));
+	}
+	//--------------------------------------------------------------------------------------
+}
+
 
 void USelectCharacterMainWidget::EnterButtonClick()
 {
@@ -244,13 +269,15 @@ void USelectCharacterMainWidget::EnterButtonOn(bool _IsOn)
 	if(_IsOn)
 	{
 		m_IsCanEnter = true;
-		m_CreateButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,0.3f));
+		m_CreateButton->SetVisibility(ESlateVisibility::Collapsed);
+		m_DeleteButton->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		m_EnterButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,1.f));
 	}
 	else
 	{
 		m_IsCanEnter = false;
-		m_CreateButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,1.f));
+		m_CreateButton->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		m_DeleteButton->SetVisibility(ESlateVisibility::Collapsed);
 		m_EnterButton->SetColorAndOpacity(FLinearColor(1.f,1.f,1.f,0.3f));
 		
 	}

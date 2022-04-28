@@ -1,8 +1,8 @@
-﻿#include "ReplyCharacterInfoMessageHandler.h"
+﻿#include "DeleteCharacterInfoResultMessageHandler.h"
 #include "Project1/SelectCharacterGameModeBase.h"
 #include "Project1/UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
 
-void ReplyCharacterInfoMessageHandler::Start()
+void DeleteCharacterInfoResultMessageHandler::Start()
 {
 	ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
 	if (GameMode == nullptr)

@@ -77,6 +77,7 @@ void AWaitingRoomPlayerController::OpenWidget()
 						if(WaitingRoomMainWidget == nullptr)
 							return;
 						WaitingRoomMainWidget->GetStoreMainWidget()->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+						m_TargetNPC->SetIsActive(false);
 					}
 					//유물
 					else if (m_TargetNPC->GetNPCName() == "Gremlin")

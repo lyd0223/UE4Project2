@@ -65,6 +65,8 @@ bool DBCharacterInfoTable_SelectCharacterInfoQuery::DoQuery()
 }
 
 
+//InsertQuery
+
 DBCharacterInfoTable_InsertCharacterInfoQuery::DBCharacterInfoTable_InsertCharacterInfoQuery(
 	int _UserIdx, const FCharacterInfo& _CharacterInfo)
 {
@@ -101,6 +103,30 @@ bool DBCharacterInfoTable_InsertCharacterInfoQuery::DoQuery()
 	}
 	return true;
 }
+
+//DeleteQuery
+
+DBCharacterInfoTable_DeleteCharacterInfoQuery::DBCharacterInfoTable_DeleteCharacterInfoQuery(const FCharacterInfo& _CharacterInfo)
+{
+	std::string str = "DELETE FROM unrealserver.characterinfo WHERE Idx = ";
+	str += std::to_string(_CharacterInfo.m_Idx);
+	str += ";";
+
+	m_QueryText = _strdup(str.c_str());
+}
+
+bool DBCharacterInfoTable_DeleteCharacterInfoQuery::DoQuery()
+{
+	int __stdcall result = mysql_query(m_DBConnecter->GetMYSQL(), m_QueryText);
+	if (result != 0)
+	{
+		std::string ErrorStr = mysql_error(m_DBConnecter->GetMYSQL());
+		GameServerDebug::LogError("QueryError : " + ErrorStr);
+		return false;
+	}
+	return true;
+}
+
 
 
 DBCharacterInfoTable_UpdateCharacterInfoQuery::DBCharacterInfoTable_UpdateCharacterInfoQuery(

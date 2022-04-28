@@ -9,7 +9,10 @@ ESignUpResultType m_SignUpResultType;
 
 |CreateCharacterInfoResult-
 ECreateCharacterInfoResultType m_CreateCharacterInfoResultType;
-FCharacterInfo m_CharacterInfo;
+std::vector<FCharacterInfo> m_CharacterInfoList;
+
+|DeleteCharacterInfoResult-
+std::vector<FCharacterInfo> m_CharacterInfoList;
 
 |ReplyCharacterInfo-
 std::vector<FCharacterInfo> m_CharacterInfoList;

@@ -1,33 +1,34 @@
 #include "PreCompile.h"
-#include "CreateCharacterInfoMessageHandler.h"
+#include "DeleteCharacterInfoMessageHandler.h"
 #include <GameServerBase/GameServerDebug.h>
 #include "DBQueue.h"
 #include "NetQueue.h"
 #include "DBCharacterInfoTable.h"
 #include "GameServerMessage/ContentsStruct.h"
 
-void CreateCharacterInfoMessageHandler::Start()
+void DeleteCharacterInfoMessageHandler::Start()
 {
 	if (m_TCPSession == nullptr)
 	{
-		GameServerDebug::LogError("SignIn TCPSession is Nullptr");
+		GameServerDebug::LogError("DeleteCharacterInfoMessageHandler TCPSession is Nullptr");
 		return;
 	}
 
-	DBQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::DBCheck, std::dynamic_pointer_cast<CreateCharacterInfoMessageHandler>(shared_from_this())));
+	DBQueue::EnQueue(std::bind(&DeleteCharacterInfoMessageHandler::DBCheck, std::dynamic_pointer_cast<DeleteCharacterInfoMessageHandler>(shared_from_this())));
 }
 
-void CreateCharacterInfoMessageHandler::DBCheck()
+void DeleteCharacterInfoMessageHandler::DBCheck()
 {
 	FCharacterInfo& CharacterInfo = m_Message->m_CharacterInfo;
-	DBCharacterInfoTable_InsertCharacterInfoQuery InsertQuery(
-		CharacterInfo.m_UserIdx, CharacterInfo);
-	if (InsertQuery.DoQuery() == false)
+
+	DBCharacterInfoTable_DeleteCharacterInfoQuery DeleteQuery(CharacterInfo);
+	if (DeleteQuery.DoQuery() == false)
 	{
 		//쿼리 실패. 바로 에러띄우고, 리턴때려버림.
-		GameServerDebug::LogInfo("DBCharacterInfoTable_InsertCharacterInfoQuery Error");
+		GameServerDebug::LogInfo("DBCharacterInfoTable_DeleteCharacterInfoQuery Error");
 		return;
 	}
+
 	DBCharacterInfoTable_SelectCharacterInfoQuery SelectQuery(m_Message->m_CharacterInfo.m_UserIdx);
 	if (SelectQuery.DoQuery() == false)
 	{
@@ -44,18 +45,19 @@ void CreateCharacterInfoMessageHandler::DBCheck()
 				RowData->m_HP, RowData->m_SP, RowData->m_ATK, RowData->m_DEF,
 				RowData->m_AttackSpeed, RowData->m_MoveSpeed,
 				RowData->m_InventoryData);
-		m_CreateCharacterInfoResultMessage.m_CharacterInfoList.push_back(*CharacterInfo);
+		m_ResultMessage.m_CharacterInfoList.push_back(*CharacterInfo);
 	}
 
-	NetQueue::EnQueue(std::bind(&CreateCharacterInfoMessageHandler::ResultSend, std::dynamic_pointer_cast<CreateCharacterInfoMessageHandler>(shared_from_this())));
+
+	NetQueue::EnQueue(std::bind(&DeleteCharacterInfoMessageHandler::ResultSend, std::dynamic_pointer_cast<DeleteCharacterInfoMessageHandler>(shared_from_this())));
 }
 
-void CreateCharacterInfoMessageHandler::ResultSend()
+void DeleteCharacterInfoMessageHandler::ResultSend()
 {
 	GameServerSerializer Serializer;
-	m_CreateCharacterInfoResultMessage.Serialize(Serializer);
+	m_ResultMessage.Serialize(Serializer);
 
 	m_TCPSession->Send(Serializer.GetData());
 
-	GameServerDebug::LogInfo("CreateCharacterInfoResultMessage Send");
+	GameServerDebug::LogInfo("DeleteCharacterInfoResultMessage Send");
 }

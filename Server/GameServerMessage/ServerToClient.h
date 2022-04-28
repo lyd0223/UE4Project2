@@ -115,13 +115,13 @@ class CreateCharacterInfoResultMessage : public GameServerMessage
 {                                                               
 public:                                                         
 	ECreateCharacterInfoResultType m_CreateCharacterInfoResultType;
-	FCharacterInfo m_CharacterInfo;
+	std::vector<FCharacterInfo> m_CharacterInfoList;
                                                                 
 public:                                                         
     CreateCharacterInfoResultMessage()                                               
         : GameServerMessage(EMessageType::CreateCharacterInfoResult)                    
         , m_CreateCharacterInfoResultType()
-        , m_CharacterInfo()
+        , m_CharacterInfoList()
     {                                                           
                                                                 
     }                                                           
@@ -130,14 +130,14 @@ public:
                                                                 
     virtual int SizeCheck()                                     
     {                                                           
-		return DataSizeCheck(m_CreateCharacterInfoResultType) + DataSizeCheck(m_CharacterInfo);
+		return DataSizeCheck(m_CreateCharacterInfoResultType) + DataSizeCheck(m_CharacterInfoList);
     }                                                           
                                                                 
     void Serialize(GameServerSerializer& _Serializer)           
     {                                                           
         GameServerMessage::Serialize(_Serializer);              
         _Serializer<<static_cast<int>(m_CreateCharacterInfoResultType);
-        m_CharacterInfo.Serialize(_Serializer);
+        _Serializer.WriteVector( m_CharacterInfoList);
 
     }                                                           
                                                                 
@@ -147,7 +147,42 @@ public:
         int temp ;		
         _Serializer>>temp;
         m_CreateCharacterInfoResultType = static_cast<ECreateCharacterInfoResultType>(temp); 
-        m_CharacterInfo.DeSerialize(_Serializer);
+        _Serializer.ReadVector( m_CharacterInfoList);
+
+    }                                                           
+};                                                              
+
+class DeleteCharacterInfoResultMessage : public GameServerMessage                    
+{                                                               
+public:                                                         
+	std::vector<FCharacterInfo> m_CharacterInfoList;
+                                                                
+public:                                                         
+    DeleteCharacterInfoResultMessage()                                               
+        : GameServerMessage(EMessageType::DeleteCharacterInfoResult)                    
+        , m_CharacterInfoList()
+    {                                                           
+                                                                
+    }                                                           
+                                                                
+    virtual ~DeleteCharacterInfoResultMessage() {}                                   
+                                                                
+    virtual int SizeCheck()                                     
+    {                                                           
+		return DataSizeCheck(m_CharacterInfoList);
+    }                                                           
+                                                                
+    void Serialize(GameServerSerializer& _Serializer)           
+    {                                                           
+        GameServerMessage::Serialize(_Serializer);              
+        _Serializer.WriteVector( m_CharacterInfoList);
+
+    }                                                           
+                                                                
+    void DeSerialize(GameServerSerializer& _Serializer)         
+    {                                                           
+        GameServerMessage::DeSerialize(_Serializer);            
+        _Serializer.ReadVector( m_CharacterInfoList);
 
     }                                                           
 };                                                              

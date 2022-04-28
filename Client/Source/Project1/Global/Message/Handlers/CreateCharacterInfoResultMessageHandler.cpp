@@ -1,6 +1,8 @@
 ﻿#include "CreateCharacterInfoResultMessageHandler.h"
 
 #include "Project1/Project1GameInstance.h"
+#include "Project1/SelectCharacterGameModeBase.h"
+#include "Project1/UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
 
 
 void CreateCharacterInfoResultMessageHandler::Start()
@@ -15,14 +17,11 @@ void CreateCharacterInfoResultMessageHandler::Start()
 		}
 	case ECreateCharacterInfoResultType::OK:
 		{
-			m_GameInstance->SetPlayingCharacterInfo(m_Message->m_CharacterInfo);
-
-			FString Str = TEXT("");
-			UClientBlueprintFunctionLibrary::UTF8ToFString(m_Message->m_CharacterInfo.m_ClassName,
-														Str);
-
-			m_GameInstance->SetSelectJob(Str);
-			UGameplayStatics::OpenLevel(m_World, TEXT("WaitingRoom"));
+			ASelectCharacterGameModeBase* GameMode = Cast<ASelectCharacterGameModeBase>(m_World->GetAuthGameMode());
+			if (GameMode == nullptr)
+				return;
+			USelectCharacterMainWidget* SelectCharacterMainWidget = Cast<USelectCharacterMainWidget>(GameMode->GetSelectHUD());
+			SelectCharacterMainWidget->UIInitialize(m_Message->m_CharacterInfoList);
 			break;
 		}
 	case ECreateCharacterInfoResultType::MAX:
