@@ -26,21 +26,30 @@ void SignInMessageHandler::DBCheck()
 	UserInfoTable_SelectIDQuery SelectQuery(m_Message->m_ID, m_Message->m_PW);
 	if (SelectQuery.DoQuery() == false)
 	{
-		//쿼리 실패. (ID 존재하지않음.)
 		m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
+		
 	}
 	else
 	{
 		if (SelectQuery.CheckPW() == false)
 		{
 			// 비밀번호 틀림. 틀렷다는 패킷 보내주자.
-			m_SignInResultMessage.m_SignInResultType = ESignInResultType::Error;
+			m_SignInResultMessage.m_SignInResultType = ESignInResultType::Failed_WrongPassword;
 		}
 		else
 		{
-			m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
-			m_SignInResultMessage.m_UserIdx = SelectQuery.m_RowData->m_Index;
+			if (!SelectQuery.m_RowData)
+			{
+				//ID 존재하지않음.
+				m_SignInResultMessage.m_SignInResultType = ESignInResultType::Failed_NoUser;
+			}
+			else
+			{
+				m_SignInResultMessage.m_SignInResultType = ESignInResultType::OK;
+				m_SignInResultMessage.m_UserIdx = SelectQuery.m_RowData->m_Index;
+			}
 		}
+
 	}
 
 	NetQueue::EnQueue(std::bind(&SignInMessageHandler::ResultSend, std::dynamic_pointer_cast<SignInMessageHandler>(shared_from_this())));

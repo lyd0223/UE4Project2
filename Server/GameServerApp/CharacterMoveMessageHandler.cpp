@@ -30,5 +30,5 @@ void CharacterMoveMessageHandler::ResultSend()
 	}
 	Listener->BroadCast(Serializer.GetData(), nullptr);
 
-	GameServerDebug::LogInfo("CharacterMoveMessage Send");
+	//GameServerDebug::LogInfo("CharacterMoveMessage Send");
 }

@@ -14,6 +14,8 @@ class PROJECT1_API UStatsWidget : public UUserWidget
 	
 	protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UTextBlock* m_LVText;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_HPText;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_SPText;
@@ -25,8 +27,7 @@ class PROJECT1_API UStatsWidget : public UUserWidget
 	UTextBlock* m_ATKSpeedText;
 
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
 
 	public:
 	void SetDatas(FPlayerInfo& playerInfo);

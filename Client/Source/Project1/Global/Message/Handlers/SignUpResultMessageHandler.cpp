@@ -18,14 +18,14 @@ void SignUpResultMessageHandler::Start()
 		}
 	case ESignUpResultType::Error_DuplicateID:
 		{
+			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("Duplicate ID!"));
+			
 			break;
 		}
 	case ESignUpResultType::Error_NonAvailableID:
 		//유효하지않은 ID
 		{
-			//PrintViewport(2.f, FColor::Red, TEXT("SignUp Failed"));
-			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
-			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignUp Failed"));
 			
 			break;
 		}

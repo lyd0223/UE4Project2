@@ -27,7 +27,7 @@ void SignUpMessageHandler::DBCheck()
 	UserInfoTable_InsertUserInfoQuery InsertUserInfoQuery(m_Message->m_ID, m_Message->m_PW);
 	
 	bool CheckResult = InsertUserInfoQuery.DoQuery();
-	m_SignUpResultMessage.m_SignUpResultType = CheckResult == true ? ESignUpResultType::OK : ESignUpResultType::Error_NonAvailableID;
+	m_SignUpResultMessage.m_SignUpResultType = CheckResult == true ? ESignUpResultType::OK : ESignUpResultType::Error_DuplicateID;
 
 	NetQueue::EnQueue(std::bind(&SignUpMessageHandler::ResultSend, std::dynamic_pointer_cast<SignUpMessageHandler>(shared_from_this())));
 }

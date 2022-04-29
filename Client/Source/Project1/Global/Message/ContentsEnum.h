@@ -3,6 +3,8 @@
 enum class ESignInResultType
 {
 	OK,
+	Failed_WrongPassword,
+	Failed_NoUser,
 	Error,
 	MAX
 };

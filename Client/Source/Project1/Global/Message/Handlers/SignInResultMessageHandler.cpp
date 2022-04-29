@@ -8,17 +8,33 @@
 
 void SignInResultMessageHandler::Start()
 {
-	if(m_Message->m_SignInResultType == ESignInResultType::OK)
+	ESignInResultType Result = m_Message->m_SignInResultType;
+	switch (Result)
 	{
-		m_GameInstance->SetUserIdx(m_Message->m_UserIdx);
-		UGameplayStatics::OpenLevel(m_World, TEXT("SelectCharacter"));
-	}
-	else
-	{
-		//PrintViewport(2.f, FColor::Red, TEXT("Login Failed"));
-		AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
-		GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignIn Failed"));
+	case ESignInResultType::OK:
+		{
+			m_GameInstance->SetUserIdx(m_Message->m_UserIdx);
+			UGameplayStatics::OpenLevel(m_World, TEXT("SelectCharacter"));
+			break;
+		}
+	case ESignInResultType::Failed_NoUser:
+		{
+			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("No ID!"));
+			break;
+		}
+	case ESignInResultType::Failed_WrongPassword:
+		{
+			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
+			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("Wrong Password!"));
+			break;
+		}
+
+	case ESignInResultType::Error:
+
+		break;
+	case ESignInResultType::MAX:
+
+		break;
 	}
 }
-
-
