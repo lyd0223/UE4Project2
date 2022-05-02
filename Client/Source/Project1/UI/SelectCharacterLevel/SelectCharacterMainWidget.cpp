@@ -30,6 +30,8 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_CharacterNameSettingWidget = Cast<UCharacterNameSettingWidget>(GetWidgetFromName(TEXT("UI_CharacterNameSettingWidget")));
 	m_CharacterNameSettingWidget->SetOwnerWidget(this);
 	m_DeleteCheckWidget = Cast<UDeleteCheckWidget>(GetWidgetFromName(TEXT("UI_DeleteCheckWidget")));
+	m_DeleteCheckWidget->SetOwnerWidget(this);
+	
 	
 	m_Character1Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character1ButtonClick);
 	m_Character2Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character2ButtonClick);
@@ -219,25 +221,8 @@ void USelectCharacterMainWidget::CreateButtonClick()
 
 void USelectCharacterMainWidget::DeleteButtonClick()
 {
-	//서버로 캐릭터인포삭제 패킷 보내기.--------------------------------------------------------
-	UProject1GameInstance* GameInst = Cast<UProject1GameInstance>(GetGameInstance());
-	if (GameInst->GetIsClientMode())
-		return;
-	DeleteCharacterInfoMessage Message;
-
-	FCharacterInfo* CharacterInfo = m_CharacterInfoMap.Find(m_SelectJob);
-	Message.m_CharacterInfo = *CharacterInfo;
-
-	GameServerSerializer Serializer;
-	Message.Serialize(Serializer);
-
-	if (!GameInst->Send(Serializer.GetData()))
-	{
-		PrintViewport(2.f, FColor::Red, TEXT("DeleteCharacterInfoMessage Send Error!"));
-	}
-	//--------------------------------------------------------------------------------------
+	m_DeleteCheckWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
-
 
 void USelectCharacterMainWidget::EnterButtonClick()
 {

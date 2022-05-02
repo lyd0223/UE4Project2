@@ -33,12 +33,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_BackButton;
 
+	UPROPERTY()
 	class UCharacterStatGraphWidget* m_CharacterStatGraphWidget;
+	UPROPERTY()
 	class UCharacterDescWidget* m_CharacterDescWidget;
+	UPROPERTY()
 	class UCharacterNameSettingWidget* m_CharacterNameSettingWidget;
+	UPROPERTY()
 	class UDeleteCheckWidget* m_DeleteCheckWidget;
 	
 	EPlayerJob m_SelectJob;
+	UPROPERTY()
 	class UCanvasPanelSlot* m_SelectPanelSlot;
 
 	std::vector<FCharacterInfo> m_CharacterInfoList;
@@ -54,6 +59,10 @@ public:
 	class UDeleteCheckWidget* GetDeleteCheckWidget() const
 	{
 		return m_DeleteCheckWidget;
+	}
+	TMap<EPlayerJob, FCharacterInfo> GetCharacterInfoMap() const
+	{
+		return m_CharacterInfoMap;
 	}
 	
 protected:

@@ -3,10 +3,18 @@
 
 #include "DeleteCheckWidget.h"
 
+#include "Project1/Project1GameInstance.h"
+#include "Project1/Global/Message/ClientToServer.h"
+#include "Project1/UI/SelectCharacterLevel/SelectCharacterMainWidget.h"
+
 
 void UDeleteCheckWidget::NativeConstruct()
 {
-
+	m_DeleteButton = Cast<UButton>(GetWidgetFromName(TEXT("DeleteButton")));
+	m_CloseButton = Cast<UButton>(GetWidgetFromName(TEXT("CloseButton")));
+	m_DeleteButton->OnClicked.AddDynamic(this, &UDeleteCheckWidget::DeleteButtonClicked);
+	m_CloseButton->OnClicked.AddDynamic(this, &UDeleteCheckWidget::CloseButtonClicked);
+	m_OwnerWidget = nullptr;
 }
 	
 void UDeleteCheckWidget::DeleteButtonClicked()
@@ -17,7 +25,7 @@ void UDeleteCheckWidget::DeleteButtonClicked()
 		return;
 	DeleteCharacterInfoMessage Message;
 
-	FCharacterInfo* CharacterInfo = m_CharacterInfoMap.Find(m_SelectJob);
+	FCharacterInfo* CharacterInfo = m_OwnerWidget->GetCharacterInfoMap().Find(m_OwnerWidget->GetSelectJob());
 	Message.m_CharacterInfo = *CharacterInfo;
 
 	GameServerSerializer Serializer;
@@ -28,9 +36,10 @@ void UDeleteCheckWidget::DeleteButtonClicked()
 		PrintViewport(2.f, FColor::Red, TEXT("DeleteCharacterInfoMessage Send Error!"));
 	}
 	//--------------------------------------------------------------------------------------
+	this->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UDeleteCheckWidget::CloseButtonClicked()
 {
-
+	this->SetVisibility(ESlateVisibility::Collapsed);
 }
