@@ -11,12 +11,27 @@ UCLASS()
 class PROJECT1_API UStoreWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
-	protected:
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	UListView* m_SaleItemListView;
+	UListView* m_StoreListView;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UBuyWidget* m_BuyWidget;
+
+public:
+	class UBuyWidget* GetBuyWidget() const
+	{
+		return m_BuyWidget;
+	}
+	void SetBuyWidget(class UBuyWidget* _BuyWidget)
+	{
+		m_BuyWidget = _BuyWidget;
+	}
 	
-	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+protected:
+	virtual void NativeConstruct() override;
+
+public:
+	void AddItemSaleItemListView(FItem* Item);
 };

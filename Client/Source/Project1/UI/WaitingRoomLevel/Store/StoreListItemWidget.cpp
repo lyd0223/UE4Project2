@@ -4,6 +4,8 @@
 #include "StoreListItemWidget.h"
 
 #include "StoreListItemData.h"
+#include "BuyWidget.h"
+#include "StoreWidget.h"
 
 
 void UStoreListItemWidget::NativeConstruct()
@@ -11,53 +13,44 @@ void UStoreListItemWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	m_ItemImage =Cast<UImage>(GetWidgetFromName(TEXT("ItemImage")));
+	m_BorderImage =Cast<UImage>(GetWidgetFromName(TEXT("BorderImage")));
 	m_NameText = Cast<UTextBlock>(GetWidgetFromName(TEXT("NameText")));
 	m_CountText = Cast<UTextBlock>(GetWidgetFromName(TEXT("CountText")));
 	m_GoldText = Cast<UTextBlock>(GetWidgetFromName(TEXT("GoldText")));
+
+	m_Item = nullptr;
+	m_BuyWidget = nullptr;
 }
 
-void UStoreListItemWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-}
 
-void UStoreListItemWidget::NativeOnListItemObjectSet(
-	UObject* ListItemObject)
+void UStoreListItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	UStoreListItemData* ListItem = Cast<UStoreListItemData>(ListItemObject);
-
-	// ListItem->SetOwnerBulletWidget(this);
-	//
-	// FBullet* Bullet = ListItem->GetBullet();
-	//
-	// m_BulletImage->SetBrushFromTexture(Bullet->BulletTableInfo->IconTexture);
-	// m_NameText->SetText(FText::FromString(Bullet->BulletTableInfo->Name));
-	// FString Str = Bullet->BulletTableInfo->Desc;
-	// FString Str1 = "";
-	// FString Str2 = "";
-	// for (int i = 0; i < Str.Len(); i++)
-	// {
-	// 	if (Str[i] == '^')
-	// 	{
-	// 		Str1.Append(*Str, i);
-	// 		Str.RemoveAt(0,i+1);
-	// 		Str2.Append(*Str, Str.Len());
-	// 	}
-	// }
-	// m_DescText1->SetText(FText::FromString(Str1));
-	// m_DescText2->SetText(FText::FromString(Str2));
-	// m_ATKPercentText->SetText(FText::FromString(FString::Printf(TEXT("%d%%"),Bullet->BulletTableInfo->ATKPercent)));
-	// m_SPCostText->SetText(FText::FromString(FString::FromInt(Bullet->BulletTableInfo->SPCost)));
-	// FLinearColor Color;
-	// switch (Bullet->BulletTableInfo->BulletType)
-	// {
-	// case EBulletType::Recovery:
-	// 	Color = FLinearColor(0.f,1.f,0.f,1.f);
-	// 	break;
-	// case EBulletType::Attack:
-	// 	Color = FLinearColor(1.f,0.f,0.f,1.f);
-	// 	break;
-	// }
-	// m_ATKPercentText->SetColorAndOpacity(Color);
+	ListItem->SetOwnerWidget(this);
+	m_BuyWidget = ListItem->GetStoreWidget()->GetBuyWidget();
+	
+	m_Item = ListItem->GetItem();
+	m_ItemImage->SetBrushFromTexture(m_Item->ItemTableInfo->IconTexture);
+	m_NameText->SetText(FText::FromString(m_Item->ItemTableInfo->Name));
+	m_GoldText->SetText(FText::FromString(FString::FromInt(m_Item->ItemTableInfo->Price)));
 }
 
+void UStoreListItemWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	m_BorderImage->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+}
+
+
+void UStoreListItemWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+{
+	m_BorderImage->SetVisibility(ESlateVisibility::Collapsed);
+	
+}
+
+FReply UStoreListItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	m_BuyWidget->OpenBuyWidget(m_Item);
+	FEventReply Reply;
+	Reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	return Reply.NativeReply;
+}

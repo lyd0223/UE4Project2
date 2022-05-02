@@ -33,13 +33,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UButton* m_BackButton;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCharacterStatGraphWidget* m_CharacterStatGraphWidget;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCharacterDescWidget* m_CharacterDescWidget;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UCharacterNameSettingWidget* m_CharacterNameSettingWidget;
-
+	class UDeleteCheckWidget* m_DeleteCheckWidget;
+	
 	EPlayerJob m_SelectJob;
 	class UCanvasPanelSlot* m_SelectPanelSlot;
 
@@ -53,7 +51,11 @@ public:
 	{
 		return m_SelectJob;
 	}
-
+	class UDeleteCheckWidget* GetDeleteCheckWidget() const
+	{
+		return m_DeleteCheckWidget;
+	}
+	
 protected:
 	virtual void NativeConstruct() override;
 

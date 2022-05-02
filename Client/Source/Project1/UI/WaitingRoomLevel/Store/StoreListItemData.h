@@ -11,17 +11,18 @@ class PROJECT1_API UStoreListItemData : public UObject
 {
 	GENERATED_BODY()
 
-	
-	public:
+
+public:
 	UStoreListItemData();
 
-	protected:
-	FItem* m_Item;
-
+protected:
 	UPROPERTY()
 	class UStoreListItemWidget* m_OwnerWidget;
-	
-	public:
+
+	FItem* m_Item;
+	class UStoreWidget* m_StoreWidget;
+
+public:
 	void SetItem(FItem* Item)
 	{
 		m_Item = Item;
@@ -36,8 +37,18 @@ class PROJECT1_API UStoreListItemData : public UObject
 	{
 		m_OwnerWidget = OwnerWidget;
 	}
+
 	class UStoreListItemWidget* GetOwnerWidget() const
 	{
 		return m_OwnerWidget;
+	}
+
+	class UStoreWidget* GetStoreWidget() const
+	{
+		return m_StoreWidget;
+	}
+	void SetStoreWidget(UStoreWidget* _StoreWidget) 
+	{
+		m_StoreWidget = _StoreWidget;
 	}
 };

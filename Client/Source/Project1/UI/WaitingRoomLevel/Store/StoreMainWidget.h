@@ -22,6 +22,11 @@ protected:
 	UButton* m_CloseButton;
 
 public:
+	class UStoreWidget* GetStoreWidget() const
+	{
+		return m_StoreWidget;
+	}
+
 	class UInventoryWidget* GetInventoryWidget() const
 	{
 		return m_InventoryWidget;

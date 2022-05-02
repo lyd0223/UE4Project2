@@ -46,11 +46,10 @@ class PROJECT1_API ULootListItemWidget : public UUserWidget , public IUserObject
 
 
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
 	
 	public:
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject);
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	void Hovered();
 	void UnHovered();
 };

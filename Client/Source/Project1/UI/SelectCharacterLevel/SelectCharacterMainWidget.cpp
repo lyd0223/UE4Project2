@@ -9,6 +9,7 @@
 #include "Project1/Project1GameInstance.h"
 #include "Project1/Global/ClientBlueprintFunctionLibrary.h"
 #include "Project1/Global/Message/ClientToServer.h"
+#include "Project1/UI/SelectCharacterLevel/DeleteCheckWidget.h"
 #include "CharacterNameSettingWidget.h"
 
 void USelectCharacterMainWidget::NativeConstruct()
@@ -28,6 +29,7 @@ void USelectCharacterMainWidget::NativeConstruct()
 	m_CharacterStatGraphWidget = Cast<UCharacterStatGraphWidget>(GetWidgetFromName(TEXT("UI_CharacterStatGraphWidget")));
 	m_CharacterNameSettingWidget = Cast<UCharacterNameSettingWidget>(GetWidgetFromName(TEXT("UI_CharacterNameSettingWidget")));
 	m_CharacterNameSettingWidget->SetOwnerWidget(this);
+	m_DeleteCheckWidget = Cast<UDeleteCheckWidget>(GetWidgetFromName(TEXT("UI_DeleteCheckWidget")));
 	
 	m_Character1Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character1ButtonClick);
 	m_Character2Button->OnClicked.AddDynamic(this, &USelectCharacterMainWidget::Character2ButtonClick);

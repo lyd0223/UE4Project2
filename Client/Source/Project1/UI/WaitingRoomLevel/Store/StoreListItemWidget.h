@@ -10,13 +10,17 @@
 #include "StoreListItemWidget.generated.h"
 
 UCLASS()
-class PROJECT1_API UStoreListItemWidget : public UUserWidget , public IUserObjectListEntry
+class PROJECT1_API UStoreListItemWidget : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
-	
+
+private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UImage* m_ItemImage;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UImage* m_BorderImage;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_NameText;
 
@@ -26,10 +30,13 @@ class PROJECT1_API UStoreListItemWidget : public UUserWidget , public IUserObjec
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UTextBlock* m_CountText;
 
-	int32		m_Index;
+	class UBuyWidget* m_BuyWidget;
 
-	public:
-	int32 GetIndex()	const
+	FItem* m_Item;
+	int32 m_Index;
+
+public:
+	int32 GetIndex() const
 	{
 		return m_Index;
 	}
@@ -40,10 +47,12 @@ class PROJECT1_API UStoreListItemWidget : public UUserWidget , public IUserObjec
 	}
 
 
-	protected:
+protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	
-	public:
-	virtual void NativeOnListItemObjectSet(UObject* ListItemObject);
+
+public:
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 };

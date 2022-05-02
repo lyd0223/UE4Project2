@@ -81,11 +81,13 @@ void UCharacterNameSettingWidget::CreateButtonClicked()
 	}
 	//--------------------------------------------------------------------------------------
 
+	m_NameTextBox->SetText(FText::FromString(TEXT("")));
 	this->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UCharacterNameSettingWidget::CloseButtonClicked()
 {
+	m_NameTextBox->SetText(FText::FromString(TEXT("")));
 	this->SetVisibility(ESlateVisibility::Collapsed);
 }
 

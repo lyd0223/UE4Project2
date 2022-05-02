@@ -37,7 +37,7 @@ void ALootBox::BeginPlay()
 	m_LootBoxTrigger->SetOwnerLootBox(this);
 
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
-	uint8 RandNum0 = FMath::RandRange(0, 100);
+	uint32 RandNum0 = FMath::RandRange(1000, 2000);
 	{
 		FItem* Item = new FItem();
 		Item->ItemTableInfo = GameInstance->FindItemTableInfo(TEXT("골드"));

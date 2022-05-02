@@ -30,11 +30,13 @@ void UInventoryManager::Init()
 void UInventoryManager::AddGold(uint64 _Gold)
 {
 	m_Gold += _Gold;
+	SetUI(m_Gold);
 }
 
 void UInventoryManager::DeductGold(uint64 _Gold)
 {
 	m_Gold -= _Gold;
+	SetUI(m_Gold);
 }
 
 void UInventoryManager::AddItem(FItem* Item)

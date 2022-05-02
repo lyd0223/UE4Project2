@@ -17,11 +17,6 @@ void ULootListItemWidget::NativeConstruct()
 	m_TypeText = Cast<UTextBlock>(GetWidgetFromName(TEXT("TypeText")));
 }
 
-void ULootListItemWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-	Super::NativeTick(MyGeometry, InDeltaTime);
-}
-
 void ULootListItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	ULootListItemData* ListItem = Cast<ULootListItemData>(ListItemObject);
