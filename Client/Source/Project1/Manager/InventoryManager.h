@@ -22,6 +22,9 @@ private:
 private:
 	TArray<FItem*> m_ItemArray;
 	uint8 m_MaxWeight;
+	uint8 m_NowWeight;
+
+	uint64 m_Gold;
 	
 	ACharacter* m_OwnerCharacter;
 	
@@ -34,13 +37,20 @@ public:
 	{
 		m_OwnerCharacter = Character;
 	}
+	uint64 GetGold() const
+	{
+		return m_Gold;
+	}
 private:
 	void Init();
 
 public:
+	void AddGold(uint64 _Gold);
+	void DeductGold(uint64 _Gold);
 	void AddItem(FItem* Item);
 	void DeductItem(FItem* Item);
 	void SetUI(FItem* Item);
+	void SetUI(uint64 _Gold);
 	void SaveCharacterInfoInventoryData(FCharacterInfo& CharacterInfo);
 	void LoadCharacterInfoInventoryData(const FCharacterInfo& CharacterInfo);
 

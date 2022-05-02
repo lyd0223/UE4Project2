@@ -291,11 +291,11 @@ struct FQuickSlotObj
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
+	Gold,
 	Equipment,
 	Uses_Potion,
 	Uses_Buff,
-	Quest,
-	Gold
+	Quest
 };
 
 UENUM(BlueprintType)

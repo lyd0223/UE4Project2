@@ -11,7 +11,6 @@ void SignUpResultMessageHandler::Start()
 	case ESignUpResultType::OK:
 		//회원가입 완료
 		{
-			//PrintViewport(2.f, FColor::Green, TEXT("SignUp Success"));
 			AStartGameModeBase* GameMode = Cast<AStartGameModeBase>(m_World->GetAuthGameMode());
 			GameMode->GetStartMainWidget()->PopUpMessage(TEXT("SignUp Succeed"));
 			break;

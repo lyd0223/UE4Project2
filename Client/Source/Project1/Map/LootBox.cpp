@@ -37,6 +37,14 @@ void ALootBox::BeginPlay()
 	m_LootBoxTrigger->SetOwnerLootBox(this);
 
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetWorld()->GetGameInstance());
+	uint8 RandNum0 = FMath::RandRange(0, 100);
+	{
+		FItem* Item = new FItem();
+		Item->ItemTableInfo = GameInstance->FindItemTableInfo(TEXT("골드"));
+		Item->Count = RandNum0;
+
+		this->GetDropItemArray().Add(Item);
+	}
 	uint8 RandNum1 = FMath::RandRange(0, 100);
 	if (RandNum1 >= 50)
 	{

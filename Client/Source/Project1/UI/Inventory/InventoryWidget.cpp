@@ -101,3 +101,13 @@ void UInventoryWidget::DeductItemCount(FItem* Item)
 		}
 	}
 }
+
+void UInventoryWidget::SetGoldText(uint64 _Gold)
+{
+	m_GoldText->SetText(FText::FromString(FString::Printf(TEXT("%lld"),_Gold)));
+}
+
+void UInventoryWidget::SetWeightText(uint8 _NowWeigth, uint8 _MaxWeight)
+{
+	m_WeightText->SetText(FText::FromString(FString::Printf(TEXT("%d / %d"),_NowWeigth, _MaxWeight)));
+}

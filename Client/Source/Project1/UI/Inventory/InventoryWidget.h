@@ -53,4 +53,6 @@ public:
 	void AddItem(FItem* Item);
 	void AddInventorySlot();
 	void DeductItemCount(FItem* Item);
+	void SetGoldText(uint64 _Gold);
+	void SetWeightText(uint8 _NowWeigth, uint8 _MaxWeight);
 };
