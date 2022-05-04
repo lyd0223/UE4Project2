@@ -52,5 +52,5 @@ void ABossMonster::IsSkillOnSetTrue()
 {
 	m_IsSkillOn = true;
 	
-	GetWorld()->GetTimerManager().SetTimer(m_TimerHandle, this, &ABossMonster::IsSkillOnSetTrue, 5.f, false);
+	GetWorld()->GetTimerManager().SetTimer(m_TimerHandle, this, &ABossMonster::IsSkillOnSetTrue, 3.f, false);
 }
