@@ -135,6 +135,8 @@ void ARampage::UseSkill(int32 Index)
 			break;
 	}
 }
+
+//얼음
 void ARampage::Skill1()
 {
 
@@ -149,53 +151,23 @@ void ARampage::Skill1()
 			TargetLoc, FRotator::ZeroRotator, param);
 	
 		Effect->LoadParticleAsync(TEXT("RampageSkill1"));
-		//Effect->SetEffectScale(FVector(1f,0.5f,0.5f));
-		//Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
+		Effect->LoadSoundAsync(TEXT("RampageSkill1"));
 
 	
 		//데미지 처리
-// 		FCollisionQueryParams	params(NAME_None, false, this);
-// 		float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-// 		FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
-// 		FHitResult	result;
-// 		bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
-// 			Loc, FQuat::Identity,
-// 			ECollisionChannel::ECC_GameTraceChannel4, 
-// 			FCollisionShape::MakeBox(FVector(Radious,800.f,Radious)),
-// 			params);
-//
-// 		//디버그용 드로우
-// 		#if ENABLE_DRAW_DEBUG
-//
-// 		FColor	DrawColor = Sweep ? FColor::Red : FColor::Green;
-// 	
-// 		DrawDebugBox(GetWorld(), Loc,FVector(Radious,800.f,Radious),
-// 			DrawColor, false, 0.5f);
-//
-// #endif
-//
-// 		if (Sweep)
-// 		{
-// 			//이펙트
-// 			// FActorSpawnParameters	param;
-// 			// param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-// 			//
-// 			// ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-// 			// 	result.ImpactPoint, result.ImpactNormal.Rotation(), param);
-// 			//
-// 			// // �ּ��� �ε��Ѵ�.
-// 			// Effect->LoadParticle(TEXT("ParticleSystem'/Game/AdvancedMagicFX13/Particles/P_ky_flash1.P_ky_flash1'"));
-// 			//
-// 			// // Sound
-// 			// Effect->LoadSound(TEXT("SoundWave'/Game/Sound/Fire4.Fire4'"));
-//
-//
-// 			//공격 데미지
-// 			FDamageEvent	DmgEvent;
-// 			float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
-// 		}
+		// FCollisionQueryParams	params(NAME_None, false, this);
+		// float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
+		// FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
+		// FHitResult	result;
+		// bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
+		// 	Loc, FQuat::Identity,
+		// 	ECollisionChannel::ECC_GameTraceChannel4, 
+		// 	FCollisionShape::MakeBox(FVector(Radious,800.f,Radious)),
+		// 	params);
 	}
 }
+
+//포효
 void ARampage::Skill2()
 {
 	
@@ -208,78 +180,42 @@ void ARampage::Skill2()
 	
 	Effect->LoadParticleAsync(TEXT("RampageSkill2"));
 	Effect->SetEffectScale(FVector(10.f,10.f,10.f));
-	//Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
-
+	Effect->LoadSoundAsync(TEXT("RampageSkill2"));
 	
 	//데미지 처리
-	// 		FCollisionQueryParams	params(NAME_None, false, this);
-	// 		float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-	// 		FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
-	// 		FHitResult	result;
-	// 		bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
-	// 			Loc, FQuat::Identity,
-	// 			ECollisionChannel::ECC_GameTraceChannel4, 
-	// 			FCollisionShape::MakeBox(FVector(Radious,800.f,Radious)),
-	// 			params);
-	//
-	// 		//디버그용 드로우
-	// 		#if ENABLE_DRAW_DEBUG
-	//
-	// 		FColor	DrawColor = Sweep ? FColor::Red : FColor::Green;
-	// 	
-	// 		DrawDebugBox(GetWorld(), Loc,FVector(Radious,800.f,Radious),
-	// 			DrawColor, false, 0.5f);
-	//
-	// #endif
-	//
-	// 		if (Sweep)
-	// 		{
-	// 			//이펙트
-	// 			// FActorSpawnParameters	param;
-	// 			// param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	// 			//
-	// 			// ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-	// 			// 	result.ImpactPoint, result.ImpactNormal.Rotation(), param);
-	// 			//
-	// 			// // �ּ��� �ε��Ѵ�.
-	// 			// Effect->LoadParticle(TEXT("ParticleSystem'/Game/AdvancedMagicFX13/Particles/P_ky_flash1.P_ky_flash1'"));
-	// 			//
-	// 			// // Sound
-	// 			// Effect->LoadSound(TEXT("SoundWave'/Game/Sound/Fire4.Fire4'"));
-	//
-	//
-	// 			//공격 데미지
-	// 			FDamageEvent	DmgEvent;
-	// 			float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
-	// 		}
+	FCollisionQueryParams params(NAME_None, false, this);
+	float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
+	FHitResult result;
+	bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
+	                                              Loc, FQuat::Identity,
+	                                              ECollisionChannel::ECC_GameTraceChannel4,
+	                                              FCollisionShape::MakeSphere(800.f),
+	                                              params);
 }
 
+//이동기
 void ARampage::Skill3()
 {
-
 	// 이펙트
 	FActorSpawnParameters	param;
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
 		GetActorLocation(), FRotator::ZeroRotator, param);
-	
 	Effect->LoadParticleAsync(TEXT("RampageSkill3_1"));
 	Effect->SetLifeTime(2.f);
-	//Effect->SetEffectScale(FVector(1f,0.5f,0.5f));
-	//Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
 
 	ANormalEffect* Effect2 = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
 		GetActorLocation(), FRotator::ZeroRotator, param);
-	
 	Effect->LoadParticleAsync(TEXT("RampageSkill3_2"));
 	Effect->SetLifeTime(2.f);
+	Effect->LoadSoundAsync(TEXT("RampageSkill3"));
+	
 	// 위치로 이동
 	GetCharacterMovement()->MaxWalkSpeed = m_MonsterInfo.MoveSpeed;
-
 	FVector TargetLoc = GetActorLocation() + GetActorForwardVector() * 800.f;
 	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, TargetLoc);
-
 	
 	//데미지 처리
 	FCollisionQueryParams	params(NAME_None, false, this);
