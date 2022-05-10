@@ -227,16 +227,20 @@ void UInventoryManager::SaveCharacterInfoInventoryData(FCharacterInfo& Character
 	CharacterInfo.m_InventoryData.clear();
 	CharacterInfo.m_InventoryData.resize(800);
 
-	//InventoryData는 vector<char>형태인데, 여기에 ItemIdx(int)/ItemCount(int)를 밀어넣는다.
+	//InventoryData는 vector<char>형태인데, 여기에 ItemIdx(uint32)/ItemCount(uint32)를 밀어넣는다.
 	int pivot = 0;
+
+	//골드
 	memcpy(&CharacterInfo.m_InventoryData[pivot], &m_Gold, sizeof(uint64));
 	pivot += sizeof(uint64);
+
+	//아이템
 	for (auto Item : m_ItemArray)
 	{
-		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->ItemTableInfo->Idx, sizeof(int));
-		pivot += sizeof(int);
-		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->Count, sizeof(int));
-		pivot += sizeof(int);
+		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->ItemTableInfo->Idx, sizeof(uint32));
+		pivot += sizeof(uint32);
+		memcpy(&CharacterInfo.m_InventoryData[pivot], &Item->Count, sizeof(uint32));
+		pivot += sizeof(uint32);
 	}
 }
 
@@ -246,12 +250,14 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 	std::vector<unsigned char> InventoryData = CharacterInfo.m_InventoryData;
 
 	//인벤토리가 비어있는경우.
-	if (InventoryData.size() < sizeof(int))
+	if (InventoryData.size() < sizeof(uint32))
 		return;
 
+	//골드
 	m_Gold = *(uint64*)&InventoryData[0];
 	SetUI(m_Gold);
-
+	
+	//아이템
 	for (int i = sizeof(uint64); i < InventoryData.size();)
 	{
 		if (m_OwnerCharacter == nullptr)
@@ -264,11 +270,11 @@ void UInventoryManager::LoadCharacterInfoInventoryData(const FCharacterInfo& Cha
 		//ItemTableInfo 설정.
 		if (InventoryData[i] == 0)
 			return;
-		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(*(int*)&InventoryData[i]);
-		i += sizeof(int);
+		LoadItem->ItemTableInfo = GameInstance->FindItemTableInfo(*(uint32*)&InventoryData[i]);
+		i += sizeof(uint32);
 		//ItemCount 설정
-		LoadItem->Count = static_cast<int>(*(int*)&InventoryData[i]);
-		i += sizeof(int);
+		LoadItem->Count = static_cast<int>(*(uint32*)&InventoryData[i]);
+		i += sizeof(uint32);
 
 		//인벤토리에 추가.
 		m_ItemArray.Add(LoadItem);
