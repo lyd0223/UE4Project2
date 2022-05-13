@@ -6,12 +6,18 @@
 #include "Rampage.h"
 
 
+void URampageAnimInstance::AnimNotify_Skill2Attack()
+{
+	ARampage* Owner = Cast<ARampage>(TryGetPawnOwner());
+	if(Owner ==nullptr)
+		return;
+	Owner->Skill2Attack();
+}
+
 void URampageAnimInstance::AnimNotify_AttachEnd()
 {
 	ARampage* Owner = Cast<ARampage>(TryGetPawnOwner());
 	if(Owner ==nullptr)
 		return;
-	Owner->Skill3RockDetach();
-	
-	
+	Owner->Skill3RockDetach();	
 }

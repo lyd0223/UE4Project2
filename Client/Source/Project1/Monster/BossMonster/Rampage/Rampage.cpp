@@ -173,23 +173,6 @@ void ARampage::Skill2()
 	Effect->LoadParticleAsync(TEXT("RampageSkill2"));
 	Effect->SetEffectScale(FVector(10.f,10.f,10.f));
 	Effect->LoadSoundAsync(TEXT("RampageSkill2"));
-	
-	//데미지 처리
-	FCollisionQueryParams params(NAME_None, false, this);
-	float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-	FVector Loc = GetActorLocation();
-	FHitResult result;
-	bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
-	                                              Loc, FQuat::Identity,
-	                                              ECollisionChannel::ECC_GameTraceChannel4,
-	                                              FCollisionShape::MakeSphere(3200.f),
-	                                              params);
-
-	if(Sweep)
-	{
-		FDamageEvent	DmgEvent;
-		float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
-	}
 
 }
 
@@ -209,6 +192,26 @@ void ARampage::Skill3()
 	m_Skill3Rock = Skill3Rock;
 	Socket->AttachActor(Skill3Rock,GetMesh());
 	
+}
+
+void ARampage::Skill2Attack()
+{
+	//데미지 처리
+	FCollisionQueryParams params(NAME_None, false, this);
+	float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
+	FVector Loc = GetActorLocation();
+	FHitResult result;
+	bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
+												Loc, FQuat::Identity,
+												ECollisionChannel::ECC_GameTraceChannel4,
+												FCollisionShape::MakeSphere(3200.f),
+												params);
+
+	if(Sweep)
+	{
+		FDamageEvent	DmgEvent;
+		float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
+	}
 }
 
 void ARampage::Skill3RockDetach()

@@ -37,5 +37,6 @@ protected:
 	void Skill3();
 	
 public:
+	void Skill2Attack();
 	void Skill3RockDetach();
 };

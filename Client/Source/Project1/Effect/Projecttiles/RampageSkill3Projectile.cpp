@@ -50,8 +50,28 @@ void ARampageSkill3Projectile::StopEvent(const FHitResult& result)
 	//Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
 
 	//데미지 처리
+	//직접 맞은경우.
 	FDamageEvent	DmgEvent;
 	float Damage = result.GetActor()->TakeDamage(m_OwnerMonster->GetMonsterInfo().Attack, DmgEvent, m_OwnerMonster->GetController(), this);
+	FCollisionQueryParams	params(NAME_None, false, this);
+
+	//범위공격 맞은경우.
+	float Radious = 300.f;
+	FVector Loc = GetActorLocation();
+	FHitResult	RangeResult;
+	bool Sweep = GetWorld()->SweepSingleByChannel(RangeResult, Loc,
+		Loc, FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel4, 
+		FCollisionShape::MakeSphere(Radious),
+		params);
+	
+	if(Sweep)
+	{
+		//데미지 처리
+		FDamageEvent RangeDmgEvent;
+		float RandgeDamage = RangeResult.GetActor()->TakeDamage(m_OwnerMonster->GetMonsterInfo().Attack, DmgEvent,
+													m_OwnerMonster->GetController(), this);
+	}
 
 	Destroy();
 }

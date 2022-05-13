@@ -17,6 +17,8 @@ class PROJECT1_API URampageAnimInstance : public UMonsterAnimInstance
 
 	public:
 	UFUNCTION()
+	void AnimNotify_Skill2Attack();
+	UFUNCTION()
 	void AnimNotify_AttachEnd();
 	
 };
