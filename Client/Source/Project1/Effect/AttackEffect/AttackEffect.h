@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../../GameInfo.h"
+#include "Project1/GameInfo.h"
 #include "Project1/Effect/NormalEffect.h"
-#include "ParticleProjectile.generated.h"
+#include "AttackEffect.generated.h"
 
 UCLASS()
 class PROJECT1_API AAttackEffect : public ANormalEffect
@@ -13,23 +13,21 @@ public:
 	AAttackEffect();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	USphereComponent* m_Body;
-
 	UPROPERTY()
-	class AMonster* m_OwnerMonster;;
+	ACharacter* m_OwnerCharacter;
 
-	int m_Damage;
+	uint32 m_Damage;
 
 public:
+	
 	void SetDamage(int32 _Damage)
 	{
 		m_Damage = _Damage;
 	}
 
-	void SetOwnerMonster(class AMonster* _OwnerMonster)
+	void SetOwnerMonster(class ACharacter* _OwnerCharacter)
 	{
-		m_OwnerMonster = _OwnerMonster;
+		m_OwnerCharacter = _OwnerCharacter;
 	}
 
 protected:
@@ -37,8 +35,11 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	void Init(const FString& _Name, ACharacter* _OwnerCharacter, uint32 _Damage);
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void ParticleFinish(UParticleSystemComponent* Particle) override;
 	virtual void Attack();
 };

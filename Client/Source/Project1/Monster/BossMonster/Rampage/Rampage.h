@@ -10,22 +10,32 @@ UCLASS()
 class PROJECT1_API ARampage : public ABossMonster
 {
 	GENERATED_BODY()
-	
-	public:
+
+public:
 	ARampage();
 
-	protected:
+protected:
+	UPROPERTY()
+	TSubclassOf<AActor> m_Skill3RockClass;
+
+	UPROPERTY()
+	AActor* m_Skill3Rock;
+
+protected:
 	virtual void BeginPlay() override;
 
-	public:
+public:
 	virtual void Tick(float DeltaTime) override;
 
-	public:
+public:
 	virtual void NormalAttack() override;
 	virtual void UseSkill(int32 Index) override;
 
-	protected:
+protected:
 	void Skill1();
 	void Skill2();
 	void Skill3();
+	
+public:
+	void Skill3RockDetach();
 };

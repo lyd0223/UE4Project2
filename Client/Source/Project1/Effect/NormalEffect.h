@@ -64,6 +64,6 @@ class PROJECT1_API ANormalEffect : public AActor
 
 	public:
 	UFUNCTION()
-	void ParticleFinish(UParticleSystemComponent* Particle);
+	virtual void ParticleFinish(UParticleSystemComponent* Particle);
 
 };

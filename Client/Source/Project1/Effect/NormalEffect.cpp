@@ -48,7 +48,7 @@ void ANormalEffect::Tick(float DeltaTime)
 
 		if(m_LifeTimeACC >= m_LifeTime)
 		{
-			Destroy();
+			ParticleFinish(m_ParticleSystem);
 		}
 	}
 	

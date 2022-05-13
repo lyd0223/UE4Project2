@@ -14,4 +14,9 @@ class PROJECT1_API URampageAnimInstance : public UMonsterAnimInstance
 {
 	GENERATED_BODY()
 
+
+	public:
+	UFUNCTION()
+	void AnimNotify_AttachEnd();
+	
 };

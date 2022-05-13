@@ -4,7 +4,10 @@
 #include "Rampage.h"
 #include "RampageAIController.h"
 #include "RampageAnimInstance.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Project1/Effect/NormalEffect.h"
+#include "Project1/Effect/AttackEffect/MonsterAttack/BossMonster/Rampage/RampageSkill1Effect.h"
+#include "Project1/Effect/Projecttiles/RampageSkill3Projectile.h"
 #include "Project1/Player/PlayerCharacter.h"
 
 ARampage::ARampage()
@@ -12,6 +15,10 @@ ARampage::ARampage()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	static ConstructorHelpers::FClassFinder<AActor>	Skill3RockAsset(TEXT("Blueprint'/Game/01Resources/Monster/BossMonster/Rampage/BP_Skill3Rock.BP_Skill3Rock_C'"));
+	if (Skill3RockAsset.Succeeded())
+		m_Skill3RockClass = Skill3RockAsset.Class;
+	
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>	MeshAsset(TEXT("SkeletalMesh'/Game/ParagonRampage/Characters/Heroes/Rampage/Meshes/Rampage.Rampage'"));
 	if (MeshAsset.Succeeded())
 		GetMesh()->SetSkeletalMesh(MeshAsset.Object);
@@ -139,38 +146,23 @@ void ARampage::UseSkill(int32 Index)
 //얼음
 void ARampage::Skill1()
 {
-
 	if(m_Target)
 	{
-		FVector TargetLoc = m_Target->GetActorLocation();
 		// 이펙트
+		FVector TargetLoc = m_Target->GetActorLocation();
 		FActorSpawnParameters	param;
 		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-		ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
+	
+		ARampageSkill1Effect* SkillEffect = GetWorld()->SpawnActor<ARampageSkill1Effect>(ARampageSkill1Effect::StaticClass(),
 			TargetLoc, FRotator::ZeroRotator, param);
-	
-		Effect->LoadParticleAsync(TEXT("RampageSkill1"));
-		Effect->LoadSoundAsync(TEXT("RampageSkill1"));
-
-	
-		//데미지 처리
-		// FCollisionQueryParams	params(NAME_None, false, this);
-		// float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-		// FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
-		// FHitResult	result;
-		// bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
-		// 	Loc, FQuat::Identity,
-		// 	ECollisionChannel::ECC_GameTraceChannel4, 
-		// 	FCollisionShape::MakeBox(FVector(Radious,800.f,Radious)),
-		// 	params);
+		SkillEffect->Init(TEXT("RampageSkill1"), this, m_MonsterInfo.Attack);
+		SkillEffect->SetLifeTime(1.5f);
 	}
 }
 
 //포효
 void ARampage::Skill2()
 {
-	
 	// 이펙트
 	FActorSpawnParameters	param;
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -185,77 +177,52 @@ void ARampage::Skill2()
 	//데미지 처리
 	FCollisionQueryParams params(NAME_None, false, this);
 	float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-	FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
+	FVector Loc = GetActorLocation();
 	FHitResult result;
 	bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
 	                                              Loc, FQuat::Identity,
 	                                              ECollisionChannel::ECC_GameTraceChannel4,
-	                                              FCollisionShape::MakeSphere(800.f),
+	                                              FCollisionShape::MakeSphere(3200.f),
 	                                              params);
-}
 
-//이동기
-void ARampage::Skill3()
-{
-	// 이펙트
-	FActorSpawnParameters	param;
-	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-		GetActorLocation(), FRotator::ZeroRotator, param);
-	Effect->LoadParticleAsync(TEXT("RampageSkill3_1"));
-	Effect->SetLifeTime(2.f);
-
-	ANormalEffect* Effect2 = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-		GetActorLocation(), FRotator::ZeroRotator, param);
-	Effect->LoadParticleAsync(TEXT("RampageSkill3_2"));
-	Effect->SetLifeTime(2.f);
-	Effect->LoadSoundAsync(TEXT("RampageSkill3"));
-	
-	// 위치로 이동
-	GetCharacterMovement()->MaxWalkSpeed = m_MonsterInfo.MoveSpeed;
-	FVector TargetLoc = GetActorLocation() + GetActorForwardVector() * 800.f;
-	UAIBlueprintHelperLibrary::SimpleMoveToLocation(Controller, TargetLoc);
-	
-	//데미지 처리
-	FCollisionQueryParams	params(NAME_None, false, this);
-	float Radious = GetCapsuleComponent()->GetScaledCapsuleRadius();
-	FVector Loc = GetActorLocation() + GetActorForwardVector() * 400.f;
-	FHitResult	result;
-	bool Sweep = GetWorld()->SweepSingleByChannel(result, Loc,
-		Loc, FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel4, 
-		FCollisionShape::MakeBox(FVector(Radious,800.f,Radious)),
-		params);
-
-	//디버그용 드로우
-	#if ENABLE_DRAW_DEBUG
-
-	FColor	DrawColor = Sweep ? FColor::Red : FColor::Green;
-	
-	DrawDebugBox(GetWorld(), Loc,FVector(Radious,800.f,Radious),
-		DrawColor, false, 0.5f);
-
-	#endif
-
-	if (Sweep)
+	if(Sweep)
 	{
-		//이펙트
-		// FActorSpawnParameters	param;
-		// param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		//
-		// ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-		// 	result.ImpactPoint, result.ImpactNormal.Rotation(), param);
-		//
-		// // �ּ��� �ε��Ѵ�.
-		// Effect->LoadParticle(TEXT("ParticleSystem'/Game/AdvancedMagicFX13/Particles/P_ky_flash1.P_ky_flash1'"));
-		//
-		// // Sound
-		// Effect->LoadSound(TEXT("SoundWave'/Game/Sound/Fire4.Fire4'"));
-
-
-		//공격 데미지
 		FDamageEvent	DmgEvent;
 		float Damage = result.GetActor()->TakeDamage(m_MonsterInfo.Attack, DmgEvent, GetController(), this);
 	}
+
+}
+
+//돌던지기
+void ARampage::Skill3()
+{
+	FActorSpawnParameters	param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	FTransform SocketTransform;
+	int32 BoneIndex;
+	const USkeletalMeshSocket* Socket = GetMesh()->GetSocketInfoByName(TEXT("RockAttachPoint"),SocketTransform, BoneIndex);
+	if(Socket == nullptr)
+		return;
+	AActor* Skill3Rock = GetWorld()->SpawnActor<AActor>(m_Skill3RockClass, SocketTransform.GetLocation(),
+		FRotator::ZeroRotator, param);
+	m_Skill3Rock = Skill3Rock;
+	Socket->AttachActor(Skill3Rock,GetMesh());
+	
+}
+
+void ARampage::Skill3RockDetach()
+{
+	if(m_Skill3Rock == nullptr)
+		return;
+	
+	FActorSpawnParameters	param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	ARampageSkill3Projectile* Projectile = GetWorld()->SpawnActor<ARampageSkill3Projectile>(ARampageSkill3Projectile::StaticClass(),
+		m_Skill3Rock->GetActorLocation(), GetActorRotation(), param);
+	Projectile->SetOwnerMonster(this);
+	
+	m_Skill3Rock->Destroy();
+	m_Skill3Rock = nullptr;
 }
