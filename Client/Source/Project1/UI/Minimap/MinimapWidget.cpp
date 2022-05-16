@@ -21,24 +21,24 @@ void UMinimapWidget::NativeConstruct()
 	//몬스터이미지 오브젝트풀
 	for (int32 i = 0; i < 30; i++)
 	{
-		FString name = FString::Printf(TEXT("Monster%d"), i);
-		UImage* image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *name);
-		image->SetVisibility(ESlateVisibility::Collapsed);
-		image->SetBrushTintColor(FSlateColor(FLinearColor(1.f,0.f,0.f,1.f)));
+		FString Name = FString::Printf(TEXT("Monster%d"), i);
+		UImage* Image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *Name);
+		Image->SetVisibility(ESlateVisibility::Collapsed);
+		Image->SetBrushTintColor(FSlateColor(FLinearColor(1.f,0.f,0.f,1.f)));
 		
-		UCanvasPanelSlot* canvasPanelSlot = m_MonsterCanvasPanel->AddChildToCanvas(image);
-		canvasPanelSlot->SetSize(FVector2D(10.f, 10.f));
-		canvasPanelSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+		UCanvasPanelSlot* CanvasPanelSlot = m_MonsterCanvasPanel->AddChildToCanvas(Image);
+		CanvasPanelSlot->SetSize(FVector2D(10.f, 10.f));
+		CanvasPanelSlot->SetAlignment(FVector2D(0.5f, 0.5f));
 		
-		m_MonsterImageArray.Add(image);
+		m_MonsterImageArray.Add(Image);
 	}
 	m_MonsterImageNum = 0;
 
 	//룸이미지 오브젝트풀
 	for (int32 i = 0; i < 20; i++)
 	{
-		FString name = FString::Printf(TEXT("Room%d"), i);
-		UImage* image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *name);
+		FString Name = FString::Printf(TEXT("Room%d"), i);
+		UImage* image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *Name);
 		image->SetVisibility(ESlateVisibility::Collapsed);
 		
 		UTexture2D* Texture = LoadObject<UTexture2D>(GetWorld(), TEXT("Texture2D'/Game/01Resources/UI/Minimap/Image/Room.Room'"));
@@ -55,19 +55,19 @@ void UMinimapWidget::NativeConstruct()
 	//도어이미지 오브젝트풀
 	for (int32 i = 0; i < 50; i++)
 	{
-		FString name = FString::Printf(TEXT("Door%d"), i);
-		UImage* image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *name);
-		image->SetVisibility(ESlateVisibility::Collapsed);
+		FString Name = FString::Printf(TEXT("Door%d"), i);
+		UImage* Image = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass(), *Name);
+		Image->SetVisibility(ESlateVisibility::Collapsed);
 		
 		UTexture2D* Texture = LoadObject<UTexture2D>(GetWorld(), TEXT("Texture2D'/Game/01Resources/UI/Minimap/Image/Door.Door'"));
-		image->SetBrushFromTexture(Texture);
-		image->SetBrushSize(FVector2D(700.f,700.f));
+		Image->SetBrushFromTexture(Texture);
+		Image->SetBrushSize(FVector2D(700.f,700.f));
 		
-		UCanvasPanelSlot* canvasPanelSlot = m_DoorCanvasPanel->AddChildToCanvas(image);
-		canvasPanelSlot->SetSize(FVector2D(15.f, 15.f));
-		canvasPanelSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+		UCanvasPanelSlot* CanvasPanelSlot = m_DoorCanvasPanel->AddChildToCanvas(Image);
+		CanvasPanelSlot->SetSize(FVector2D(15.f, 15.f));
+		CanvasPanelSlot->SetAlignment(FVector2D(0.5f, 0.5f));
 		
-		m_DoorImageArray.Add(image);
+		m_DoorImageArray.Add(Image);
 	}
 	m_DoorImageNum = 0;
 }

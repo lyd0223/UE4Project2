@@ -23,7 +23,6 @@ protected:
 	{
 		m_Widget = _Widget;
 	}
-	
 	void SetMousePosition(const FVector2D& _MousePos)
 	{
 		m_MousePos = _MousePos;

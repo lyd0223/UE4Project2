@@ -40,9 +40,9 @@ protected:
 	
 
 protected:
-	virtual void NativeConstruct();
+	virtual void NativeConstruct() override;
 
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	void RotateMinimap(float Yaw);

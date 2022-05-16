@@ -97,7 +97,8 @@ void UInventorySlotWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
 	m_ItemToolTipWidget->SetVisibility(ESlateVisibility::Collapsed);
 }
 
-void UInventorySlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+void UInventorySlotWidget::NativeOnDragDetected(
+	const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
 
@@ -115,7 +116,8 @@ void UInventorySlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, con
 
 	//DragDropOperation 설정.
 	UWidgetDragDropOperation* DDOper =
-		Cast<UWidgetDragDropOperation>(UWidgetBlueprintLibrary::CreateDragDropOperation(UWidgetDragDropOperation::StaticClass()));
+		Cast<UWidgetDragDropOperation>(
+			UWidgetBlueprintLibrary::CreateDragDropOperation(UWidgetDragDropOperation::StaticClass()));
 	if(DDOper == nullptr)
 		return;
 	DDOper->SetWidget(this);
