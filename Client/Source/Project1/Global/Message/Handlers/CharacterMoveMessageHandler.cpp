@@ -14,7 +14,7 @@ void CharacterMoveMessageHandler::Start()
 	AWaitingRoomGameModeBase* GameMode = Cast<AWaitingRoomGameModeBase>(m_World->GetAuthGameMode());
 	if (GameMode == nullptr)
 		return;
-	//UserIdx확인 후 움직여준다.
+	//UserIdx확인 후 접속해있지 않다면 OtherCharacter생성.
 	if (m_GameInstance->GetPlayingOtherCharacter(m_Message->m_CharacterInfo.m_UserIdx) == nullptr)
 	{
 		FActorSpawnParameters param;
@@ -30,6 +30,7 @@ void CharacterMoveMessageHandler::Start()
 		
 		return;
 	}
+	//움직여준다.
 	AOtherPlayerCharacter* OtherPlayerCharacter = m_GameInstance->GetPlayingOtherCharacter(m_Message->m_CharacterInfo.m_UserIdx);
 	OtherPlayerCharacter->Move(m_Message->m_Pos, FRotator(m_Message->m_Rot.X, m_Message->m_Rot.Y, m_Message->m_Rot.Z));
 }

@@ -41,6 +41,7 @@ public:
 	{
 		return m_Gold;
 	}
+	
 private:
 	void Init();
 

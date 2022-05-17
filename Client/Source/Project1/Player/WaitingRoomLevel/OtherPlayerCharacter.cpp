@@ -45,14 +45,7 @@ void AOtherPlayerCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
-void AOtherPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
-
-void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
+void AOtherPlayerCharacter::Move(const FVector& _Pos, const FRotator& _Rot)
 {
 	//방향회전
 	SetActorRotation(_Rot);
@@ -72,13 +65,9 @@ void AOtherPlayerCharacter::Move(FVector& _Pos, FRotator const& _Rot)
 	//방향 구하기 (Cross Product한 값이 0보다 작을시 왼쪽.)
 	FVector Cross = FVector::CrossProduct(GetActorForwardVector(), Dir);
 	if (Cross.Z < 0)
-	{
 		DegreesAngle *= -1.f;
-	}
 	m_AnimInstance->SetDirection(DegreesAngle);
 
-	//AAIController* AIController = Cast<AAIController>(Controller);
-	//AIController->MoveToLocation(_Pos,1.f);
 	SetActorLocation(_Pos);
 }
 

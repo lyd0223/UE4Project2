@@ -32,12 +32,10 @@ public:
 	{
 		return m_CharacterInfo;
 	}
-	
 	void SetCharacterInfo(const FCharacterInfo& _CharacterInfo)
 	{
 		m_CharacterInfo = _CharacterInfo;	
 	}
-	
 	
 protected:
 	virtual void BeginPlay() override;
@@ -45,9 +43,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 public:
-	void Move(FVector& _Pos, FRotator const& _Rot);
+	void Move(const FVector& _Pos, const FRotator& _Rot);
 	void NickNameWidgetCallBackFunc();
 };
