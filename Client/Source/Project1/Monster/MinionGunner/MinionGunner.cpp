@@ -3,6 +3,7 @@
 
 #include "MinionGunner.h"
 #include "MinionGunnerAIController.h"
+#include "Project1/Effect/NormalEffect.h"
 #include "Project1/Effect/Projecttiles/MinionGunnerAttackProjectile.h"
 
 AMinionGunner::AMinionGunner()
@@ -49,7 +50,14 @@ void AMinionGunner::NormalAttack()
 		AMinionGunnerAttackProjectile::StaticClass(), MuzzleLoc, GetActorRotation(),
 		SpawnParam);
 	Bullet->SetOwnerMonster(this);
-		
+
+	
+	FActorSpawnParameters	param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
+		MuzzleLoc, GetActorRotation(), param);
+	Effect->LoadSound(TEXT("MinionGunnerAttack"));
+	Effect->SetLifeTime(1.f);
 	
 }
 

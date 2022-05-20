@@ -209,6 +209,13 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 		m_AnimInstance->SetHit(true);
 	}
 
+	FActorSpawnParameters	param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
+		GetActorLocation(), FRotator::ZeroRotator, param);
+	Effect->LoadSound(TEXT("BelicaHit"));
+	Effect->SetLifeTime(1.5f);
+	
 	//UMG 체력 변경
 	AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 	if (IsValid(gameMode))
@@ -488,6 +495,14 @@ void APlayerCharacter::DashKey()
 			//Dash GhostTrail
 			GhostTrailFunc();
 
+			//대쉬사운드
+			FActorSpawnParameters param;
+			param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(), GetActorLocation(),
+				FRotator::ZeroRotator, param);
+			Effect->LoadSoundAsync(TEXT("Dash"));
+			Effect->SetLifeTime(1.f);
+			
 			//UMG 기력 변경
 			AProject1GameModeBase* gameMode = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 			if (IsValid(gameMode))

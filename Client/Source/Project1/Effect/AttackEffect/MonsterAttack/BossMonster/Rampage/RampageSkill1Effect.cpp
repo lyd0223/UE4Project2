@@ -42,7 +42,7 @@ void ARampageSkill1Effect::Attack()
 																result.ImpactPoint, result.Normal.Rotation(), param);
 		Effect->LoadParticleAsync(TEXT("MinionGunnerHit"));
 		Effect->SetEffectScale(FVector(0.5f, 0.5f, 0.5f));
-		Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
+		
 		//데미지 처리
 		FDamageEvent DmgEvent;
 		float Damage = result.GetActor()->TakeDamage(m_Damage, DmgEvent,

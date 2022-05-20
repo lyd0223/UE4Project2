@@ -73,10 +73,8 @@ void AGolem::NormalAttack()
 		ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
 			result.ImpactPoint, result.ImpactNormal.Rotation(), param);
 		
-		Effect->LoadParticleAsync(TEXT("GolemHit"));
-		
-		// // Sound
-		// Effect->LoadSound(TEXT("SoundWave'/Game/Sound/Fire4.Fire4'"));
+		Effect->LoadParticleAsync(TEXT("PlayerHit"));
+		Effect->LoadSound(TEXT("GolemAttack"));
 
 
 		//공격 데미지
