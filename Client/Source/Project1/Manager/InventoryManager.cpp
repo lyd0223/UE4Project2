@@ -45,6 +45,7 @@ void UInventoryManager::AddItem(FItem* Item)
 	{
 		AddGold(Item->Count);
 		SetUI(Item);
+		return;
 	}
 	//아이템이 이미 인벤토리에 있는지 판단한다.
 	bool IsAlreadyHave = false;

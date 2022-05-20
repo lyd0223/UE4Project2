@@ -56,8 +56,9 @@ void AMinionGunner::NormalAttack()
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
 		MuzzleLoc, GetActorRotation(), param);
-	Effect->LoadSound(TEXT("MinionGunnerAttack"));
+	Effect->LoadSoundAsync(TEXT("MinionGunnerAttack"));
 	Effect->SetLifeTime(1.f);
+	Effect->SetSoundVolume(0.5f);
 	
 }
 

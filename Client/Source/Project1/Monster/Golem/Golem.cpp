@@ -61,20 +61,20 @@ void AGolem::NormalAttack()
 
 	DrawDebugBox(GetWorld(), Center,FVector(60.f,60.f,60.f),
 		DrawColor, false, 0.5f);
-
+	
 #endif
+	FActorSpawnParameters	param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
+		result.ImpactPoint, result.ImpactNormal.Rotation(), param);
+	Effect->LoadSoundAsync(TEXT("GolemAttack"));
+	Effect->SetLifeTime(1.5f);
+	Effect->SetSoundVolume(0.5f);
 
 	if (Sweep)
 	{
 		//이펙트
-		FActorSpawnParameters	param;
-		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-		
-		ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
-			result.ImpactPoint, result.ImpactNormal.Rotation(), param);
-		
 		Effect->LoadParticleAsync(TEXT("PlayerHit"));
-		Effect->LoadSound(TEXT("GolemAttack"));
 
 
 		//공격 데미지

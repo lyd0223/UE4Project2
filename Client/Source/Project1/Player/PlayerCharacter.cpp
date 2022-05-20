@@ -213,7 +213,7 @@ float APlayerCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(),
 		GetActorLocation(), FRotator::ZeroRotator, param);
-	Effect->LoadSound(TEXT("BelicaHit"));
+	Effect->LoadSoundAsync(TEXT("BelicaHit"));
 	Effect->SetLifeTime(1.5f);
 	
 	//UMG 체력 변경
@@ -500,7 +500,7 @@ void APlayerCharacter::DashKey()
 			param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(), GetActorLocation(),
 				FRotator::ZeroRotator, param);
-			Effect->LoadSoundAsync(TEXT("Dash"));
+			Effect->LoadSoundAsync(TEXT("PlayerDash"));
 			Effect->SetLifeTime(1.f);
 			
 			//UMG 기력 변경

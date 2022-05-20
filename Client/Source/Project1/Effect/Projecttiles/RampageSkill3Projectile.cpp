@@ -47,7 +47,7 @@ void ARampageSkill3Projectile::StopEvent(const FHitResult& result)
 		result.ImpactPoint, result.Normal.Rotation(), param);
 	
 	Effect->LoadParticleAsync(TEXT("RampageSkill3"));
-	//Effect->LoadSoundAsync(TEXT("GunnerNormalAttackHit"));
+	Effect->LoadSoundAsync(TEXT("RampageSkill3"));
 
 	//데미지 처리
 	//직접 맞은경우.
