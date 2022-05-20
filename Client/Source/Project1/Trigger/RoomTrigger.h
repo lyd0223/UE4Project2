@@ -5,6 +5,9 @@
 #include "BoxTrigger.h"
 #include "RoomTrigger.generated.h"
 
+
+
+DECLARE_DELEGATE(FRoomEnterDeligate);
 UCLASS()
 class PROJECT1_API ARoomTrigger : public ABoxTrigger
 {
@@ -12,19 +15,9 @@ class PROJECT1_API ARoomTrigger : public ABoxTrigger
 	
 	public:
 	ARoomTrigger();
-
+	
 	protected:
-	class ARoom* m_OwnerRoom;
-
-	public:
-	void SetOwnerRoom(class ARoom* OwnerRoom)
-	{
-		m_OwnerRoom = OwnerRoom;
-	}
-	class ARoom* GetOwnerRoom()
-	{
-		return m_OwnerRoom;
-	}
+	FRoomEnterDeligate m_RoomEnterDeligate;
 	
 	protected:
 	virtual void BeginPlay() override;
@@ -42,4 +35,10 @@ class PROJECT1_API ARoomTrigger : public ABoxTrigger
 	void SetTriggerSize(FVector SizeVector);
 
 	FVector2D GetTriggerSize();
+	
+	template <class T>
+	void SetRoomEnterDelegate(T* _Obj, void(T::* _Func)())
+	{
+		m_RoomEnterDeligate.BindUObject(_Obj, _Func);
+	}
 };

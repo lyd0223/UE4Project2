@@ -44,16 +44,13 @@ void ARoom::BeginPlay()
 	m_RoomTrigger = GetWorld()->SpawnActor<ARoomTrigger>(ARoomTrigger::StaticClass(), GetActorLocation(),
 	                                                     GetActorRotation(), param);
 	m_RoomTrigger->SetTriggerSize(FVector(900.f, 900.f, 500.f));
-	m_RoomTrigger->SetOwnerRoom(this);
-
+	m_RoomTrigger->SetRoomEnterDelegate(this, &ARoom::Enter);
 	m_MonsterCount = m_SpawnPointArray.Num();
 
 	for (auto SpawnPoint : m_SpawnPointArray)
 	{
 		SpawnPoint->SetOwnerRoom(this);
 	}
-
-	//GetWorld()->GetTimerManager().SetTimer(m_RegisterTimerHandle, this, &ARoom::RegisterRoomintoMinimap, 0.5f, false, 0.5f);
 }
 
 // Called every frame
@@ -100,19 +97,3 @@ void ARoom::Enter()
 		}
 	}
 }
-
-// void ARoom::RegisterRoomintoMinimap()
-// {
-// 	//미니맵에 등록
-// 	AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
-// 	if(GameModeBase)
-// 	{
-// 		UMainHUDWidget* MainHUDWidget = GameModeBase->GetMainHUDWidget();\
-// 		if(MainHUDWidget)
-// 		{
-// 			UMinimapWidget* MinimapWidget = MainHUDWidget->GetMinimapWidget();
-// 			MinimapWidget->AddRoomArray(this);
-// 			//MinimapWidget->SetRoomImage(this);
-// 		}
-// 	}
-// }

@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Room.generated.h"
 
-DECLARE_DELEGATE(FRoomDeligate);
 UCLASS()
 class PROJECT1_API ARoom : public AActor
 {
@@ -22,56 +21,43 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TArray<class ADoor*> m_DoorArray;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY()
 	class ARoomTrigger* m_RoomTrigger;
 	
-	bool m_IsClear;
-
-	int32 m_MonsterCount;
-
-	//Minimap Room 세팅 델리게이트
-	FRoomDeligate m_RoomDeligate;
-	FTimerHandle m_RegisterTimerHandle;
-
 	//클리어시 나오는 보상 상자 클래스
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class ALootBox> m_LootBoxClass;
 	
-	
+	bool m_IsClear;
+
+	int32 m_MonsterCount;
 	
 public:
 	// Sets default values for this actor's properties
 	ARoom();
 
 public:
-	class ARoomTrigger* GetRoomTrigger()
+	class ARoomTrigger* GetRoomTrigger() const
 	{
 		return m_RoomTrigger;
 	}
-	FVector GetBoxExtent()
+	FVector GetBoxExtent() const 
 	{
 		return m_BoxComponent->GetScaledBoxExtent();
 	}
+	
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 protected:
 	void Clear();
+	
 public:
 	void Enter();
 
 	void DeductMonsterCount();
 
-	template <typename T>
-	void SetRoomDelegate(T* Obj, void (T::* Func)())
-	{
-		m_RoomDeligate.BindUObject(Obj, Func);
-	}
-
-	//void RegisterRoomintoMinimap();
 };

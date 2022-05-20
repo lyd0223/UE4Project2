@@ -29,9 +29,9 @@ void ARoomTrigger::TriggerBegin(AActor* _OtherActor)
 {
 	//PrintViewport(1.f, FColor::Red, TEXT("Begin Trigger"));
 
-	if(m_OwnerRoom)
+	if(m_RoomEnterDeligate.IsBound())
 	{
-		m_OwnerRoom->Enter();
+		m_RoomEnterDeligate.Execute();
 	}
 	
 }
@@ -46,6 +46,7 @@ void ARoomTrigger::SetTriggerSize(FVector SizeVector)
 	UBoxComponent* Box = Cast<UBoxComponent>(m_Trigger);
 	Box->SetBoxExtent(FVector(SizeVector));
 }
+
 FVector2D ARoomTrigger::GetTriggerSize()
 {
 	UBoxComponent* Box = Cast<UBoxComponent>(m_Trigger);
