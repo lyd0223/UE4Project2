@@ -79,12 +79,12 @@ APlayerCharacter::APlayerCharacter()
 
 	//렌더타겟
 	m_SceneCaputreComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
-	m_SceneCaputreComponent->SetupAttachment(GetMesh());
+	m_SceneCaputreComponent->SetupAttachment(RootComponent);
 
-	ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D> RTTextureAsset(
-		TEXT("TextureRenderTarget2D'/Game/01Resources/Player/RTPlayer.RTPlayer'"));
-	if (RTTextureAsset.Succeeded())
-		m_SceneCaputreComponent->TextureTarget = RTTextureAsset.Object;
+	// ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D> RTTextureAsset(
+	// 	TEXT("TextureRenderTarget2D'/Game/01Resources/Player/RTPlayer.RTPlayer'"));
+	// if (RTTextureAsset.Succeeded())
+	// 	m_SceneCaputreComponent->TextureTarget = RTTextureAsset.Object;
 	m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
 	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
 	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
