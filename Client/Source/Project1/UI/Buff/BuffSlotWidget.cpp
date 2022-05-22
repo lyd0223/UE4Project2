@@ -57,8 +57,6 @@ void UBuffSlotWidget::BuffEnd()
 
 	SetVisibility(ESlateVisibility::Collapsed);
 
-	m_OwnerBuffMainWidget->BuffRefresh(m_Index);
-
 	//PlayerInfo 변경.
 	APlayerCharacter* PlayerCharacter = m_OwnerBuffMainWidget->GetPlayerCharacter();
 	for (auto ItemOption : m_ItemTableInfo->ItemOptionArray)
@@ -72,12 +70,15 @@ void UBuffSlotWidget::BuffEnd()
 			PlayerInfo.ATK -= ItemOption.OptionAmount;
 			break;
 		case EItemOptionType::AttackSpeed:
-			PlayerInfo.AttackSpeed -= ItemOption.OptionAmount;
+			PlayerInfo.AttackSpeed *=  (1.f / (1.f + ItemOption.OptionAmount));
 			break;
 		}
 	}
+	
 	PlayerCharacter->SetUI();
 	m_ItemTableInfo = nullptr;
+	
+	m_OwnerBuffMainWidget->BuffRefresh(m_Index);
 }
 
 void UBuffSlotWidget::BuffStart(const FItemTableInfo* ItemTableInfo, float Duration)
@@ -105,7 +106,7 @@ void UBuffSlotWidget::BuffStart(const FItemTableInfo* ItemTableInfo, float Durat
 				PlayerInfo.ATK += ItemOption.OptionAmount;
 				break;
 			case EItemOptionType::AttackSpeed:
-				PlayerInfo.AttackSpeed += ItemOption.OptionAmount;
+				PlayerInfo.AttackSpeed *=  1.f + ItemOption.OptionAmount;
 				break;
 			}
 		}
@@ -120,6 +121,7 @@ void UBuffSlotWidget::BuffSlotChange(UBuffSlotWidget* NextBuffSlotWidget)
 	m_IsActive = NextBuffSlotWidget->GetIsActive();
 	UTexture2D* Texture = Cast<UTexture2D>(NextBuffSlotWidget->m_BuffImage->Brush.GetResourceObject());
 	m_BuffImage->SetBrushFromTexture(Texture);
+	m_ItemTableInfo = NextBuffSlotWidget->GetItemTableInfo();
 
 	SetVisibility(ESlateVisibility::HitTestInvisible);
 
@@ -133,6 +135,7 @@ void UBuffSlotWidget::BuffSlotReset()
 	m_AccTime = 0.f;
 	m_IsActive = false;
 	m_BuffImage->SetBrushFromTexture(nullptr);
+	m_ItemTableInfo = nullptr;
 
 	this->SetVisibility(ESlateVisibility::Collapsed);
 }

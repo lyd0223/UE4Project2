@@ -23,5 +23,5 @@ void UStatsWidget::SetDatas(FPlayerInfo& PlayerInfo)
 	m_SPText->SetText(FText::FromString(FString::FromInt(PlayerInfo.SPMax)));
 	m_DEFText->SetText(FText::FromString(FString::FromInt(PlayerInfo.DEF)));
 	m_ATKText->SetText(FText::FromString(FString::FromInt(PlayerInfo.ATK)));
-	m_ATKSpeedText->SetText(FText::FromString(FString::FromInt(PlayerInfo.AttackSpeed)));
+	m_ATKSpeedText->SetText(FText::FromString(FString::Printf(TEXT("%.2f"),PlayerInfo.AttackSpeed)));
 }
