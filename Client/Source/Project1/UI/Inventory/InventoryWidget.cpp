@@ -51,6 +51,7 @@ void UInventoryWidget::AddInventorySlot()
 	UInventorySlotWidget* InventorySlotWidget = WidgetTree->ConstructWidget<UInventorySlotWidget>(
 		m_InventorySlotWidgetClass);
 	InventorySlotWidget->SetItemToolTipWidget(m_ItemToolTipWidget);
+	InventorySlotWidget->SetOwnerWidget(this);
 	int32 Row = m_InventoryPanel->GetChildrenCount() / 6;
 	int32 Col = m_InventoryPanel->GetChildrenCount() % 6;
 	m_InventoryPanel->AddChildToUniformGrid(InventorySlotWidget, Row, Col);

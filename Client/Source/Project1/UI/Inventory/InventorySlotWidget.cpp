@@ -37,31 +37,13 @@ void UInventorySlotWidget::NativeTick(const FGeometry& MyGeometry, float InDelta
 
 FReply UInventorySlotWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	// Super::NativeOnMouseMove(InGeometry, InMouseEvent);
-	//
-	// if (m_ItemButton->IsHovered())
-	// {
-	// 	UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(m_ItemToolTipWidget->Slot);
-	//
-	// 	if (PanelSlot)
-	// 	{
-	// 		FVector2D	WidgetPos = InMouseEvent.GetScreenSpacePosition();
-	// 		
-	// 		// 마우스의 Screen좌표를 위젯의 Local 좌표로 변경
-	// 		WidgetPos = InGeometry.AbsoluteToLocal(WidgetPos);
-	//
-	// 		UUniformGridSlot* GridSlot = Cast<UUniformGridSlot>(Slot);
-	// 		WidgetPos.X += (GridSlot->Column * 100.f);
-	// 		WidgetPos.Y += (GridSlot->Row * 100.f);
-	//
-	// 		WidgetPos.Y += 100.f;
-	// 		
-	// 		PanelSlot->SetPosition(WidgetPos);
-	//
-	// 		//PrintViewport(1.f, FColor::Red, FString::Printf(TEXT("X : %.5f Y : %.5f"), WidgetPos.X, WidgetPos.Y));
-	// 	}
-	// }
-
+	Super::NativeOnMouseMove(InGeometry, InMouseEvent);
+	
+	UCanvasPanelSlot* ItemToolTipPanelSlot = Cast<UCanvasPanelSlot>(m_ItemToolTipWidget->Slot);
+	if(ItemToolTipPanelSlot == nullptr)
+		return FReply::Unhandled();
+	FVector2D CursorPos = InMouseEvent.GetScreenSpacePosition();
+	ItemToolTipPanelSlot->SetPosition(USlateBlueprintLibrary::AbsoluteToLocal(m_OwnerWidget->GetCachedGeometry(), CursorPos));
 	
 	return FReply::Handled();
 }
@@ -89,6 +71,16 @@ void UInventorySlotWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const
 		//PrintViewport(2.f, FColor::Blue, "ItemButtonHovered");
 		m_ItemToolTipWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		m_ItemToolTipWidget->SetDatas(*m_Item);
+		
+		// UCanvasPanelSlot* ItemToolTipPanelSlot = Cast<UCanvasPanelSlot>(m_ItemToolTipWidget->Slot);
+		// if(ItemToolTipPanelSlot == nullptr)
+		//  	return;
+		// UUniformGridSlot* PanelSlot = Cast<UUniformGridSlot>(Slot);
+		// if(PanelSlot == nullptr)
+		// 	return;
+		// FVector2D Pos = USlateBlueprintLibrary::LocalToAbsolute(this->GetCachedGeometry(),this->GetCachedGeometry().Position);
+		//
+		// ItemToolTipPanelSlot->SetPosition(USlateBlueprintLibrary::AbsoluteToLocal(m_ItemToolTipWidget->GetCachedGeometry(),Pos));
 	}
 }
 

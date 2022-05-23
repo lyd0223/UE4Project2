@@ -29,10 +29,9 @@ class PROJECT1_API UItemToolTipWidget : public UUserWidget
 	UTextBlock* m_PriceText;
 
 	protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 	public:
 	void SetDatas(FItem& Item);
-	FVector2D GetLocalPos(const FGeometry& InGeometry, FVector2D Pos);
 };
