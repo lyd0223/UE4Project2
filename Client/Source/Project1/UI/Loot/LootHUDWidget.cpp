@@ -81,3 +81,30 @@ void ULootHUDWidget::WidgetOpen(bool _IsOpen)
 		this->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
+
+void ULootHUDWidget::GetAllItem()
+{
+	//아이템 클릭시 획득하여 인벤토리에 넣어준다.
+	for(auto& Data :m_LootListView->GetListItems())
+	{
+		ULootListItemData* ItemData = Cast<ULootListItemData>(Data);
+		if (ItemData)
+		{
+			UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(m_LootBox->GetWorld()->GetGameInstance());
+			if(IsValid(GameInstance))
+			{
+				GameInstance->GetInventoryManager()->AddItem(ItemData->GetItem());
+			
+				FVector Loc = GetWorld()->GetFirstPlayerController()->GetCharacter()->GetActorLocation();
+				FActorSpawnParameters param;
+				param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				ANormalEffect* Effect = GetWorld()->SpawnActor<ANormalEffect>(ANormalEffect::StaticClass(), Loc,
+					FRotator::ZeroRotator, param);
+				Effect->LoadSoundAsync(TEXT("PickUp"));
+				Effect->SetLifeTime(1.f);
+			
+			}
+		}
+	}
+	m_LootListView->ClearListItems();
+}

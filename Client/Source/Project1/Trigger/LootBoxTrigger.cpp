@@ -37,8 +37,8 @@ void ALootBoxTrigger::Tick(float DeltaTime)
 		AProject1GameModeBase* GameModeBase = Cast<AProject1GameModeBase>(GetWorld()->GetAuthGameMode());
 		if(IsValid(GameModeBase))
 		{
-			bool IsKeyDown = GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::F);
-			if(IsKeyDown)
+			bool IsFKeyDown = GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::F);
+			if(IsFKeyDown)
 			{
 				m_OwnerLootBox->GetMesh()->Play(false);
 				ESlateVisibility Visibility = GameModeBase->GetMainHUDWidget()->GetLootHUD()->GetVisibility();
@@ -84,6 +84,15 @@ void ALootBoxTrigger::Tick(float DeltaTime)
 					FRotator::ZeroRotator, param);
 				Effect->LoadSoundAsync(TEXT("OpenWidget"));
 				Effect->SetLifeTime(1.f);
+			}
+
+			bool IsGKeyDown = GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::G);
+			if(IsGKeyDown)
+			{
+				ESlateVisibility Visibility = GameModeBase->GetMainHUDWidget()->GetLootHUD()->GetVisibility();
+				if(Visibility == ESlateVisibility::Collapsed)
+					return;
+				GameModeBase->GetMainHUDWidget()->GetLootHUD()->GetAllItem();
 			}
 		}
 	}

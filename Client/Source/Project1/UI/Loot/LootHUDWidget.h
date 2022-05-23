@@ -29,8 +29,8 @@ public:
 	}
 	
 protected:
-	virtual void NativeConstruct();
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	UFUNCTION()
@@ -40,4 +40,5 @@ public:
 	void ItemHovered(UObject* Data, bool Hovered);
 
 	void WidgetOpen(bool _IsOpen);
+	void GetAllItem();
 };
