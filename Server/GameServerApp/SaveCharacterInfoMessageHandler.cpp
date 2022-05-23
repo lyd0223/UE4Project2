@@ -25,7 +25,8 @@ void SaveCharacterInfoMessageHandler::DBCheck()
 	DBCharacterInfoTable_UpdateCharacterInfoQuery UpdateQuery(m_Message->m_UserIdx, m_Message->m_CharacterInfo);
 	if (UpdateQuery.DoQuery() == false)
 	{
-		//쿼리 실패. (ID 존재하지않음.)
+		//쿼리 실패. 
+		GameServerDebug::LogInfo("CharacterInfo Save Failed");
 		return;
 	}
 	else

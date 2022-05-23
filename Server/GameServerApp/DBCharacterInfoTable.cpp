@@ -142,11 +142,16 @@ DBCharacterInfoTable_UpdateCharacterInfoQuery::DBCharacterInfoTable_UpdateCharac
 	str += ",AttackSpeed = " + std::to_string(_CharacterInfo.m_AttackSpeed);
 	str += ",MoveSpeed = " + std::to_string(_CharacterInfo.m_MoveSpeed);
 	std::string InventoryDataString(_CharacterInfo.m_InventoryData.begin(), _CharacterInfo.m_InventoryData.end());
+	std::string InventoryDataAnsiString = "";
+	GameServerString::UTF8ToAnsi(_CharacterInfo.m_Nickname, InventoryDataAnsiString);
 	for (int i = 0; i < InventoryDataString.size(); i++)
 	{
 		InventoryDataString[i]++;
 	}
 	str += ",InventoryData = \"" + InventoryDataString + "\"";
+
+	const char* InventoryData;
+	
 	//utf-8로 할시 인식이 안된다. 인코딩방식을 Ansi로 바꾼다.
 	std::string Nickname = "";
 	GameServerString::UTF8ToAnsi(_CharacterInfo.m_Nickname, Nickname);
