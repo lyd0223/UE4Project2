@@ -4,6 +4,7 @@
 #include "MenuSceneCapture2D.h"
 
 #include "Project1/Project1GameInstance.h"
+#include "Project1/Effect/NormalEffect.h"
 
 
 AMenuSceneCapture2D::AMenuSceneCapture2D()
@@ -18,6 +19,8 @@ AMenuSceneCapture2D::AMenuSceneCapture2D()
 
 void AMenuSceneCapture2D::BeginPlay()
 {
+	Super::BeginPlay();
+	
 	UProject1GameInstance* GameInstance = Cast<UProject1GameInstance>(GetGameInstance());
 	if (GameInstance == nullptr)
 		return;

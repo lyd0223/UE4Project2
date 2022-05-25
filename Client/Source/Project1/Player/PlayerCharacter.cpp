@@ -78,16 +78,16 @@ APlayerCharacter::APlayerCharacter()
 		m_BulletQuickSlotsArray.Add(nullptr);
 
 	//렌더타겟
-	m_SceneCaputreComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
-	m_SceneCaputreComponent->SetupAttachment(RootComponent);
+	// m_SceneCaputreComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
+	// m_SceneCaputreComponent->SetupAttachment(RootComponent);
 
 	// ConstructorHelpers::FObjectFinder<UTextureRenderTarget2D> RTTextureAsset(
 	// 	TEXT("TextureRenderTarget2D'/Game/01Resources/Player/RTPlayer.RTPlayer'"));
 	// if (RTTextureAsset.Succeeded())
-	// 	m_SceneCaputreComponent->TextureTarget = RTTextureAsset.Object;
-	m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
-	m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
-	m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
+	// m_SceneCaputreComponent->TextureTarget = RTTextureAsset.Object;
+	// m_SceneCaputreComponent->PrimitiveRenderMode = ESceneCapturePrimitiveRenderMode::PRM_UseShowOnlyList;
+	// m_SceneCaputreComponent->SetRelativeLocation(FVector(0.f, 150.f, 110.f));
+	// m_SceneCaputreComponent->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
 }
 
 void APlayerCharacter::BeginPlay()
@@ -123,7 +123,7 @@ void APlayerCharacter::BeginPlay()
 	Effect->LoadParticleAsync(TEXT("PlayerSpawn"));
 	Effect->LoadSoundAsync(TEXT("PlayerSpawn"));
 
-	m_SceneCaputreComponent->ShowOnlyActors.Add(this);
+	//m_SceneCaputreComponent->ShowOnlyActors.Add(this);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -541,11 +541,11 @@ void APlayerCharacter::BulletQuickSlotLeftKey()
 				UQuickSlotsWidget* QuickSlotsWidget = MainHUDWidget->GetQuickSlotWidget();
 				if (IsValid(QuickSlotsWidget))
 				{
+					QuickSlotsWidget->QuickBulletSlotChange(EQuickBulletSlotChangeType::Left, m_BulletIndex);
 					if (m_BulletIndex > 0)
-					{
-						QuickSlotsWidget->QuickBulletSlotChange(EQuickBulletSlotChangeType::Left, m_BulletIndex);
 						m_BulletIndex--;
-					}
+					else
+						m_BulletIndex = 3;
 				}
 			}
 		}
@@ -568,11 +568,11 @@ void APlayerCharacter::BulletQuickSlotRightKey()
 				UQuickSlotsWidget* QuickSlotsWidget = MainHUDWidget->GetQuickSlotWidget();
 				if (IsValid(QuickSlotsWidget))
 				{
+					QuickSlotsWidget->QuickBulletSlotChange(EQuickBulletSlotChangeType::Right, m_BulletIndex);
 					if (m_BulletIndex < 3)
-					{
-						QuickSlotsWidget->QuickBulletSlotChange(EQuickBulletSlotChangeType::Right, m_BulletIndex);
 						m_BulletIndex++;
-					}
+					else
+						m_BulletIndex = 0;
 				}
 			}
 		}

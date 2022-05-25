@@ -76,11 +76,17 @@ void UQuickSlotsWidget::QuickBulletSlotChange(EQuickBulletSlotChangeType ChangeT
 	{
 		case EQuickBulletSlotChangeType::Left:
 			m_QuickBulletSlotWidgetArray[Index]->SelectOn(false);
-			m_QuickBulletSlotWidgetArray[Index-1]->SelectOn(true);
+			if(Index != 0)
+				m_QuickBulletSlotWidgetArray[Index-1]->SelectOn(true);
+			else
+				m_QuickBulletSlotWidgetArray[3]->SelectOn(true);
 			break;
 		case EQuickBulletSlotChangeType::Right:
 			m_QuickBulletSlotWidgetArray[Index]->SelectOn(false);
-			m_QuickBulletSlotWidgetArray[Index+1]->SelectOn(true);
+			if(Index != 3)
+				m_QuickBulletSlotWidgetArray[Index+1]->SelectOn(true);
+			else
+				m_QuickBulletSlotWidgetArray[0]->SelectOn(true);
 			break;
 	}
 }

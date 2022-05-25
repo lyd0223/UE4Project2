@@ -68,8 +68,8 @@ protected:
 	TArray<const FBulletTableInfo*> m_BulletQuickSlotsArray;
 
 	//렌더타겟
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	USceneCaptureComponent2D* m_SceneCaputreComponent;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	//USceneCaptureComponent2D* m_SceneCaputreComponent;
 	
 	public:
 	FPlayerInfo& GetPlayerInfo()
